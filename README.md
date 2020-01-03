@@ -172,5 +172,4 @@ Change the `launchSettings.json` file to browse to `redirect/info` when debuggin
 Run the application. Browse to [https://localhost:5001/redirect/info](https://localhost:5001/redirect/info) and the name of your host will be displayed.
 Browse to [https://localhost:5000/redirect/ms](https://localhost:5000/redirect/ms) and the browser will be redirected to microsoft.com.
 
-
 ### Implement the Url Management API

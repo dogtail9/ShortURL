@@ -17,3 +17,6 @@ The data will be stored in SQL Server and cached in Redis nere the redirect serv
 The cache will be updated using RabbitMQ when a url is added, deleted or updated.
 The application will trace every call using Open Telemetry and W3C Trace Context. 
 Zipkin will be used to gather the logs.
+
+### Implement the Redirect API
+

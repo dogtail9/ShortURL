@@ -1,27 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ShortUrl.RedirectApi.DataAccess;
 
 namespace ShortUrl.RedirectApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RedirectController : ControllerBase
+    public class RedirectController : Controller
     {
+        private readonly IUrlRepository _repository;
         private readonly ILogger<RedirectController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public RedirectController(ILogger<RedirectController> logger)
+        public RedirectController(IUrlRepository repository, ILogger<RedirectController> logger, IWebHostEnvironment hostEnvironment)
         {
-            _logger = logger;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{key}")]
+        public async Task<IActionResult> RedirectTo(string key)
         {
-            return Ok();
+            if (_hostEnvironment.IsDevelopment() && key == "info")
+                return View("Info");
+
+            try
+            {
+                var url = await _repository.GetUrlAsync(key);
+
+                return Redirect(url);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
         }
     }
 }

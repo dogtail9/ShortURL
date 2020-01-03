@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ShortUrl.RedirectApi.Controllers
+namespace ShortUrl.UrlManagementApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RedirectController : ControllerBase
+    public class ManagementController : ControllerBase
     {
-        private readonly ILogger<RedirectController> _logger;
+        private readonly ILogger<ManagementController> _logger;
 
-        public RedirectController(ILogger<RedirectController> logger)
+        public ManagementController(ILogger<ManagementController> logger)
         {
             _logger = logger;
         }

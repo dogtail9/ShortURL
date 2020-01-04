@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using ShortUrl.UrlManagementApi.DataAccess;
+using ShortUrl.DataAccess.Sql;
 
 namespace ShortUrl.UrlManagementApi.Controllers
 {
@@ -10,19 +10,19 @@ namespace ShortUrl.UrlManagementApi.Controllers
     [Route("[controller]")]
     public class ManagementController : ControllerBase
     {
-        private readonly UrlDbContext _context;
+        private readonly IUrlRepository _repository;
         private readonly ILogger<ManagementController> _logger;
 
-        public ManagementController(UrlDbContext context, ILogger<ManagementController> logger)
+        public ManagementController(IUrlRepository repository, ILogger<ManagementController> logger)
         {
-            _context = context;
-            _logger = logger;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var shortUrlModels = await _context.ShortUrl.ToListAsync();
+            var shortUrlModels = await _repository.GetAll();
 
             return new JsonResult(shortUrlModels);
         }
@@ -31,21 +31,29 @@ namespace ShortUrl.UrlManagementApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(long? id)
         {
-            var shortUrlModel = await _context.ShortUrl.FindAsync(id);
+            try
+            {
+                var shortUrlModel = await _repository.GetUrlAsync(id);
 
-            if (shortUrlModel is null)
+                return new JsonResult(shortUrlModel);
+            }
+            catch (ArgumentException)
             {
                 return NotFound();
             }
-
-            return new JsonResult(shortUrlModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ShortUrlModel shortUrlModel)
         {
-            _context.Add(shortUrlModel);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _repository.AddUrl(shortUrlModel.Key, shortUrlModel.Url);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
 
             return Created(shortUrlModel.Key, shortUrlModel);
         }
@@ -57,15 +65,16 @@ namespace ShortUrl.UrlManagementApi.Controllers
             if (id is null)
                 return NotFound();
 
-            var shortUrlModel = await _context.ShortUrl.FirstOrDefaultAsync(m => m.Id == id);
+            try
+            {
+                await _repository.DeleteUrl(id);
 
-            if (shortUrlModel is null)
+                return NoContent();
+            }
+            catch (ArgumentException)
+            {
                 return NotFound();
-
-            _context.ShortUrl.Remove(shortUrlModel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            }
         }
     }
 }

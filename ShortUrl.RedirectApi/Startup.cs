@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ShortUrl.DataAccess.Sql;
 using ShortUrl.RedirectApi.DataAccess;
 
 namespace ShortUrl.RedirectApi
@@ -26,7 +28,9 @@ namespace ShortUrl.RedirectApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<IUrlRepository, InMemoryUrlRepository>();
+            services.AddDbContext<UrlDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
+            services.AddScoped<IUrlRepository, SqlUrlRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

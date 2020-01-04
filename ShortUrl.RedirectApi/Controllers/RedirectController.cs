@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ShortUrl.RedirectApi.DataAccess;
+using ShortUrl.DataAccess.Sql;
 
 namespace ShortUrl.RedirectApi.Controllers
 {

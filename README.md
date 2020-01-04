@@ -453,4 +453,283 @@ The specific entry will be returned.
 To delete an entry in the database send a `DELETE` to [https://localhost:5001/Management/1](https://localhost:5001/Management/1).
 This will delete the entry and the database will be empty again.
 
-### Refactoring data access
+### Refactor data access
+
+It is now possible to get, add and delete urls to the datadase through the management api service but the redirect service has an in memory implementation of the `IUrlRepository` interface to get the data.
+Let's move the data access code to a new project and implement a `SqlUrlRepository` that will be used by both the management and the redirect services.
+
+Create a new `ClassLibrary` project named `ShortUrl.DataAccess.Sql`.
+Add references from both the management and the redirect project to the data access project.
+Move the `IUrlRepository`, `ShortUrlModel` and the `UrlDbContext` types to the `ShortUrl.DataAccess.Sql` project.
+
+Create a new class named `SqlServerDesignTimeDbContextFactory` and implement the `IDesignTimeDbContextFactory` interface.
+
+```c#
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+
+namespace ShortUrl.DataAccess.Sql
+{
+    public class SqlServerDesignTimeDbContextFactory : IDesignTimeDbContextFactory<UrlDbContext>
+    {
+        public UrlDbContext CreateDbContext(string[] args)
+        {
+            var connectionString = "Server = localhost; Database = ShortUrl; User Id = sa; Password = P@ssw0rd;";
+            var optionsBuilder = new DbContextOptionsBuilder<UrlDbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            return new UrlDbContext(optionsBuilder.Options);
+        }
+    }
+}
+```
+
+Run the migration again against the `ShortUrl.DataAccess.Sql` project.
+
+```powershell
+Add-Migration CreateDatabase
+```
+
+Delete the `Migrations` folder in the `ShortUrl.UrlManagementApi` project.
+
+Add methods to get all, add and delete entities in the `IUrlRepository` interface.
+
+```c#
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ShortUrl.DataAccess.Sql
+{
+    public interface IUrlRepository
+    {
+        Task<IEnumerable<ShortUrlModel>> GetAll();
+
+        Task<string> GetUrlAsync(string key);
+
+        Task<string> GetUrlAsync(long? id);
+
+        Task<ShortUrlModel> AddUrl(string key, string url);
+
+        Task DeleteUrl(long? id);
+    }
+}
+```
+
+Create a new class named `SqlUrlRepository` and implement the `IUrlRepository` interface.
+
+```c#
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ShortUrl.DataAccess.Sql
+{
+    public class SqlUrlRepository : IUrlRepository
+    {
+        private const string KeyNotFound = "Key not found.";
+        private const string AgumentNeedsToHaveAValue = "Argument needs to have a value.";
+
+        private readonly UrlDbContext _context;
+
+        public SqlUrlRepository(UrlDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<IEnumerable<ShortUrlModel>> GetAll()
+        {
+            var shortUrlModels = await _context.ShortUrl.ToListAsync();
+
+            return shortUrlModels;
+        }
+
+        public async Task<ShortUrlModel> AddUrl(string key, string url)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException(AgumentNeedsToHaveAValue, nameof(key));
+
+            if (string.IsNullOrWhiteSpace(url))
+                throw new ArgumentException(AgumentNeedsToHaveAValue, nameof(url));
+
+            var shortUrlModel = new ShortUrlModel { Key = key, Url = url };
+            _context.Add(shortUrlModel);
+            await _context.SaveChangesAsync();
+
+            return shortUrlModel;
+        }
+
+        public async Task DeleteUrl(long? id)
+        {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id));
+
+            var shortUrlModel = await _context.ShortUrl.FirstOrDefaultAsync(m => m.Id == id);
+            
+            if (shortUrlModel is null)
+                throw new ArgumentException(KeyNotFound);
+
+            _context.ShortUrl.Remove(shortUrlModel);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<string> GetUrlAsync(string key)
+        {
+            if (key is null)
+                throw new ArgumentNullException(nameof(key));
+
+            var shortUrlModel = await _context.ShortUrl.FirstOrDefaultAsync(m => m.Key == key);
+
+            if(shortUrlModel is null)
+                throw new ArgumentException(KeyNotFound);
+
+            return shortUrlModel.Url;
+        }
+
+        public async Task<string> GetUrlAsync(long? id)
+        {
+            if (id is null)
+                throw new ArgumentNullException(nameof(id));
+
+            var shortUrlModel = await _context.ShortUrl.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (shortUrlModel is null)
+                throw new ArgumentException(KeyNotFound);
+
+            return shortUrlModel.Url;
+        }
+    }
+}
+```
+
+Replace the `InMemoryUrlRepository` with the newly created `SqlUrlRepository` in the `ShortUrl.RedirectApi` project.
+In the `Startup` class add the `UrlDbContext` and `SqlUrlRepository` to the IoC.
+
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+    services.AddDbContext<UrlDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
+    services.AddScoped<IUrlRepository, SqlUrlRepository>();
+}
+```
+
+Add the connectionsting to the database in the `appsettings.Development.json` file.
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "UrlDbContext": "Server=localhost;Database=ShortUrl;User Id=sa;Password=P@ssw0rd;"
+  }
+}
+```
+
+Change the `ConfigureServices` metod int the `Satrtup` class in the `ShortUrl.UrlManagementApi` projrct.
+
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+    services.AddDbContext<UrlDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
+    services.AddScoped<IUrlRepository, SqlUrlRepository>();
+}
+```
+
+Replace the `UrlDbContext` with the `IUrlRepository` in the `ManagementController` class.
+
+```c#
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using ShortUrl.DataAccess.Sql;
+
+namespace ShortUrl.UrlManagementApi.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class ManagementController : ControllerBase
+    {
+        private readonly IUrlRepository _repository;
+        private readonly ILogger<ManagementController> _logger;
+
+        public ManagementController(IUrlRepository repository, ILogger<ManagementController> logger)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var shortUrlModels = await _repository.GetAll();
+
+            return new JsonResult(shortUrlModels);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(long? id)
+        {
+            try
+            {
+                var shortUrlModel = await _repository.GetUrlAsync(id);
+
+                return new JsonResult(shortUrlModel);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ShortUrlModel shortUrlModel)
+        {
+            try
+            {
+                await _repository.AddUrl(shortUrlModel.Key, shortUrlModel.Url);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+
+            return Created(shortUrlModel.Key, shortUrlModel);
+        }
+
+        [HttpDelete]
+        [Route("{id?}")]
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if (id is null)
+                return NotFound();
+
+            try
+            {
+                await _repository.DeleteUrl(id);
+
+                return NoContent();
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+    }
+}
+```
+
+Set both the `` and the `` project as startup projects and run the application.
+It is now possible to add an url bia the managemant service and browse to that key en be redirected to the coresponding url in the redirect service.
+
+### Add an administration GUI application.

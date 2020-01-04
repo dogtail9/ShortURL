@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShortUrl.UrlManagementApi.DataAccess
+namespace ShortUrl.DataAccess.Sql
 {
     public class ShortUrlModel
     {

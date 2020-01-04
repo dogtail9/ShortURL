@@ -2,17 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ShortUrl.UrlManagementApi.DataAccess;
+using ShortUrl.DataAccess.Sql;
 
-namespace ShortUrl.UrlManagementApi.Migrations
+namespace ShortUrl.DataAccess.Sql.Migrations
 {
     [DbContext(typeof(UrlDbContext))]
-    [Migration("20200103153447_InitialCreate")]
-    partial class InitialCreate
+    partial class UrlDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,7 +18,7 @@ namespace ShortUrl.UrlManagementApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ShortUrl.UrlManagementApi.DataAccess.ShortUrlModel", b =>
+            modelBuilder.Entity("ShortUrl.DataAccess.Sql.ShortUrlModel", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -28,6 +26,7 @@ namespace ShortUrl.UrlManagementApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Key")
+                        .IsRequired()
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 

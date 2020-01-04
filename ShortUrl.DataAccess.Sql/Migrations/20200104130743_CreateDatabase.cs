@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ShortUrl.UrlManagementApi.Migrations
+namespace ShortUrl.DataAccess.Sql.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace ShortUrl.UrlManagementApi.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Key = table.Column<string>(maxLength: 10, nullable: true),
+                    Key = table.Column<string>(maxLength: 10, nullable: false),
                     Url = table.Column<string>(maxLength: 1000, nullable: false)
                 },
                 constraints: table =>

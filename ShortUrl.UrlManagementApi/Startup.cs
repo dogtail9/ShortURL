@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using ShortUrl.UrlManagementApi.DataAccess;
 
 namespace ShortUrl.UrlManagementApi
 {
@@ -25,6 +21,8 @@ namespace ShortUrl.UrlManagementApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<UrlDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +30,7 @@ namespace ShortUrl.UrlManagementApi
         {
             if (env.IsDevelopment())
             {
+                UpdateDatabase(app);
                 app.UseDeveloperExceptionPage();
             }
 
@@ -43,6 +42,19 @@ namespace ShortUrl.UrlManagementApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<UrlDbContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

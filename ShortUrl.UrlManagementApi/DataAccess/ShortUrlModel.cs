@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShortUrl.UrlManagementApi.DataAccess
 {
@@ -11,6 +7,7 @@ namespace ShortUrl.UrlManagementApi.DataAccess
         [Key]
         public long Id { get; set; }
 
+        [Required]
         [MaxLength(10)]
         public string Key { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ShortUrl.UrlManagementApi.DataAccess
+namespace ShortUrl.DataAccess.Sql
 {
     public class UrlDbContext : DbContext
     {

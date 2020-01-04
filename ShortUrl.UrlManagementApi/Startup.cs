@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ShortUrl.UrlManagementApi.DataAccess;
+using ShortUrl.DataAccess.Sql;
 
 namespace ShortUrl.UrlManagementApi
 {
@@ -23,6 +23,7 @@ namespace ShortUrl.UrlManagementApi
             services.AddControllers();
             services.AddDbContext<UrlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
+            services.AddScoped<IUrlRepository, SqlUrlRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

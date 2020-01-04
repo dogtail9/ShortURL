@@ -9,5 +9,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShortUrl.DataAccess.Sql\ShortUrl.DataAccess.Sql.csproj" />
+  </ItemGroup>
+
 
 </Project>

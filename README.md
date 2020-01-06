@@ -729,7 +729,10 @@ namespace ShortUrl.UrlManagementApi.Controllers
 }
 ```
 
-Set both the `` and the `` project as startup projects and run the application.
+Set both the `ShortUrl.RedirectApi` and the `ShortUrl.UrlManagementApi` project as startup projects and run the application.
 It is now possible to add an url bia the managemant service and browse to that key en be redirected to the coresponding url in the redirect service.
 
-### Add an administration GUI application.
+### Add Swagger to the service projects.
+
+Before creating the gui application to manage the urls it it a good idé to add Swagger to the services so we can generate client code.
+

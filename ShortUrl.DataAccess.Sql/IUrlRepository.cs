@@ -9,7 +9,7 @@ namespace ShortUrl.DataAccess.Sql
 
         Task<string> GetUrlAsync(string key);
 
-        Task<string> GetUrlAsync(long? id);
+        Task<ShortUrlModel> GetUrlAsync(long? id);
 
         Task<ShortUrlModel> AddUrl(string key, string url);
 

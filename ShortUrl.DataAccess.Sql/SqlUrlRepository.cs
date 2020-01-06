@@ -66,7 +66,7 @@ namespace ShortUrl.DataAccess.Sql
             return shortUrlModel.Url;
         }
 
-        public async Task<string> GetUrlAsync(long? id)
+        public async Task<ShortUrlModel> GetUrlAsync(long? id)
         {
             if (id is null)
                 throw new ArgumentNullException(nameof(id));
@@ -76,7 +76,9 @@ namespace ShortUrl.DataAccess.Sql
             if (shortUrlModel is null)
                 throw new ArgumentException(KeyNotFound);
 
-            return shortUrlModel.Url;
+            return shortUrlModel;
         }
+
+
     }
 }

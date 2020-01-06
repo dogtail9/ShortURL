@@ -38,7 +38,7 @@ namespace ShortUrl.RedirectApi.DataAccess
             throw new ArgumentException(KeyNotFound);
         }
 
-        public Task<string> GetUrlAsync(long? id)
+        public Task<ShortUrlModel> GetUrlAsync(long? id)
         {
             throw new NotImplementedException();
         }

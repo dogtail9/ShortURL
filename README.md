@@ -1204,3 +1204,183 @@ Run the application and try to add and delete urls from the database.
 Also try to browse to the `ShortUrl.RedirectApi` to se that the data for the urls come from the same database.
 
 ### Add a Cache to the Redirect Api.
+
+Install the dotnet tool to create a database for the distrubuted cache.
+
+```powershell
+dotnet tool install --global dotnet-sql-cache --version 3.1.0
+```
+
+Create a Sql Server image with a database to store the cached urls in.
+
+```powershell
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1435:1433 -d --name shorturlcache mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
+docker exec shorturlcache /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "P@ssw0rd" -Q "CREATE DATABASE ShortUrlCache"
+dotnet sql-cache create "Server=localhost,1435;Database=ShortUrlCache;User Id=sa;Password=P@ssw0rd;" dbo UrlCache
+docker stop shorturlcache
+docker commit shorturlcache shorturl/cache:v0.1
+docker rm shorturlcache
+```
+
+Run the cache database
+
+```powershell
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1434:1433 -d shorturl/cache:v0.1
+```
+
+Add the connectionstring to the cache sql server to the `appsettings.Development.json` file in the `ShortUrl.RedirectApi` project.
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    "UrlDbContext": "Server=localhost;Database=ShortUrl;User Id=sa;Password=P@ssw0rd;",
+    "UrlCache": "Server=localhost,1434;Database=ShortUrlCache;User Id=sa;Password=P@ssw0rd;"
+  }
+}
+```
+
+Implement the cache logic in the `RedirectController` class in the `ShortUrl.RedirectApi` project.
+
+```c#
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using ShortUrl.DataAccess.Sql;
+
+namespace ShortUrl.RedirectApi.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class RedirectController : Controller
+    {
+        private readonly IUrlRepository _repository;
+        private readonly IDistributedCache _cache;
+        private readonly ILogger<RedirectController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public RedirectController(IUrlRepository repository, IDistributedCache cache, ILogger<RedirectController> logger, IWebHostEnvironment hostEnvironment)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _cache = cache;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+        }
+
+        [HttpGet("{key}")]
+        public async Task<IActionResult> RedirectTo(string key)
+        {
+            if (_hostEnvironment.IsDevelopment() && key == "info")
+                return View("Info");
+
+            // Get url for key from cache
+            var urlFromCache = await _cache.GetStringAsync(key);
+            
+            // If the url is found return the url
+            if (!(urlFromCache is null))
+                return Redirect(urlFromCache);
+
+            try
+            {
+                // Url not found in cache, try to get it from database.
+                var url = await _repository.GetUrlAsync(key);
+
+                // Store the url in the cache
+                await _cache.SetStringAsync(key, url, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = new TimeSpan(0, 1, 0)
+                });
+
+                return Redirect(url);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+    }
+}
+```
+
+Register the `IDistributedCache` interface in the `Startup` class in the `ShortUrl.RedirectApi` project.
+
+```c#
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using ShortUrl.DataAccess.Sql;
+
+namespace ShortUrl.RedirectApi.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class RedirectController : Controller
+    {
+        private readonly IUrlRepository _repository;
+        private readonly IDistributedCache _cache;
+        private readonly ILogger<RedirectController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public RedirectController(IUrlRepository repository, IDistributedCache cache, ILogger<RedirectController> logger, IWebHostEnvironment hostEnvironment)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _cache = cache;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+        }
+
+        [HttpGet("{key}")]
+        public async Task<IActionResult> RedirectTo(string key)
+        {
+            if (_hostEnvironment.IsDevelopment() && key == "info")
+                return View("Info");
+
+            // Get url for key from cache
+            var urlFromCache = await _cache.GetStringAsync(key);
+            
+            // If the url is found return the url
+            if (!(urlFromCache is null))
+                return Redirect(urlFromCache);
+
+            try
+            {
+                // Url not found in cache, try to get it from database.
+                var url = await _repository.GetUrlAsync(key);
+
+                // Store the url in the cache
+                await _cache.SetStringAsync(key, url, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = new TimeSpan(0, 1, 0)
+                });
+
+                return Redirect(url);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+    }
+}
+```
+
+Add an url with the key `a` in the management portal. Browse to http://localhost:5000/Redirect/a. This will populate the cache with the value for key `a`.
+Delete the url with the key `a` an try to brows to http://localhost:5000/Redirect/a the browser will be redirected to the url that was just deleted. 
+The value is still present in the cache. Wait more than a minutie an try to browse to http://localhost:5000/Redirect/a again. 
+The browser will not be redirected because the walu for key`a` is no longer present in the cache.
+
+### Add Authentication and Authorization to the Management portal

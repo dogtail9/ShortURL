@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShortUrl.DataAccess.Sql;
@@ -19,7 +23,9 @@ namespace ShortUrl.UrlManagementApi.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [HttpGet]
+        [HttpGet(Name ="GetAll")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShortUrlModel>))]
         public async Task<IActionResult> GetAll()
         {
             var shortUrlModels = await _repository.GetAll();
@@ -27,9 +33,11 @@ namespace ShortUrl.UrlManagementApi.Controllers
             return new JsonResult(shortUrlModels);
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> Get(long? id)
+        [HttpGet("{id}", Name ="GetById")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShortUrlModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(long? id)
         {
             try
             {
@@ -43,8 +51,11 @@ namespace ShortUrl.UrlManagementApi.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ShortUrlModel shortUrlModel)
+        [HttpPost(Name ="Add")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShortUrlModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateUrl(ShortUrlModel shortUrlModel)
         {
             try
             {
@@ -58,9 +69,10 @@ namespace ShortUrl.UrlManagementApi.Controllers
             return Created(shortUrlModel.Key, shortUrlModel);
         }
 
-        [HttpDelete]
-        [Route("{id?}")]
-        public async Task<IActionResult> Delete(long? id)
+        [HttpDelete("{id?}", Name ="DeleteById")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteById(long? id)
         {
             if (id is null)
                 return NotFound();

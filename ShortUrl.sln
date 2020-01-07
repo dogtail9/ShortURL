@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.RedirectApi", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.UrlManagementApi", "ShortUrl.UrlManagementApi\ShortUrl.UrlManagementApi.csproj", "{973F8248-CAB2-4445-8CEF-EDB59C69E339}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.DataAccess.Sql", "ShortUrl.DataAccess.Sql\ShortUrl.DataAccess.Sql.csproj", "{6A8BB54F-8F5B-47F5-84F3-56C60B7AF958}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.DataAccess.Sql", "ShortUrl.DataAccess.Sql\ShortUrl.DataAccess.Sql.csproj", "{6A8BB54F-8F5B-47F5-84F3-56C60B7AF958}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.ManagementGui", "ShortUrl.ManagementGui\ShortUrl.ManagementGui.csproj", "{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,10 @@ Global
 		{6A8BB54F-8F5B-47F5-84F3-56C60B7AF958}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A8BB54F-8F5B-47F5-84F3-56C60B7AF958}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A8BB54F-8F5B-47F5-84F3-56C60B7AF958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

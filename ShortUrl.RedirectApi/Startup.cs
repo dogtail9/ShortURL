@@ -31,6 +31,13 @@ namespace ShortUrl.RedirectApi
             services.AddDbContext<UrlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
             services.AddScoped<IUrlRepository, SqlUrlRepository>();
+
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("UrlCache");
+                options.SchemaName = "dbo";
+                options.TableName = "UrlCache";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

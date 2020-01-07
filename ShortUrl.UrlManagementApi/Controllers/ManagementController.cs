@@ -24,7 +24,8 @@ namespace ShortUrl.UrlManagementApi.Controllers
         }
 
         [HttpGet(Name ="GetAll")]
-        [Produces("application/json", Type = typeof(IEnumerable<ShortUrlModel>))]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShortUrlModel>))]
         public async Task<IActionResult> GetAll()
         {
             var shortUrlModels = await _repository.GetAll();
@@ -33,7 +34,9 @@ namespace ShortUrl.UrlManagementApi.Controllers
         }
 
         [HttpGet("{id}", Name ="GetById")]
-        [Produces("application/json", Type = typeof(ShortUrlModel))]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShortUrlModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(long? id)
         {
             try
@@ -67,6 +70,8 @@ namespace ShortUrl.UrlManagementApi.Controllers
         }
 
         [HttpDelete("{id?}", Name ="DeleteById")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteById(long? id)
         {
             if (id is null)

@@ -734,5 +734,473 @@ It is now possible to add an url bia the managemant service and browse to that k
 
 ### Add Swagger to the service projects.
 
-Before creating the gui application to manage the urls it it a good idé to add Swagger to the services so we can generate client code.
+Before creating the gui application to manage the urls it it a good idé to add Swagger to the management service so we can generate the client code.
 
+Add the `Swashbuckle.AspNetCore` NuGet package to the `ShortUrl.UrlManagementApi` project.
+Enable XML documentation on the `ShortUrl.UrlManagementApi` project.
+
+Add Swagger to the `Startup` class.
+
+```c#
+// https://dev.to/dr_dimaka/how-to-add-generated-httpclient-to-asp-net-core-dependency-injection-right-way-5731
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using ShortUrl.DataAccess.Sql;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System;
+using System.IO;
+
+namespace ShortUrl.UrlManagementApi
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddDbContext<UrlDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
+            services.AddScoped<IUrlRepository, SqlUrlRepository>();
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                UpdateDatabase(app);
+                app.UseDeveloperExceptionPage();
+            }
+            
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+
+            });
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<UrlDbContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
+        }
+    }
+}
+```
+
+Add attributes to all methods in the `ManagementController` class to generate status codes in the OpenApi file.
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Http.Description;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using ShortUrl.DataAccess.Sql;
+
+namespace ShortUrl.UrlManagementApi.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class ManagementController : ControllerBase
+    {
+        private readonly IUrlRepository _repository;
+        private readonly ILogger<ManagementController> _logger;
+
+        public ManagementController(IUrlRepository repository, ILogger<ManagementController> logger)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        [HttpGet(Name ="GetAll")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShortUrlModel>))]
+        public async Task<IActionResult> GetAll()
+        {
+            var shortUrlModels = await _repository.GetAll();
+
+            return new JsonResult(shortUrlModels);
+        }
+
+        [HttpGet("{id}", Name ="GetById")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShortUrlModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(long? id)
+        {
+            try
+            {
+                var shortUrlModel = await _repository.GetUrlAsync(id);
+
+                return new JsonResult(shortUrlModel);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost(Name ="Add")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShortUrlModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateUrl(ShortUrlModel shortUrlModel)
+        {
+            try
+            {
+                await _repository.AddUrl(shortUrlModel.Key, shortUrlModel.Url);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+
+            return Created(shortUrlModel.Key, shortUrlModel);
+        }
+
+        [HttpDelete("{id?}", Name ="DeleteById")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteById(long? id)
+        {
+            if (id is null)
+                return NotFound();
+
+            try
+            {
+                await _repository.DeleteUrl(id);
+
+                return NoContent();
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+    }
+}
+```
+
+### Implement the Management GUI.
+
+Create an ASP.NET Core MVC project. called `ShortUrl.ManagementGui`.
+
+Add a Service Reference That points to the Swagger file from the `ShortUrl.UrlManagementApi` project.
+Change the `ShortUrl.UrlManagementApi.csproj` file so that the IMangementApiClient interface is generated. 
+Disable the BaseUrl generation. We do not want the constructor to have an argument for the BaseUrl we will set the base Url on the HttpClent in the `Startup` class insted.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="ShortUrl.ManagementGui">
+      <SourceUri>http://localhost:5001/swagger/v1/swagger.json</SourceUri>
+      <ClassName>ManagementApiClient</ClassName>
+      <OutputPath>ManagementApiClient.cs</OutputPath>
+      <Options>/UseBaseUrl:false /GenerateClientInterfaces:true</Options>
+    </OpenApiReference>
+  </ItemGroup>
+
+</Project>
+```
+
+Use the `HttpClientFactory` by adding the generated Api client class to the `ServiceCollection` by using the `AddHttpClient` extension method.
+
+```c#
+// This method gets called by the runtime. Use this method to add services to the container.
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews();
+
+    // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
+    services.AddHttpClient<IManagementApiClient, ManagementApiClient>((provider, client) =>
+    {
+        client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+    });
+}
+```
+
+Inject an `IManagementApiClient` into the `HomeController` in the `ShortUrl.ManagementGui` project.
+Change the `Index` method so that it uses the `IManagementApiClient` object to retrive all urls from the `ShortUrl.UrlManagementApi` service.
+Add methods for `Create` and `Delete` urls.
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using ShortUrl.ManagementGui.Models;
+
+namespace ShortUrl.ManagementGui.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+        private readonly IManagementApiClient _httpCient;
+
+        public HomeController(ILogger<HomeController> logger, IManagementApiClient httpCient)
+        {
+            _logger = logger;
+            _httpCient = httpCient;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<ShortUrlModel> urlData = await _httpCient.GetAllAsync();
+
+            return View(urlData);
+        }
+        
+        // GET: ShortUrl/Create
+        [Route("/Home/Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/Home/Create")]
+        public async Task<IActionResult> Create([Bind("Id,Key,Url")] ShortUrlModel shortUrlModel)
+        {
+            if (ModelState.IsValid)
+            {
+                await _httpCient.AddAsync(shortUrlModel);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(shortUrlModel);
+        }
+
+        [Route("/Home/Delete/{id?}")]
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var shortUrlModel = await _httpCient.GetByIdAsync(id);
+            //await _httpCient.DeleteByIdAsync(id);
+
+            return View(shortUrlModel);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Route("/Home/Delete/{id}")]
+        public async Task<IActionResult> DeleteConfirmed(long id)
+        {
+            await _httpCient.DeleteByIdAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+```
+
+Change the `Index` view to list all urls in a table.
+
+```html
+@model IEnumerable<ShortUrl.ManagementGui.ShortUrlModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Key)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Key)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
+
+Add a `Create` view.
+
+```c#
+@model ShortUrl.ManagementGui.ShortUrlModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ShortUrlModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Key" class="control-label"></label>
+                <input asp-for="Key" class="form-control" />
+                <span asp-validation-for="Key" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+```
+
+Add a `Delete` view.
+
+```c#
+@model ShortUrl.ManagementGui.ShortUrlModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ShortUrlModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Key)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Key)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+```
+
+Run the application and try to add and delete urls from the database.
+Also try to browse to the `ShortUrl.RedirectApi` to se that the data for the urls come from the same database.
+
+### Add a Cache to the Redirect Api.

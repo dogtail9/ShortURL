@@ -33,6 +33,7 @@ namespace ShortUrl.ManagementGui.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/Home/Create")]

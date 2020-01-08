@@ -1408,3 +1408,89 @@ Add the IdentityServer project to the solution.
 ```powershell
 dotnet sln add .\src\IdentityServer\IdentityServer.csproj
 ```
+
+Add an api and a client to the `Config` class in the ´ShortUrl.IdentityServer´ project.
+
+```c#
+// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+
+using IdentityServer4.Models;
+using System.Collections.Generic;
+
+namespace ShortUrl.IdentityServer
+{
+    public static class Config
+    {
+        public static IEnumerable<IdentityResource> Ids =>
+            new IdentityResource[]
+            {
+                new IdentityResources.OpenId()
+            };
+
+        public static IEnumerable<ApiResource> Apis =>
+            new ApiResource[]
+            {
+                new ApiResource("managementapi", "Management API")
+            };
+
+        public static IEnumerable<Client> Clients =>
+            new Client[]
+            {
+                new Client
+                {
+                    ClientId = "managementgui",
+
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    // scopes that client has access to
+                    AllowedScopes = { "managementapi" }
+                }
+            };
+    }
+}
+```
+
+Change the port to ´6000´ in the ´launchSettings.json´ file in the ´ShortUrl.IdentityServer´ project.
+
+```json
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:6000",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "SelfHost": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:6000"
+    }
+  }
+}
+```
+
+Set the ´ShortUrl.IdentityServer´ project as the startup project and run the application.
+Browse to http://localhost:6000/.well-known/openid-configuration, the discovery document will be shown in the browser.
+

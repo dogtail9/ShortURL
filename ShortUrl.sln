@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.DataAccess.Sql", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.ManagementGui", "ShortUrl.ManagementGui\ShortUrl.ManagementGui.csproj", "{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.IdentityServer", "ShortUrl.IdentityServer\ShortUrl.IdentityServer.csproj", "{0E5E4534-07A1-472B-8C8A-DA34CED758C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5E4534-07A1-472B-8C8A-DA34CED758C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5E4534-07A1-472B-8C8A-DA34CED758C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5E4534-07A1-472B-8C8A-DA34CED758C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5E4534-07A1-472B-8C8A-DA34CED758C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1391,3 +1391,20 @@ The management portal will authenticate against the management api.
 
 Create an Identityserver4 project.
 
+Install the IdentityServer4 project templates.
+
+```powershell
+dotnet new -i IdentityServer4.Templates
+```
+
+Create the IdentityServer project.
+
+```powershell
+dotnet sln add .\src\IdentityServer\IdentityServer.csproj
+```
+
+Add the IdentityServer project to the solution.
+
+```powershell
+dotnet sln add .\src\IdentityServer\IdentityServer.csproj
+```

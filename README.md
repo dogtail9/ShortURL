@@ -1384,3 +1384,10 @@ The value is still present in the cache. Wait more than a minutie an try to brow
 The browser will not be redirected because the walu for key`a` is no longer present in the cache.
 
 ### Add Authentication and Authorization to the Management portal
+
+We will use IdentityServer4 to add Authentication and Authorization to the management portal and the management api.
+The users will be able to login to see the urls in the list and the admin user will be able to add and remove urls from the list.
+The management portal will authenticate against the management api.
+
+Create an Identityserver4 project.
+

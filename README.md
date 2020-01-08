@@ -1494,3 +1494,14 @@ Change the port to ´6000´ in the ´launchSettings.json´ file in the ´ShortUrl.Ide
 Set the ´ShortUrl.IdentityServer´ project as the startup project and run the application.
 Browse to http://localhost:6000/.well-known/openid-configuration, the discovery document will be shown in the browser.
 
+Add the UI for IdentityServer4 to the ´ShortUrl.IdentityServer´ project.
+
+```powershell
+cd .\ShortUrl.IdentityServer\
+dotnet new is4ui
+```
+
+Once you have added the MVC UI, you will also need to enable MVC, both in the DI system and in the pipeline. 
+When you look at `Startup` class you will find comments in the `ConfigureServices` and `Configure` method that tell you how to enable MVC.
+Run the IdentityServer application, you should now see a home page.
+

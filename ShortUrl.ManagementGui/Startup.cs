@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,8 +29,9 @@ namespace ShortUrl.ManagementGui
             services.AddControllersWithViews();
 
             // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
-            services.AddHttpClient<IManagementApiClient, ManagementApiClient>((provider, client) =>
+            services.AddHttpClient<IManagementApiClient, ManagementApiClient>(async (provider, client) =>
             {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
                 client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
             });
 

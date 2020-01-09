@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ using ShortUrl.DataAccess.Sql;
 
 namespace ShortUrl.UrlManagementApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ManagementController : ControllerBase

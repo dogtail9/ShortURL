@@ -26,6 +26,16 @@ namespace ShortUrl.UrlManagementApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "http://localhost:6000";
+                options.RequireHttpsMetadata = false;
+
+                options.Audience = "managementapi";
+            });
+
             services.AddDbContext<UrlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
             services.AddScoped<IUrlRepository, SqlUrlRepository>();
@@ -62,6 +72,7 @@ namespace ShortUrl.UrlManagementApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

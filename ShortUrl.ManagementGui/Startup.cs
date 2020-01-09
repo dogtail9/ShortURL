@@ -51,6 +51,9 @@ namespace ShortUrl.ManagementGui
                     options.ResponseType = "code";
 
                     options.SaveTokens = true;
+
+                    options.Scope.Add("managementapi");
+                    options.Scope.Add("offline_access");
                 });
         }
 

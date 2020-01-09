@@ -1510,7 +1510,6 @@ Add the `Microsoft.AspNetCore.Authentication.OpenIdConnect` NuGet package to the
 Add the aautehtication service to DI in the `Startup` class in the `ShortUrl.ManagementGui` project.
 
 ```c#
-// https://stigrune.dev/posts/adding-new-OpenAPI-service-references-to-Core-projects
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

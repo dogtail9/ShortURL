@@ -54,10 +54,10 @@ namespace ShortUrl.IdentityServer
                     RequirePkce = true,
 
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:6000/signin-oidc" },
+                    RedirectUris = { "http://localhost:5002/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:6000/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {

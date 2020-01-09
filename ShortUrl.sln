@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
+		StartDevelopmentSqlServers.ps1 = StartDevelopmentSqlServers.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.RedirectApi", "ShortUrl.RedirectApi\ShortUrl.RedirectApi.csproj", "{DA8649A3-767F-403F-8D02-150C45FFA306}"
@@ -16,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.UrlManagementApi",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.DataAccess.Sql", "ShortUrl.DataAccess.Sql\ShortUrl.DataAccess.Sql.csproj", "{6A8BB54F-8F5B-47F5-84F3-56C60B7AF958}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.ManagementGui", "ShortUrl.ManagementGui\ShortUrl.ManagementGui.csproj", "{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.ManagementGui", "ShortUrl.ManagementGui\ShortUrl.ManagementGui.csproj", "{BEEF11F1-A52A-4AAF-9F7C-70149C6CD902}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.IdentityServer", "ShortUrl.IdentityServer\ShortUrl.IdentityServer.csproj", "{0E5E4534-07A1-472B-8C8A-DA34CED758C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.IdentityServer", "ShortUrl.IdentityServer\ShortUrl.IdentityServer.csproj", "{0E5E4534-07A1-472B-8C8A-DA34CED758C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

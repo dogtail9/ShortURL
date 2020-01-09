@@ -1,6 +1,7 @@
 // https://stigrune.dev/posts/adding-new-OpenAPI-service-references-to-Core-projects
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +31,27 @@ namespace ShortUrl.ManagementGui
             {
                 client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
             });
+
+            // Add the authentication service
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "http://localhost:6000";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "managementguiclient";
+                    options.ClientSecret = "secret";
+                    options.ResponseType = "code";
+
+                    options.SaveTokens = true;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +70,7 @@ namespace ShortUrl.ManagementGui
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1505,3 +1505,95 @@ Once you have added the MVC UI, you will also need to enable MVC, both in the DI
 When you look at `Startup` class you will find comments in the `ConfigureServices` and `Configure` method that tell you how to enable MVC.
 Run the IdentityServer application, you should now see a home page.
 
+Add the `Microsoft.AspNetCore.Authentication.OpenIdConnect` NuGet package to the `ShortUrl.ManagementGui` project.
+
+Add the aautehtication service to DI in the `Startup` class in the `ShortUrl.ManagementGui` project.
+
+```c#
+// https://stigrune.dev/posts/adding-new-OpenAPI-service-references-to-Core-projects
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace ShortUrl.ManagementGui
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
+
+            // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
+            services.AddHttpClient<IManagementApiClient, ManagementApiClient>((provider, client) =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+            });
+
+            // Add the authentication service
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "http://localhost:6000";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "managementgui";
+                    options.ClientSecret = "secret";
+                    options.ResponseType = "code";
+
+                    options.SaveTokens = true;
+                });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}
+```
+
+

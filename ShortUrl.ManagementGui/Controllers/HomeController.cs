@@ -18,22 +18,25 @@ namespace ShortUrl.ManagementGui.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IManagementApiClient _httpCient;
 
-        public HomeController(ILogger<HomeController> logger, IManagementApiClient httpCient)
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
-            _httpCient = httpCient;
+            _httpClientFactory = httpClientFactory;
+            //_httpCient = httpCient;
         }
 
         public async Task<IActionResult> Index()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = await client.GetStringAsync("http://localhost:5001/Management");
 
-            var urlData = JsonConvert.DeserializeObject<IEnumerable<ShortUrlModel>>(content);
+            var client = new HttpClient();// _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await client.GetStringAsync("http://localhost:5001/Management");
+
+            var urlData = JsonConvert.DeserializeObject<IEnumerable<ShortUrlModel>>(response);
 
             //IEnumerable<ShortUrlModel> urlData = await _httpCient.GetAllAsync();
 

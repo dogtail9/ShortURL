@@ -29,10 +29,11 @@ namespace ShortUrl.ManagementGui
             services.AddControllersWithViews();
 
             // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
-            services.AddHttpClient<IManagementApiClient, ManagementApiClient>(async (provider, client) =>
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
-            });
+            services.AddHttpClient();
+            //services.AddHttpClient<IManagementApiClient, ManagementApiClient>(async (provider, client) =>
+            //{
+            //    client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+            //});
 
             // Add the authentication service
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;

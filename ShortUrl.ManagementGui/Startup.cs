@@ -31,7 +31,6 @@ namespace ShortUrl.ManagementGui
             // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
             services.AddHttpClient<IManagementApiClient, ManagementApiClient>(async (provider, client) =>
             {
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
                 client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
             });
 

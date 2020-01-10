@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ShortUrl.ManagementGui
 {
@@ -9,8 +10,8 @@ namespace ShortUrl.ManagementGui
     {
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url)
         {
-            var accessToken = Microsoft.AspNetCore.Http.HttpContext.GetTokens();
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            //var accessToken = Microsoft.AspNetCore.Http.HttpContext.GetTokenAsync("access_token");
+            //request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
         }
     }
 }

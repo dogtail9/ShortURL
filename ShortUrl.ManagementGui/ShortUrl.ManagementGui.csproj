@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
@@ -22,7 +23,7 @@
       <SourceUri>http://localhost:5001/swagger/v1/swagger.json</SourceUri>
       <ClassName>ManagementApiClient</ClassName>
       <OutputPath>ManagementApiClient.cs</OutputPath>
-      <Options>/UseBaseUrl:false /GenerateClientInterfaces:true</Options>
+      <Options>/UseBaseUrl:false /GenerateClientInterfaces:true /ClientBaseClass:ManagementApiClientBase</Options>
     </OpenApiReference>
   </ItemGroup>
 

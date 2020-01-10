@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShortUrl.ManagementGui.Models;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace ShortUrl.ManagementGui.Controllers
 {
@@ -24,7 +28,14 @@ namespace ShortUrl.ManagementGui.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<ShortUrlModel> urlData = await _httpCient.GetAllAsync();
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var content = await client.GetStringAsync("http://localhost:5001/Management");
+
+            var urlData = JsonConvert.DeserializeObject<IEnumerable<ShortUrlModel>>(content);
+
+            //IEnumerable<ShortUrlModel> urlData = await _httpCient.GetAllAsync();
 
             return View(urlData);
         }

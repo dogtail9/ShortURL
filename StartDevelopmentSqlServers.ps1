@@ -1,2 +1,2 @@
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1434:1433 -d shorturl/cache:v0.1
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -d -m 2g -p 1433:1433 mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -d -m 2g -p 1434:1433 shorturl/cache:v0.1

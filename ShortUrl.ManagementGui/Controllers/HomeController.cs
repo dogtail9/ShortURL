@@ -32,7 +32,7 @@ namespace ShortUrl.ManagementGui.Controllers
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            var client = new HttpClient();// _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await client.GetStringAsync("http://localhost:5001/Management");
 
@@ -57,7 +57,17 @@ namespace ShortUrl.ManagementGui.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _httpCient.AddAsync(shortUrlModel);
+                var json = JsonConvert.SerializeObject(shortUrlModel);
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = await client.PostAsync("http://localhost:5001/Management", new StringContent(json));
+
+                var body = await response.Content.ReadAsStringAsync();
+                var urlData = JsonConvert.DeserializeObject<ShortUrlModel>(body);
+
+                //await _httpCient.AddAsync(shortUrlModel);
                 return RedirectToAction(nameof(Index));
             }
 

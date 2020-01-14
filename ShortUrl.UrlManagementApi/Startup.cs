@@ -72,7 +72,7 @@ namespace ShortUrl.UrlManagementApi
                             In=ParameterLocation.Header
                         },
                         new List<string>()
-                        }
+                    }
                 });
             });
         }

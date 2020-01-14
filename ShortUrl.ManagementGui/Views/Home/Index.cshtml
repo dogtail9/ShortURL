@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ShortUrl.ManagementGui.ShortUrlModel>
+﻿@model ShortUrl.ManagementGui.ModelsAndClaims
 
 @{
     ViewData["Title"] = "Home Page";
@@ -11,16 +11,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Key)
+                Key
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Url)
+                Url
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.ShortUrlModels)
         {
             <tr>
                 <td>
@@ -37,3 +37,29 @@
     </tbody>
 </table>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Type
+            </th>
+            <th>
+                Value
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MyClaims)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

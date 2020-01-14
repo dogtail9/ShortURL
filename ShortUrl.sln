@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A200928-7AF6-4CA8-84F8-CCAA879C4334}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		DeleteDevelopmentSqlServer.ps1 = DeleteDevelopmentSqlServer.ps1
 		LICENSE = LICENSE
 		README.md = README.md
 		StartDevelopmentSqlServers.ps1 = StartDevelopmentSqlServers.ps1

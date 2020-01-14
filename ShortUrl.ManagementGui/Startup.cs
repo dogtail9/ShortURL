@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using IdentityModel.Client;
 
 namespace ShortUrl.ManagementGui
 {
@@ -28,13 +29,6 @@ namespace ShortUrl.ManagementGui
         {
             services.AddControllersWithViews();
 
-            // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
-            //services.AddHttpClient();
-            //services.AddHttpClient<IManagementApiClient, ManagementApiClient>(async (provider, client) =>
-            //{
-            //    client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
-            //});
-
             // Add the authentication service
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
@@ -46,7 +40,7 @@ namespace ShortUrl.ManagementGui
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "http://localhost:6000";
+                    options.Authority = Configuration.GetConnectionString("SecurityTokenService"); 
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "managementguiclient";
@@ -66,9 +60,20 @@ namespace ShortUrl.ManagementGui
                 // client config is inferred from OpenID Connect settings
                 // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
                 options.Client.Scope = "managementapi";
-               
+
             })
                 .ConfigureBackchannelHttpClient();
+
+            //services.AddAccessTokenManagement(options =>
+            //{
+            //    options.Client.Clients.Add("identityserver", new ClientCredentialsTokenRequest
+            //    {
+            //        Address = $"{Configuration.GetConnectionString("SecurityTokenService")}connect/token",
+            //        ClientId = "managementapiclient",
+            //        ClientSecret = "secret",
+            //        Scope = "managementapi"
+            //    });
+            //});
 
             services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
             {

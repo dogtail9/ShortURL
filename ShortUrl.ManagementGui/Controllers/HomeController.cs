@@ -28,9 +28,9 @@ namespace ShortUrl.ManagementGui.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<ShortUrlModel> urlData = await _httpClient.GetAllAsync();
+            ModelsAndClaims modelsAndClaims = await _httpClient.GetAllAsync();
 
-            return View(urlData);
+            return View(modelsAndClaims);
         }
         
         // GET: ShortUrl/Create

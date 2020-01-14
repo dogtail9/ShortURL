@@ -18,27 +18,17 @@ namespace ShortUrl.ManagementGui.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IManagementApiClient _httpCient;
+        private readonly IManagementApiClient _httpClient;
 
-        public HomeController(ILogger<HomeController> logger)//, IManagementApiClient httpCient)
+        public HomeController(ILogger<HomeController> logger, IManagementApiClient httpCient)
         {
             _logger = logger;
-            //_httpClientFactory = httpClientFactory;
-            //_httpCient = httpCient;
+            _httpClient = httpCient;
         }
 
-        public async Task<IActionResult> Index([FromServices] ManagementApiClient httpClient)
+        public async Task<IActionResult> Index()
         {
-            //var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            //var client = _httpClientFactory.CreateClient();
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            //var response = await client.GetStringAsync("http://localhost:5001/Management");
-
-            //var urlData = JsonConvert.DeserializeObject<IEnumerable<ShortUrlModel>>(response);
-
-            IEnumerable<ShortUrlModel> urlData = await httpClient.GetAllAsync();
+            IEnumerable<ShortUrlModel> urlData = await _httpClient.GetAllAsync();
 
             return View(urlData);
         }
@@ -57,17 +47,7 @@ namespace ShortUrl.ManagementGui.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var json = JsonConvert.SerializeObject(shortUrlModel);
-                //var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                //var client = _httpClientFactory.CreateClient();
-                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                //var response = await client.PostAsync("http://localhost:5001/Management", new StringContent(json));
-
-                //var body = await response.Content.ReadAsStringAsync();
-                //var urlData = JsonConvert.DeserializeObject<ShortUrlModel>(body);
-
-                await _httpCient.AddAsync(shortUrlModel);
+                await _httpClient.AddAsync(shortUrlModel);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -81,8 +61,7 @@ namespace ShortUrl.ManagementGui.Controllers
             {
                 return NotFound();
             }
-            var shortUrlModel = await _httpCient.GetByIdAsync(id);
-            //await _httpCient.DeleteByIdAsync(id);
+            var shortUrlModel = await _httpClient.GetByIdAsync(id);
 
             return View(shortUrlModel);
         }
@@ -92,7 +71,7 @@ namespace ShortUrl.ManagementGui.Controllers
         [Route("/Home/Delete/{id}")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            await _httpCient.DeleteByIdAsync(id);
+            await _httpClient.DeleteByIdAsync(id);
 
             return RedirectToAction(nameof(Index));
         }

@@ -29,7 +29,7 @@ namespace ShortUrl.ManagementGui
             services.AddControllersWithViews();
 
             // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
-            services.AddHttpClient();
+            //services.AddHttpClient();
             //services.AddHttpClient<IManagementApiClient, ManagementApiClient>(async (provider, client) =>
             //{
             //    client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
@@ -70,7 +70,7 @@ namespace ShortUrl.ManagementGui
             })
                 .ConfigureBackchannelHttpClient();
 
-            services.AddHttpClient<ManagementApiClient>(client =>
+            services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
             {
                 client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
             })

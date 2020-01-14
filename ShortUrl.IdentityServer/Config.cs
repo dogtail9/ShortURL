@@ -21,6 +21,9 @@ namespace ShortUrl.IdentityServer
             new ApiResource[]
             {
                 new ApiResource("managementapi", "Management API")
+                {
+                    ApiSecrets = { new Secret("secret".Sha256()) }
+                }
             };
 
         public static IEnumerable<Client> Clients =>
@@ -49,7 +52,7 @@ namespace ShortUrl.IdentityServer
                     ClientId = "managementguiclient",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequireConsent = false,
                     RequirePkce = true,
 

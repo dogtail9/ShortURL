@@ -54,10 +54,27 @@ namespace ShortUrl.ManagementGui
                     options.ResponseType = "code";
 
                     options.SaveTokens = true;
-
-                    options.Scope.Add("managementapi");
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
                     options.Scope.Add("offline_access");
+                    options.Scope.Add("managementapi");
                 });
+
+            services.AddAccessTokenManagement(options =>
+            {
+                // client config is inferred from OpenID Connect settings
+                // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
+                options.Client.Scope = "managementapi";
+               
+            })
+                .ConfigureBackchannelHttpClient();
+
+            services.AddHttpClient<ManagementApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+            })
+                .AddClientAccessTokenHandler();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -21,24 +21,24 @@ namespace ShortUrl.ManagementGui.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IManagementApiClient _httpCient;
 
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
+        public HomeController(ILogger<HomeController> logger)//, IManagementApiClient httpCient)
         {
             _logger = logger;
-            _httpClientFactory = httpClientFactory;
+            //_httpClientFactory = httpClientFactory;
             //_httpCient = httpCient;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ManagementApiClient httpClient)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = await client.GetStringAsync("http://localhost:5001/Management");
+            //var client = _httpClientFactory.CreateClient();
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            //var response = await client.GetStringAsync("http://localhost:5001/Management");
 
-            var urlData = JsonConvert.DeserializeObject<IEnumerable<ShortUrlModel>>(response);
+            //var urlData = JsonConvert.DeserializeObject<IEnumerable<ShortUrlModel>>(response);
 
-            //IEnumerable<ShortUrlModel> urlData = await _httpCient.GetAllAsync();
+            IEnumerable<ShortUrlModel> urlData = await httpClient.GetAllAsync();
 
             return View(urlData);
         }
@@ -57,17 +57,17 @@ namespace ShortUrl.ManagementGui.Controllers
         {
             if (ModelState.IsValid)
             {
-                var json = JsonConvert.SerializeObject(shortUrlModel);
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                //var json = JsonConvert.SerializeObject(shortUrlModel);
+                //var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var client = _httpClientFactory.CreateClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = await client.PostAsync("http://localhost:5001/Management", new StringContent(json));
+                //var client = _httpClientFactory.CreateClient();
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                //var response = await client.PostAsync("http://localhost:5001/Management", new StringContent(json));
 
-                var body = await response.Content.ReadAsStringAsync();
-                var urlData = JsonConvert.DeserializeObject<ShortUrlModel>(body);
+                //var body = await response.Content.ReadAsStringAsync();
+                //var urlData = JsonConvert.DeserializeObject<ShortUrlModel>(body);
 
-                //await _httpCient.AddAsync(shortUrlModel);
+                await _httpCient.AddAsync(shortUrlModel);
                 return RedirectToAction(nameof(Index));
             }
 

@@ -36,6 +36,7 @@ namespace ShortUrl.ManagementGui
             {
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
+                
             })
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
@@ -55,6 +56,11 @@ namespace ShortUrl.ManagementGui
                     options.Scope.Add("managementapi");
                     options.Scope.Add("short_url");
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("short_url.accesslevel", "admin"));
+            });
 
 
             services.AddAccessTokenManagement(options =>

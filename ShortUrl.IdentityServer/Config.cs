@@ -10,11 +10,20 @@ namespace ShortUrl.IdentityServer
 {
     public static class Config
     {
+
         public static IEnumerable<IdentityResource> Ids =>
+
             new IdentityResource[]
             {
                  new IdentityResources.OpenId(),
-                 new IdentityResources.Profile()
+                 new IdentityResources.Profile(),
+                 new IdentityResource
+                 (
+                     name: "short_url",
+                     displayName: "ShortUrl Profile",
+                     claimTypes: new[] { "short_url.accesslevel" }
+                 )
+
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -43,7 +52,7 @@ namespace ShortUrl.IdentityServer
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "managementapi" }
+                    AllowedScopes = { "managementapi", "short_url" }
                 },
 
                 // interactive ASP.NET Core MVC client
@@ -70,7 +79,7 @@ namespace ShortUrl.IdentityServer
                         "managementapi",
                         "short_url"
                     },
-                 
+
                     AllowOfflineAccess = true
                 }
             };

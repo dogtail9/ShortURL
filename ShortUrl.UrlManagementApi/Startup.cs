@@ -35,6 +35,7 @@ namespace ShortUrl.UrlManagementApi
                 options.RequireHttpsMetadata = false;
 
                 options.Audience = "managementapi";
+                
             });
 
             services.AddDbContext<UrlDbContext>(options =>

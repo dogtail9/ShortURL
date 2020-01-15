@@ -67,7 +67,8 @@ namespace ShortUrl.IdentityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "managementapi"
+                        "managementapi",
+                        "short_url"
                     },
                  
                     AllowOfflineAccess = true

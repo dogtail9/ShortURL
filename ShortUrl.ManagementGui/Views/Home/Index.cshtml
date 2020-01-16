@@ -1,15 +1,16 @@
 ﻿@model ShortUrl.ManagementGui.ModelsAndClaims
+@using Microsoft.AspNetCore.Authentication
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-    <p>
-        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminPolicy")).Succeeded)
-        {
-            <a asp-action="Create">Create New</a>
-        }
-    </p>
+<p>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "AdminPolicy")).Succeeded)
+    {
+        <a asp-action="Create">Create New</a>
+    }
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -40,6 +41,26 @@
     </tbody>
 </table>
 
+<h2>Claims</h2>
+
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
+<h2>Properties</h2>
+
+<dl>
+    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+    {
+        <dt>@prop.Key</dt>
+        <dd>@prop.Value</dd>
+    }
+</dl>
+
 <table class="table">
     <thead>
         <tr>
@@ -66,3 +87,4 @@
         }
     </tbody>
 </table>
+

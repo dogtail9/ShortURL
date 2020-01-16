@@ -55,6 +55,9 @@ namespace ShortUrl.ManagementGui
                     options.Scope.Add("offline_access");
                     options.Scope.Add("managementapi");
                     options.Scope.Add("shorturl");
+
+                    // not mapped by default
+                    options.ClaimActions.MapJsonKey("shorturl.accesslevel", "shorturl.accesslevel");
                 });
 
             services.AddAuthorization(options =>

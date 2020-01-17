@@ -24,6 +24,7 @@ namespace ShortUrl.IdentityServer
             {
               new IdentityResources.OpenId(),
               new IdentityResources.Profile(),
+              new IdentityResources.Email(),
               shorturlProfile
             };
         }
@@ -65,7 +66,7 @@ namespace ShortUrl.IdentityServer
 
                     //AllowedGrantTypes = GrantTypes.Code,
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RequireConsent = false,
+                    RequireConsent = true,
                     RequirePkce = true,
 
                     // where to redirect to after login
@@ -78,6 +79,7 @@ namespace ShortUrl.IdentityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         "managementapi",
                         "shorturl"
                     },

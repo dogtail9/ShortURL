@@ -52,12 +52,15 @@ namespace ShortUrl.ManagementGui
                     options.Scope.Clear();
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
+                    options.Scope.Add("email");
                     options.Scope.Add("offline_access");
                     options.Scope.Add("managementapi");
                     options.Scope.Add("shorturl");
+                    
+                    options.GetClaimsFromUserInfoEndpoint = true;
 
                     // not mapped by default
-                    options.ClaimActions.MapJsonKey("shorturl.accesslevel", "shorturl.accesslevel");
+                    //options.ClaimActions.MapUniqueJsonKey("shorturl.accesslevel", "shorturl.accesslevel");
                 });
 
             services.AddAuthorization(options =>

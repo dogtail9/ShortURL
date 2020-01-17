@@ -31,7 +31,7 @@ namespace ShortUrl.UrlManagementApi
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "http://localhost:6000";
+                options.Authority = "http://localhost:5999";
                 options.RequireHttpsMetadata = false;
 
                 options.Audience = "managementapi";

@@ -32,7 +32,7 @@ namespace ShortUrl.IdentityServer
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("managementapi", "Management API")
+                new ApiResource("managementapi", "Management API", new[] { "shorturl.accesslevel" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) }
                 }

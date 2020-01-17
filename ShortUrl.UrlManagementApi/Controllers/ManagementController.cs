@@ -63,6 +63,7 @@ namespace ShortUrl.UrlManagementApi.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost(Name = "Add")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShortUrlModel))]
@@ -81,6 +82,7 @@ namespace ShortUrl.UrlManagementApi.Controllers
             return Created(shortUrlModel.Key, shortUrlModel);
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("{id?}", Name = "DeleteById")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

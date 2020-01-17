@@ -38,6 +38,11 @@ namespace ShortUrl.UrlManagementApi
                 
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("shorturl.accesslevel", "admin"));
+            });
+
             services.AddDbContext<UrlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
             services.AddScoped<IUrlRepository, SqlUrlRepository>();

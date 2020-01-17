@@ -26,16 +26,19 @@
     <tbody>
         @foreach (var item in Model.ShortUrlModels)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Key)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Url)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Key)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "AdminPolicy")).Succeeded)
+            {
                 <td>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
+            }
             </tr>
         }
     </tbody>

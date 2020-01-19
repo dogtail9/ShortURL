@@ -1387,7 +1387,7 @@ The browser will not be redirected because the walu for key`a` is no longer pres
 
 We will use IdentityServer4 to add Authentication and Authorization to the management portal and the management api.
 The users will be able to login to see the urls in the list and the admin user will be able to add and remove urls from the list.
-The management portal will authenticate against the management api.
+The management portal will authenticate against the management api on behalf of the user.
 
 Create an Identityserver4 project.
 
@@ -1594,4 +1594,16 @@ namespace ShortUrl.ManagementGui
     }
 }
 ```
+
+Let's star with authenticate the user in the management gui.
+
+Let's add autorazition to the management gui.
+
+Let's add autentication to the management api.
+
+Let's add autorization to the management api.
+
+### Open telemetry
+
+
 

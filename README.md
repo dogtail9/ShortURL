@@ -1459,7 +1459,7 @@ namespace ShortUrl.IdentityServer
 }
 ```
 
-Change the port to ´6000´ in the ´launchSettings.json´ file in the ´ShortUrl.IdentityServer´ project.
+Change the port to ´5999´ in the ´launchSettings.json´ file in the ´ShortUrl.IdentityServer´ project.
 
 ```json
 {
@@ -1467,7 +1467,7 @@ Change the port to ´6000´ in the ´launchSettings.json´ file in the ´ShortUrl.Ide
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:6000",
+      "applicationUrl": "http://localhost:5999",
       "sslPort": 0
     }
   },
@@ -1485,14 +1485,14 @@ Change the port to ´6000´ in the ´launchSettings.json´ file in the ´ShortUrl.Ide
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:6000"
+      "applicationUrl": "http://localhost:5999"
     }
   }
 }
 ```
 
 Set the ´ShortUrl.IdentityServer´ project as the startup project and run the application.
-Browse to http://localhost:6000/.well-known/openid-configuration, the discovery document will be shown in the browser.
+Browse to http://localhost:5999/.well-known/openid-configuration, the discovery document will be shown in the browser.
 
 Add the UI for IdentityServer4 to the ´ShortUrl.IdentityServer´ project.
 
@@ -1554,7 +1554,7 @@ namespace ShortUrl.ManagementGui
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "http://localhost:6000";
+                    options.Authority = "http://localhost:5999";
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "managementgui";

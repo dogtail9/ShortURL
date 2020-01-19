@@ -66,8 +66,9 @@ namespace ShortUrl.IdentityServer
 
                     //AllowedGrantTypes = GrantTypes.Code,
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RequireConsent = true,
+                    RequireConsent = false,
                     RequirePkce = true,
+                    AccessTokenLifetime=70,
 
                     // where to redirect to after login
                     RedirectUris = { "http://localhost:5002/signin-oidc" },

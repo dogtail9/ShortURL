@@ -75,9 +75,15 @@ namespace ShortUrl.ManagementGui
                 // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
                 options.Client.Scope = "managementapi";
                 options.Client.Scope = "shorturl";
-
             })
                 .ConfigureBackchannelHttpClient();
+
+            //registers a typed HTTP client with token management support
+            services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+            })
+                .AddUserAccessTokenHandler();
 
             //services.AddAccessTokenManagement(options =>
             //{
@@ -89,13 +95,6 @@ namespace ShortUrl.ManagementGui
             //        Scope = "managementapi"
             //    });
             //});
-
-            //registers a typed HTTP client with token management support
-            services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
-            {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
-            })
-                .AddUserAccessTokenHandler();
 
             //services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
             //{

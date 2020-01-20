@@ -1608,6 +1608,24 @@ Add autorization to the management api.
 [OpenTelemetry](https://opentelemetry.io/) provides a single set of APIs,
 libraries, agents, and collector services to capture distributed traces and metrics from your application.
 You can analyze them using Prometheus, Jaeger, and other observability tools.
+The OpenTelemetry project for .NET can be found on [GitHub](https://github.com/open-telemetry/opentelemetry-dotnet).
+
+Start a Zipkin container.
+
+```powershell
+docker run --name shorturlzipkin -d -p 9411:9411 openzipkin/zipkin-slim
+```
+
+Browse to [localhost:9411](http://localhost.9411) to se the Gui for Zipkin.
+
+Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting` and `OpenTelemetry.Exporter.Zipkin` NuGet packeges to the `ShortUrl.UrlManagementApi` project.
+
+Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
+
+```c#
+
+```
+
 
 ## Docker
 

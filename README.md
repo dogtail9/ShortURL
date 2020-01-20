@@ -1603,7 +1603,11 @@ Add autentication to the management api.
 
 Add autorization to the management api.
 
-### Open telemetry
+### Open Telemetry
+
+[OpenTelemetry](https://opentelemetry.io/) provides a single set of APIs,
+libraries, agents, and collector services to capture distributed traces and metrics from your application.
+You can analyze them using Prometheus, Jaeger, and other observability tools.
 
 ## Docker
 

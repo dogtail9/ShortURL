@@ -1595,15 +1595,29 @@ namespace ShortUrl.ManagementGui
 }
 ```
 
-Let's star with authenticate the user in the management gui.
+Let's start with authenticate the user in the management gui.
 
-Let's add autorazition to the management gui.
+Add autorazition to the management gui.
 
-Let's add autentication to the management api.
+Add autentication to the management api.
 
-Let's add autorization to the management api.
+Add autorization to the management api.
 
 ### Open telemetry
 
+## Docker
 
+### Docker-Compose
+
+### Docker Swarm
+
+### Kubernetes
+
+#### Ingress
+
+##### Istio
+
+##### Nginx
+
+## Azure
 

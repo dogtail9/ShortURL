@@ -17,11 +17,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ShortUrlModel"
-                  },
-                  "nullable": true
+                  "$ref": "#/components/schemas/ModelsAndClaims"
                 }
               }
             }
@@ -104,6 +100,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -125,8 +131,28 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Success"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -152,6 +178,40 @@
           "url": {
             "maxLength": 1000,
             "type": "string"
+          }
+        },
+        "nullable": true
+      },
+      "MyClaim": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "ModelsAndClaims": {
+        "type": "object",
+        "properties": {
+          "shortUrlModels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShortUrlModel"
+            },
+            "nullable": true
+          },
+          "myClaims": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MyClaim"
+            },
+            "nullable": true
           }
         },
         "nullable": true
@@ -198,6 +258,19 @@
         },
         "nullable": true
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        "name": "Autorization",
+        "in": "header"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

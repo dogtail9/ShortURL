@@ -1,36 +1,90 @@
-﻿@model IEnumerable<ShortUrl.ManagementGui.ShortUrlModel>
+﻿@model ShortUrl.ManagementGui.ModelsAndClaims
+@using Microsoft.AspNetCore.Authentication
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "AdminPolicy")).Succeeded)
+    {
+        <a asp-action="Create">Create New</a>
+    }
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Key)
+                Key
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Url)
+                Url
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.ShortUrlModels)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Key)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "AdminPolicy")).Succeeded)
+            {
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Claims</h2>
+
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
+<h2>Properties</h2>
+
+<dl>
+    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+    {
+        <dt>@prop.Key</dt>
+        <dd>@prop.Value</dd>
+    }
+</dl>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Type
+            </th>
+            <th>
+                Value
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MyClaims)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Key)
+                    @Html.DisplayFor(modelItem => item.Type)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Url)
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Value)
                 </td>
             </tr>
         }

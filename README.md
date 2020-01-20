@@ -1384,3 +1384,240 @@ The value is still present in the cache. Wait more than a minutie an try to brow
 The browser will not be redirected because the walu for key`a` is no longer present in the cache.
 
 ### Add Authentication and Authorization to the Management portal
+
+We will use IdentityServer4 to add Authentication and Authorization to the management portal and the management api.
+The users will be able to login to see the urls in the list and the admin user will be able to add and remove urls from the list.
+The management portal will authenticate against the management api on behalf of the user.
+
+Create an Identityserver4 project.
+
+Install the IdentityServer4 project templates.
+
+```powershell
+dotnet new -i IdentityServer4.Templates
+```
+
+Create the IdentityServer project.
+
+```powershell
+dotnet sln add .\src\IdentityServer\IdentityServer.csproj
+```
+
+Add the IdentityServer project to the solution.
+
+```powershell
+dotnet sln add .\src\IdentityServer\IdentityServer.csproj
+```
+
+Add an api and a client to the `Config` class in the ´ShortUrl.IdentityServer´ project.
+
+```c#
+// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+
+using IdentityServer4.Models;
+using System.Collections.Generic;
+
+namespace ShortUrl.IdentityServer
+{
+    public static class Config
+    {
+        public static IEnumerable<IdentityResource> Ids =>
+            new IdentityResource[]
+            {
+                new IdentityResources.OpenId()
+            };
+
+        public static IEnumerable<ApiResource> Apis =>
+            new ApiResource[]
+            {
+                new ApiResource("managementapi", "Management API")
+            };
+
+        public static IEnumerable<Client> Clients =>
+            new Client[]
+            {
+                new Client
+                {
+                    ClientId = "managementgui",
+
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    // scopes that client has access to
+                    AllowedScopes = { "managementapi" }
+                }
+            };
+    }
+}
+```
+
+Change the port to ´5999´ in the ´launchSettings.json´ file in the ´ShortUrl.IdentityServer´ project.
+
+```json
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5999",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "SelfHost": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5999"
+    }
+  }
+}
+```
+
+Set the ´ShortUrl.IdentityServer´ project as the startup project and run the application.
+Browse to http://localhost:5999/.well-known/openid-configuration, the discovery document will be shown in the browser.
+
+Add the UI for IdentityServer4 to the ´ShortUrl.IdentityServer´ project.
+
+```powershell
+cd .\ShortUrl.IdentityServer\
+dotnet new is4ui
+```
+
+Once you have added the MVC UI, you will also need to enable MVC, both in the DI system and in the pipeline. 
+When you look at `Startup` class you will find comments in the `ConfigureServices` and `Configure` method that tell you how to enable MVC.
+Run the IdentityServer application, you should now see a home page.
+
+Add the `Microsoft.AspNetCore.Authentication.OpenIdConnect` NuGet package to the `ShortUrl.ManagementGui` project.
+
+Add the aautehtication service to DI in the `Startup` class in the `ShortUrl.ManagementGui` project.
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace ShortUrl.ManagementGui
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
+
+            // Inject generated Management client via using HttpClientFactory to implement resilient HTTP requests.
+            services.AddHttpClient<IManagementApiClient, ManagementApiClient>((provider, client) =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+            });
+
+            // Add the authentication service
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "http://localhost:5999";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "managementgui";
+                    options.ClientSecret = "secret";
+                    options.ResponseType = "code";
+
+                    options.SaveTokens = true;
+                });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}
+```
+
+Let's start with authenticate the user in the management gui.
+
+Add autorazition to the management gui.
+
+Add autentication to the management api.
+
+Add autorization to the management api.
+
+### Open telemetry
+
+## Docker
+
+### Docker-Compose
+
+### Docker Swarm
+
+### Kubernetes
+
+#### Ingress
+
+##### Istio
+
+##### Nginx
+
+## Azure
+

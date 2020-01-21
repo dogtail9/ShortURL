@@ -1623,9 +1623,36 @@ Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting` and `OpenT
 Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
 
 ```c#
-
+services.AddOpenTelemetry(builder => 
+{
+    builder.AddRequestCollector()
+    .UseZipkin(options =>
+    {
+        options.ServiceName = "ShortUrl.ManagementApi";
+        //o.ServiceName = "BackEndApp";
+        options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+    });
+});
 ```
 
+Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting` and `OpenTelemetry.Exporter.Zipkin` NuGet packeges to the `ShortUrl.UrlManagementGui` project.
+
+Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
+
+```c#
+services.AddOpenTelemetry(builder => 
+{
+    builder.AddRequestCollector()
+    .UseZipkin(options =>
+    {
+        options.ServiceName = "ShortUrl.ManagementGui";
+        //o.ServiceName = "BackEndApp";
+        options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+    });
+});
+```
+
+Try to add an url to the list. Browse to [http://localhost:9411](http://localhost:9411) container to see the requests in Zipkin. 
 
 ## Docker
 

@@ -13,7 +13,6 @@ using System.IO;
 using System.Collections.Generic;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace.Configuration;
-using OpenTelemetry.Trace.Sampler;
 
 namespace ShortUrl.UrlManagementApi
 {
@@ -54,8 +53,15 @@ namespace ShortUrl.UrlManagementApi
             services.AddOpenTelemetry(builder => 
             {
                 builder.AddRequestCollector()
+                //.UseJaeger(options =>
+                //{
+                //    options.ServiceName = "ShortUrl.ManagementApi";// $"{HostingEnvironment.ApplicationName}_{HostingEnvironment.EnvironmentName}"; ;
+                //    options.AgentHost = "localhost";
+                //    options.AgentPort = 6831;
+                //});
                 .UseZipkin(options =>
                 {
+                    options.ServiceName = "ShortUrl.ManagementApi";
                     //o.ServiceName = "BackEndApp";
                     options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
                 });

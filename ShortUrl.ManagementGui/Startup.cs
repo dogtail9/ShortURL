@@ -12,6 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using IdentityModel.Client;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace.Configuration;
+using OpenTelemetry.Exporter.Jaeger;
+using OpenTelemetry.Trace;
 
 namespace ShortUrl.ManagementGui
 {
@@ -31,6 +35,26 @@ namespace ShortUrl.ManagementGui
 
             // Add the authentication service
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            // Add OpenTelemetry
+            services.AddOpenTelemetry(builder =>
+            {
+                builder.AddRequestCollector()
+                //.UseJaeger(options =>
+                //{
+                //    options.ServiceName = "ShortUrl.ManagementGui";
+                //    options.AgentHost = "localhost";
+                //    options.AgentPort = 6831;
+                //});
+                .UseZipkin(options =>
+                {
+                    options.ServiceName = "ShortUrl.ManagementGui";
+                    //o.ServiceName = "BackEndApp";
+                    options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+                });
+                //.AddRequestCollector()
+                //.AddDependencyCollector();
+            });
 
             services.AddAuthentication(options =>
             {

@@ -7437,3 +7437,14 @@
 2020-01-23 20:04:51.012 +01:00 [DBG] Get profile called for subject 818727 from client managementguiclient with claim types ["name","family_name","given_name","middle_name","nickname","preferred_username","profile","picture","website","gender","birthdate","zoneinfo","locale","updated_at","email","email_verified","shorturl.accesslevel"] via ClaimsProviderIdentityToken
 2020-01-23 20:04:51.017 +01:00 [DBG] Issued claims: ["name","given_name","family_name","email","email_verified","website","shorturl.accesslevel"]
 2020-01-23 20:04:51.019 +01:00 [DBG] Token request success.
+2020-01-23 21:29:33.873 +00:00 [INF] Starting host...
+2020-01-23 21:29:37.300 +00:00 [WRN] Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+2020-01-23 21:29:37.375 +00:00 [WRN] No XML encryptor configured. Key {fcc52b29-085c-41cb-8d2b-05b31f7c087b} may be persisted to storage in unencrypted form.
+2020-01-23 21:29:37.453 +00:00 [INF] Starting IdentityServer4 version 3.0.1.0
+2020-01-23 21:29:37.465 +00:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2020-01-23 21:29:37.476 +00:00 [INF] Using the default authentication scheme idsrv for IdentityServer
+2020-01-23 21:29:37.476 +00:00 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2020-01-23 21:29:37.477 +00:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2020-01-23 21:29:37.477 +00:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2020-01-23 21:29:37.478 +00:00 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2020-01-23 21:29:37.480 +00:00 [DBG] Using idsrv as default ASP.NET Core scheme for forbid

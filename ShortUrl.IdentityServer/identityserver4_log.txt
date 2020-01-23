@@ -7283,3 +7283,157 @@
 2020-01-21 21:52:57.687 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
 2020-01-21 21:52:57.690 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
 2020-01-21 21:52:57.691 +01:00 [DBG] Start key discovery request
+2020-01-23 20:03:38.267 +01:00 [INF] Starting host...
+2020-01-23 20:03:47.128 +01:00 [INF] Starting IdentityServer4 version 3.0.1.0
+2020-01-23 20:03:47.143 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2020-01-23 20:03:47.149 +01:00 [INF] Using the default authentication scheme idsrv for IdentityServer
+2020-01-23 20:03:47.149 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2020-01-23 20:03:47.149 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2020-01-23 20:03:47.149 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2020-01-23 20:03:47.149 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2020-01-23 20:03:47.150 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2020-01-23 20:03:57.680 +01:00 [DBG] Login Url: /Account/Login
+2020-01-23 20:03:57.691 +01:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-01-23 20:03:57.693 +01:00 [DBG] Logout Url: /Account/Logout
+2020-01-23 20:03:57.693 +01:00 [DBG] ConsentUrl Url: /consent
+2020-01-23 20:03:57.694 +01:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-01-23 20:03:57.695 +01:00 [DBG] Error Url: /home/error
+2020-01-23 20:03:57.696 +01:00 [DBG] Error Id Parameter: errorId
+2020-01-23 20:04:16.855 +01:00 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2020-01-23 20:04:16.859 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2020-01-23 20:04:16.860 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2020-01-23 20:04:16.863 +01:00 [DBG] Start discovery request
+2020-01-23 20:04:17.255 +01:00 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2020-01-23 20:04:17.257 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2020-01-23 20:04:17.258 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2020-01-23 20:04:17.260 +01:00 [DBG] Start key discovery request
+2020-01-23 20:04:17.397 +01:00 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2020-01-23 20:04:17.406 +01:00 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2020-01-23 20:04:17.406 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2020-01-23 20:04:17.409 +01:00 [DBG] Start authorize request
+2020-01-23 20:04:17.416 +01:00 [DBG] No user present in authorize request
+2020-01-23 20:04:17.418 +01:00 [DBG] Start authorize request protocol validation
+2020-01-23 20:04:17.430 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:17.443 +01:00 [DBG] Checking for PKCE parameters
+2020-01-23 20:04:17.466 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-01-23 20:04:17.481 +01:00 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"managementguiclient","ClientName":null,"RedirectUri":"http://localhost:5002/signin-oidc","AllowedRedirectUris":["http://localhost:5002/signin-oidc"],"SubjectId":"anonymous","ResponseType":"code","ResponseMode":"form_post","GrantType":"authorization_code","RequestedScopes":"openid profile email offline_access managementapi shorturl","State":"CfDJ8CLd0A0sbwFGt3oVSyfRn93V6dff8BHQo7tY39xA-4rAAdiPCPsqF2vyo6-N3uMOr4MrccTIUeybdllVewQl5ohAIY5SO7u8V3274HpCQGgIS1cXJCM8-Ai-Ca6pC_VR3UDgZ3OjctVuYnWKLG9Y55QYkVU7Weu0cAwgofocNaaMFTcpTE4c9vl9ZJ10l2Bj4L-b7W_xZv1_S2j3eJ0Pau8uc7PAO7sK7gD_2tICW5aA3wmNUOg6ZxzqADCSx9e4AeGbKA3mbdHfOHTvlSrhHzdIFcojFgTBEAq_QNTkwRdIHwJE6HIPd6HGgOr-sLdRbhR7OQ6zCN55NzvcCEksZzTAOPTJyfYlJtFHiYxUjxvue2B_QgJQiPaBnB-xeehyyw","UiLocales":null,"Nonce":"637154030573569216.ODVjMGZhNDMtOGRlMy00MDY1LWI1Y2ItMmU4YWMxMzg0NDhkNTcyNzFlM2MtOGI5OC00MDZmLWIyOWMtMmY3MGM2NDA4YTY4","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"managementguiclient","redirect_uri":"http://localhost:5002/signin-oidc","response_type":"code","scope":"openid profile email offline_access managementapi shorturl","code_challenge":"iJPVi6qXLStg92x2Gsf9zk3GVMXYuxhDNLaRexNzpW0","code_challenge_method":"S256","response_mode":"form_post","nonce":"637154030573569216.ODVjMGZhNDMtOGRlMy00MDY1LWI1Y2ItMmU4YWMxMzg0NDhkNTcyNzFlM2MtOGI5OC00MDZmLWIyOWMtMmY3MGM2NDA4YTY4","state":"CfDJ8CLd0A0sbwFGt3oVSyfRn93V6dff8BHQo7tY39xA-4rAAdiPCPsqF2vyo6-N3uMOr4MrccTIUeybdllVewQl5ohAIY5SO7u8V3274HpCQGgIS1cXJCM8-Ai-Ca6pC_VR3UDgZ3OjctVuYnWKLG9Y55QYkVU7Weu0cAwgofocNaaMFTcpTE4c9vl9ZJ10l2Bj4L-b7W_xZv1_S2j3eJ0Pau8uc7PAO7sK7gD_2tICW5aA3wmNUOg6ZxzqADCSx9e4AeGbKA3mbdHfOHTvlSrhHzdIFcojFgTBEAq_QNTkwRdIHwJE6HIPd6HGgOr-sLdRbhR7OQ6zCN55NzvcCEksZzTAOPTJyfYlJtFHiYxUjxvue2B_QgJQiPaBnB-xeehyyw","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.5.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2020-01-23 20:04:17.519 +01:00 [INF] Showing login: User is not authenticated
+2020-01-23 20:04:17.574 +01:00 [DBG] Start authorize request protocol validation
+2020-01-23 20:04:17.575 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:17.577 +01:00 [DBG] Checking for PKCE parameters
+2020-01-23 20:04:17.583 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-01-23 20:04:17.587 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:23.908 +01:00 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2020-01-23 20:04:23.965 +01:00 [DBG] Start authorize request protocol validation
+2020-01-23 20:04:23.965 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:23.967 +01:00 [DBG] Checking for PKCE parameters
+2020-01-23 20:04:23.968 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-01-23 20:04:23.983 +01:00 [DBG] Augmenting SignInContext
+2020-01-23 20:04:23.984 +01:00 [DBG] Adding idp claim with value: local
+2020-01-23 20:04:23.985 +01:00 [DBG] Adding amr claim with value: pwd
+2020-01-23 20:04:23.998 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2020-01-23 20:04:24.000 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.014 +01:00 [DBG] Request path /connect/authorize/callback matched to endpoint type Authorize
+2020-01-23 20:04:24.015 +01:00 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint
+2020-01-23 20:04:24.017 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint for /connect/authorize/callback
+2020-01-23 20:04:24.022 +01:00 [DBG] Start authorize callback request
+2020-01-23 20:04:24.026 +01:00 [DBG] User in authorize request: 818727
+2020-01-23 20:04:24.026 +01:00 [DBG] Start authorize request protocol validation
+2020-01-23 20:04:24.027 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.027 +01:00 [DBG] Checking for PKCE parameters
+2020-01-23 20:04:24.028 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-01-23 20:04:24.030 +01:00 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"managementguiclient","ClientName":null,"RedirectUri":"http://localhost:5002/signin-oidc","AllowedRedirectUris":["http://localhost:5002/signin-oidc"],"SubjectId":"818727","ResponseType":"code","ResponseMode":"form_post","GrantType":"authorization_code","RequestedScopes":"openid profile email offline_access managementapi shorturl","State":"CfDJ8CLd0A0sbwFGt3oVSyfRn93V6dff8BHQo7tY39xA-4rAAdiPCPsqF2vyo6-N3uMOr4MrccTIUeybdllVewQl5ohAIY5SO7u8V3274HpCQGgIS1cXJCM8-Ai-Ca6pC_VR3UDgZ3OjctVuYnWKLG9Y55QYkVU7Weu0cAwgofocNaaMFTcpTE4c9vl9ZJ10l2Bj4L-b7W_xZv1_S2j3eJ0Pau8uc7PAO7sK7gD_2tICW5aA3wmNUOg6ZxzqADCSx9e4AeGbKA3mbdHfOHTvlSrhHzdIFcojFgTBEAq_QNTkwRdIHwJE6HIPd6HGgOr-sLdRbhR7OQ6zCN55NzvcCEksZzTAOPTJyfYlJtFHiYxUjxvue2B_QgJQiPaBnB-xeehyyw","UiLocales":null,"Nonce":"637154030573569216.ODVjMGZhNDMtOGRlMy00MDY1LWI1Y2ItMmU4YWMxMzg0NDhkNTcyNzFlM2MtOGI5OC00MDZmLWIyOWMtMmY3MGM2NDA4YTY4","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":"ZfyAPmbggCDfJqQOM9PqLQ","Raw":{"client_id":"managementguiclient","redirect_uri":"http://localhost:5002/signin-oidc","response_type":"code","scope":"openid profile email offline_access managementapi shorturl","code_challenge":"iJPVi6qXLStg92x2Gsf9zk3GVMXYuxhDNLaRexNzpW0","code_challenge_method":"S256","response_mode":"form_post","nonce":"637154030573569216.ODVjMGZhNDMtOGRlMy00MDY1LWI1Y2ItMmU4YWMxMzg0NDhkNTcyNzFlM2MtOGI5OC00MDZmLWIyOWMtMmY3MGM2NDA4YTY4","state":"CfDJ8CLd0A0sbwFGt3oVSyfRn93V6dff8BHQo7tY39xA-4rAAdiPCPsqF2vyo6-N3uMOr4MrccTIUeybdllVewQl5ohAIY5SO7u8V3274HpCQGgIS1cXJCM8-Ai-Ca6pC_VR3UDgZ3OjctVuYnWKLG9Y55QYkVU7Weu0cAwgofocNaaMFTcpTE4c9vl9ZJ10l2Bj4L-b7W_xZv1_S2j3eJ0Pau8uc7PAO7sK7gD_2tICW5aA3wmNUOg6ZxzqADCSx9e4AeGbKA3mbdHfOHTvlSrhHzdIFcojFgTBEAq_QNTkwRdIHwJE6HIPd6HGgOr-sLdRbhR7OQ6zCN55NzvcCEksZzTAOPTJyfYlJtFHiYxUjxvue2B_QgJQiPaBnB-xeehyyw","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.5.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2020-01-23 20:04:24.038 +01:00 [DBG] IsActive called from: AuthorizeEndpoint
+2020-01-23 20:04:24.043 +01:00 [DBG] Client is configured to not require consent, no consent is required
+2020-01-23 20:04:24.047 +01:00 [DBG] Creating Authorization Code Flow response.
+2020-01-23 20:04:24.076 +01:00 [DBG] Authorize endpoint response
+{"SubjectId":"818727","ClientId":"managementguiclient","RedirectUri":"http://localhost:5002/signin-oidc","State":"CfDJ8CLd0A0sbwFGt3oVSyfRn93V6dff8BHQo7tY39xA-4rAAdiPCPsqF2vyo6-N3uMOr4MrccTIUeybdllVewQl5ohAIY5SO7u8V3274HpCQGgIS1cXJCM8-Ai-Ca6pC_VR3UDgZ3OjctVuYnWKLG9Y55QYkVU7Weu0cAwgofocNaaMFTcpTE4c9vl9ZJ10l2Bj4L-b7W_xZv1_S2j3eJ0Pau8uc7PAO7sK7gD_2tICW5aA3wmNUOg6ZxzqADCSx9e4AeGbKA3mbdHfOHTvlSrhHzdIFcojFgTBEAq_QNTkwRdIHwJE6HIPd6HGgOr-sLdRbhR7OQ6zCN55NzvcCEksZzTAOPTJyfYlJtFHiYxUjxvue2B_QgJQiPaBnB-xeehyyw","Scope":"openid profile email shorturl managementapi offline_access","Error":null,"ErrorDescription":null,"$type":"AuthorizeResponseLog"}
+2020-01-23 20:04:24.085 +01:00 [DBG] Augmenting SignInContext
+2020-01-23 20:04:24.086 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2020-01-23 20:04:24.204 +01:00 [DBG] Request path /connect/token matched to endpoint type Token
+2020-01-23 20:04:24.210 +01:00 [DBG] Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+2020-01-23 20:04:24.211 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+2020-01-23 20:04:24.217 +01:00 [DBG] Start token request.
+2020-01-23 20:04:24.220 +01:00 [DBG] Start client validation
+2020-01-23 20:04:24.225 +01:00 [DBG] Start parsing Basic Authentication secret
+2020-01-23 20:04:24.226 +01:00 [DBG] Start parsing for secret in post body
+2020-01-23 20:04:24.227 +01:00 [DBG] Parser found secret: PostBodySecretParser
+2020-01-23 20:04:24.228 +01:00 [DBG] Secret id found: managementguiclient
+2020-01-23 20:04:24.228 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.240 +01:00 [DBG] Secret validator success: HashedSharedSecretValidator
+2020-01-23 20:04:24.240 +01:00 [DBG] Client validation success
+2020-01-23 20:04:24.244 +01:00 [DBG] Start token request validation
+2020-01-23 20:04:24.249 +01:00 [DBG] Start validation of authorization code token request
+2020-01-23 20:04:24.278 +01:00 [DBG] Client required a proof key for code exchange. Starting PKCE validation
+2020-01-23 20:04:24.280 +01:00 [DBG] IsActive called from: AuthorizationCodeValidation
+2020-01-23 20:04:24.281 +01:00 [DBG] Validation of authorization code token request success
+2020-01-23 20:04:24.284 +01:00 [INF] Token request validation success, {"ClientId":"managementguiclient","ClientName":null,"GrantType":"authorization_code","Scopes":null,"AuthorizationCode":"Lm_fftNUXt2wE-W9WGi3akQI6z6s_mWVqnuHR1O-J38","RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"managementguiclient","client_secret":"***REDACTED***","code":"Lm_fftNUXt2wE-W9WGi3akQI6z6s_mWVqnuHR1O-J38","grant_type":"authorization_code","redirect_uri":"http://localhost:5002/signin-oidc","code_verifier":"4n4QXBH9BRkpdfR90kI1Yk_mx1UehYEkTlr6haR9nmQ"},"$type":"TokenRequestValidationLog"}
+2020-01-23 20:04:24.293 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.310 +01:00 [DBG] Getting claims for access token for client: managementguiclient
+2020-01-23 20:04:24.311 +01:00 [DBG] Getting claims for access token for subject: 818727
+2020-01-23 20:04:24.316 +01:00 [DBG] Get profile called for subject 818727 from client managementguiclient with claim types ["shorturl.accesslevel"] via ClaimsProviderAccessToken
+2020-01-23 20:04:24.318 +01:00 [DBG] Issued claims: ["shorturl.accesslevel"]
+2020-01-23 20:04:24.485 +01:00 [DBG] Creating refresh token
+2020-01-23 20:04:24.487 +01:00 [DBG] Setting an absolute lifetime: 2592000
+2020-01-23 20:04:24.501 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.509 +01:00 [DBG] Getting claims for identity token for subject: 818727 and client: managementguiclient
+2020-01-23 20:04:24.510 +01:00 [DBG] Get profile called for subject 818727 from client managementguiclient with claim types ["name","family_name","given_name","middle_name","nickname","preferred_username","profile","picture","website","gender","birthdate","zoneinfo","locale","updated_at","email","email_verified","shorturl.accesslevel"] via ClaimsProviderIdentityToken
+2020-01-23 20:04:24.511 +01:00 [DBG] Issued claims: ["name","given_name","family_name","email","email_verified","website","shorturl.accesslevel"]
+2020-01-23 20:04:24.514 +01:00 [DBG] Token request success.
+2020-01-23 20:04:24.738 +01:00 [DBG] Request path /connect/userinfo matched to endpoint type Userinfo
+2020-01-23 20:04:24.741 +01:00 [DBG] Endpoint enabled: Userinfo, successfully created handler: IdentityServer4.Endpoints.UserInfoEndpoint
+2020-01-23 20:04:24.743 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.UserInfoEndpoint for /connect/userinfo
+2020-01-23 20:04:24.745 +01:00 [DBG] Start userinfo request
+2020-01-23 20:04:24.747 +01:00 [DBG] Bearer token found in header
+2020-01-23 20:04:24.798 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.805 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:24.807 +01:00 [DBG] IsActive called from: AccessTokenValidation
+2020-01-23 20:04:24.808 +01:00 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2020-01-23 20:04:24.810 +01:00 [DBG] Token validation success
+{"ClientId":null,"ClientName":null,"ValidateLifetime":true,"AccessTokenType":"Jwt","ExpectedScope":"openid","TokenHandle":null,"JwtId":null,"Claims":{"nbf":1579806264,"exp":1579806334,"iss":"http://localhost:5999","aud":"managementapi","client_id":"managementguiclient","sub":"818727","auth_time":1579806263,"idp":"local","shorturl.accesslevel":"admin","scope":["openid","profile","email","shorturl","managementapi","offline_access"],"amr":"pwd"},"$type":"TokenValidationLog"}
+2020-01-23 20:04:24.816 +01:00 [DBG] IsActive called from: UserInfoRequestValidation
+2020-01-23 20:04:24.818 +01:00 [DBG] Creating userinfo response
+2020-01-23 20:04:24.821 +01:00 [DBG] Scopes in access token: openid profile email shorturl managementapi offline_access
+2020-01-23 20:04:24.823 +01:00 [DBG] Scopes in access token: openid profile email shorturl managementapi offline_access
+2020-01-23 20:04:24.826 +01:00 [DBG] Requested claim types: sub name family_name given_name middle_name nickname preferred_username profile picture website gender birthdate zoneinfo locale updated_at email email_verified shorturl.accesslevel
+2020-01-23 20:04:24.827 +01:00 [DBG] Scopes in access token: openid profile email shorturl managementapi offline_access
+2020-01-23 20:04:24.829 +01:00 [DBG] Get profile called for subject 818727 from client managementguiclient with claim types ["sub","name","family_name","given_name","middle_name","nickname","preferred_username","profile","picture","website","gender","birthdate","zoneinfo","locale","updated_at","email","email_verified","shorturl.accesslevel"] via UserInfoEndpoint
+2020-01-23 20:04:24.835 +01:00 [DBG] Issued claims: ["name","given_name","family_name","email","email_verified","website","shorturl.accesslevel"]
+2020-01-23 20:04:24.836 +01:00 [INF] Profile service returned the following claim types: name given_name family_name email email_verified website shorturl.accesslevel
+2020-01-23 20:04:24.839 +01:00 [DBG] End userinfo request
+2020-01-23 20:04:25.433 +01:00 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2020-01-23 20:04:25.436 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2020-01-23 20:04:25.440 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2020-01-23 20:04:25.441 +01:00 [DBG] Start discovery request
+2020-01-23 20:04:25.529 +01:00 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2020-01-23 20:04:25.530 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2020-01-23 20:04:25.531 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2020-01-23 20:04:25.532 +01:00 [DBG] Start key discovery request
+2020-01-23 20:04:50.948 +01:00 [DBG] Request path /connect/token matched to endpoint type Token
+2020-01-23 20:04:50.959 +01:00 [DBG] Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+2020-01-23 20:04:50.960 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+2020-01-23 20:04:50.961 +01:00 [DBG] Start token request.
+2020-01-23 20:04:50.962 +01:00 [DBG] Start client validation
+2020-01-23 20:04:50.962 +01:00 [DBG] Start parsing Basic Authentication secret
+2020-01-23 20:04:50.963 +01:00 [DBG] Start parsing for secret in post body
+2020-01-23 20:04:50.964 +01:00 [DBG] Parser found secret: PostBodySecretParser
+2020-01-23 20:04:50.967 +01:00 [DBG] Secret id found: managementguiclient
+2020-01-23 20:04:50.968 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-01-23 20:04:50.969 +01:00 [DBG] Secret validator success: HashedSharedSecretValidator
+2020-01-23 20:04:50.970 +01:00 [DBG] Client validation success
+2020-01-23 20:04:50.971 +01:00 [DBG] Start token request validation
+2020-01-23 20:04:50.976 +01:00 [DBG] Start validation of refresh token request
+2020-01-23 20:04:50.991 +01:00 [DBG] IsActive called from: RefreshTokenValidation
+2020-01-23 20:04:50.992 +01:00 [DBG] Token validation success
+{"ClientId":"managementguiclient","ClientName":null,"ValidateLifetime":false,"AccessTokenType":null,"ExpectedScope":null,"TokenHandle":null,"JwtId":null,"Claims":{"sub":"818727","client_id":"managementguiclient","scope":["openid","profile","email","shorturl","managementapi","offline_access"],"auth_time":1579806263,"idp":"local","amr":"pwd","shorturl.accesslevel":"admin"},"$type":"TokenValidationLog"}
+2020-01-23 20:04:50.995 +01:00 [DBG] Validation of refresh token request success
+2020-01-23 20:04:50.995 +01:00 [INF] Token request validation success, {"ClientId":"managementguiclient","ClientName":null,"GrantType":"refresh_token","Scopes":null,"AuthorizationCode":null,"RefreshToken":"dbKI8dUv8Fw5hXsRMVy4hHTXb7zGc9XANr6zZhWnXwU","UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"grant_type":"refresh_token","refresh_token":"***REDACTED***","client_id":"managementguiclient","client_secret":"***REDACTED***"},"$type":"TokenRequestValidationLog"}
+2020-01-23 20:04:51.005 +01:00 [DBG] Updating refresh token
+2020-01-23 20:04:51.006 +01:00 [DBG] Token usage is one-time only. Generating new handle
+2020-01-23 20:04:51.008 +01:00 [DBG] Created refresh token in store
+2020-01-23 20:04:51.011 +01:00 [DBG] Getting claims for identity token for subject: 818727 and client: managementguiclient
+2020-01-23 20:04:51.012 +01:00 [DBG] Get profile called for subject 818727 from client managementguiclient with claim types ["name","family_name","given_name","middle_name","nickname","preferred_username","profile","picture","website","gender","birthdate","zoneinfo","locale","updated_at","email","email_verified","shorturl.accesslevel"] via ClaimsProviderIdentityToken
+2020-01-23 20:04:51.017 +01:00 [DBG] Issued claims: ["name","given_name","family_name","email","email_verified","website","shorturl.accesslevel"]
+2020-01-23 20:04:51.019 +01:00 [DBG] Token request success.

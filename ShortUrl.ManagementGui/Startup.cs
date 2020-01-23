@@ -40,6 +40,7 @@ namespace ShortUrl.ManagementGui
             services.AddOpenTelemetry(builder =>
             {
                 builder.AddRequestCollector()
+                .AddDependencyCollector()
                 //.UseJaeger(options =>
                 //{
                 //    options.ServiceName = "ShortUrl.ManagementGui";

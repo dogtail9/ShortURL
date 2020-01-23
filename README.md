@@ -1618,14 +1618,14 @@ docker run --name shorturlzipkin -d -p 9411:9411 openzipkin/zipkin-slim
 
 Browse to [localhost:9411](http://localhost.9411) to se the Gui for Zipkin.
 
-Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting` and `OpenTelemetry.Exporter.Zipkin` NuGet packeges to the `ShortUrl.UrlManagementApi` project.
+Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting`, `OpenTelemetry.Collector.Dependencies` and `OpenTelemetry.Exporter.Zipkin` NuGet packages to the `ShortUrl.UrlManagementApi` project.
 
 Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
 
 ```c#
 services.AddOpenTelemetry(builder => 
 {
-    builder.AddRequestCollector()
+    builder.AddRequestCollector().AddDependencyCollector()
     .UseZipkin(options =>
     {
         options.ServiceName = "ShortUrl.ManagementApi";
@@ -1642,7 +1642,7 @@ Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
 ```c#
 services.AddOpenTelemetry(builder => 
 {
-    builder.AddRequestCollector()
+    builder.AddRequestCollector().AddDependencyCollector()
     .UseZipkin(options =>
     {
         options.ServiceName = "ShortUrl.ManagementGui";

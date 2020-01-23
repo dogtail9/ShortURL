@@ -53,6 +53,7 @@ namespace ShortUrl.UrlManagementApi
             services.AddOpenTelemetry(builder => 
             {
                 builder.AddRequestCollector()
+                .AddDependencyCollector()
                 //.UseJaeger(options =>
                 //{
                 //    options.ServiceName = "ShortUrl.ManagementApi";// $"{HostingEnvironment.ApplicationName}_{HostingEnvironment.EnvironmentName}"; ;

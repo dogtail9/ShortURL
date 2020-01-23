@@ -11,6 +11,8 @@ using System.Reflection;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace.Configuration;
 
 namespace ShortUrl.UrlManagementApi
 {
@@ -46,6 +48,25 @@ namespace ShortUrl.UrlManagementApi
             services.AddDbContext<UrlDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UrlDbContext")));
             services.AddScoped<IUrlRepository, SqlUrlRepository>();
+
+            // Add OpenTelemetry
+            services.AddOpenTelemetry(builder => 
+            {
+                builder.AddRequestCollector()
+                .AddDependencyCollector()
+                //.UseJaeger(options =>
+                //{
+                //    options.ServiceName = "ShortUrl.ManagementApi";// $"{HostingEnvironment.ApplicationName}_{HostingEnvironment.EnvironmentName}"; ;
+                //    options.AgentHost = "localhost";
+                //    options.AgentPort = 6831;
+                //});
+                .UseZipkin(options =>
+                {
+                    options.ServiceName = "ShortUrl.ManagementApi";
+                    //o.ServiceName = "BackEndApp";
+                    options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+                });
+            });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>

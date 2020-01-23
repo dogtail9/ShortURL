@@ -1603,7 +1603,56 @@ Add autentication to the management api.
 
 Add autorization to the management api.
 
-### Open telemetry
+### Open Telemetry
+
+[OpenTelemetry](https://opentelemetry.io/) provides a single set of APIs,
+libraries, agents, and collector services to capture distributed traces and metrics from your application.
+You can analyze them using Prometheus, Jaeger, and other observability tools.
+The OpenTelemetry project for .NET can be found on [GitHub](https://github.com/open-telemetry/opentelemetry-dotnet).
+
+Start a Zipkin container.
+
+```powershell
+docker run --name shorturlzipkin -d -p 9411:9411 openzipkin/zipkin-slim
+```
+
+Browse to [localhost:9411](http://localhost.9411) to se the Gui for Zipkin.
+
+Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting`, `OpenTelemetry.Collector.Dependencies` and `OpenTelemetry.Exporter.Zipkin` NuGet packages to the `ShortUrl.UrlManagementApi` project.
+
+Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
+
+```c#
+services.AddOpenTelemetry(builder => 
+{
+    builder.AddRequestCollector().AddDependencyCollector()
+    .UseZipkin(options =>
+    {
+        options.ServiceName = "ShortUrl.ManagementApi";
+        //o.ServiceName = "BackEndApp";
+        options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+    });
+});
+```
+
+Add the `OpenTelemetry.Collector.AspNetCore`, `OpenTelemetry.Hosting` and `OpenTelemetry.Exporter.Zipkin` NuGet packeges to the `ShortUrl.UrlManagementGui` project.
+
+Add OpenTelemetry with the Zipkin exporter to DI in the `Startup.cs` file.
+
+```c#
+services.AddOpenTelemetry(builder => 
+{
+    builder.AddRequestCollector().AddDependencyCollector()
+    .UseZipkin(options =>
+    {
+        options.ServiceName = "ShortUrl.ManagementGui";
+        //o.ServiceName = "BackEndApp";
+        options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+    });
+});
+```
+
+Try to add an url to the list. Browse to [http://localhost:9411](http://localhost:9411) container to see the requests in Zipkin. 
 
 ## Docker
 

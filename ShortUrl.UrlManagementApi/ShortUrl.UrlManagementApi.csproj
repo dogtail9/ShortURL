@@ -16,6 +16,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
+    <PackageReference Include="OpenTelemetry.Collector.AspNetCore" Version="0.2.0-alpha.167" />
+    <PackageReference Include="OpenTelemetry.Collector.Dependencies" Version="0.2.0-alpha.167" />
+    <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="0.2.0-alpha.167" />
+    <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="0.2.0-alpha.167" />
+    <PackageReference Include="OpenTelemetry.Hosting" Version="0.2.0-alpha.167" />
   </ItemGroup>
 
   <ItemGroup>

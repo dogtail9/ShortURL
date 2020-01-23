@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
 
 namespace ShortUrl.UrlManagementApi
 {
@@ -7,6 +8,7 @@ namespace ShortUrl.UrlManagementApi
     {
         public static void Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             CreateHostBuilder(args).Build().Run();
         }
 

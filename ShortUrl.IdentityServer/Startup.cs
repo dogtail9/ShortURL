@@ -23,7 +23,7 @@ namespace ShortUrl.IdentityServer
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
 
-            var builder = services.AddIdentityServer()
+            var builder = services.AddIdentityServer(x=>x.IssuerUri= "http://shorturl.identityserver")
                 .AddInMemoryIdentityResources(Config.Ids())
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.Clients)
@@ -55,3 +55,5 @@ namespace ShortUrl.IdentityServer
         }
     }
 }
+
+// https://stackoverflow.com/questions/43911536/how-can-i-use-identityserver4-from-inside-and-outside-a-docker-machine

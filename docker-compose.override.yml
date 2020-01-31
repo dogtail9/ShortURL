@@ -9,7 +9,7 @@ services:
 
   shorturl.managementgui:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5002:80"
 
@@ -21,7 +21,7 @@ services:
 
   shorturl.urlmanagementapi:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5001:80"
 

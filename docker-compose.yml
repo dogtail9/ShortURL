@@ -40,4 +40,4 @@ services:
   shorturl.zipkin:
     image: openzipkin/zipkin-slim
 
-    https://stackoverflow.com/questions/43911536/how-can-i-use-identityserver4-from-inside-and-outside-a-docker-machine
+    

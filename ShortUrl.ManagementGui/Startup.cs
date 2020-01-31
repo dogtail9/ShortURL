@@ -66,7 +66,7 @@ namespace ShortUrl.ManagementGui
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = Configuration.GetConnectionString("SecurityTokenService"); 
+                    options.Authority = "http://192.168.1.221:5999/";// Configuration.GetConnectionString("SecurityTokenService"); 
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "managementguiclient";

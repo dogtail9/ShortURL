@@ -1656,11 +1656,9 @@ Try to add an url to the list. Browse to [http://localhost:9411](http://localhos
 
 ## Docker
 
-
-
 ### Docker-Compose
 
-### Docker Swarm
+### Helm
 
 ### Kubernetes
 
@@ -1670,5 +1668,13 @@ Try to add an url to the list. Browse to [http://localhost:9411](http://localhos
 
 ##### Nginx
 
+#### Network
+
+##### Calico
+
 ## Azure
+
+### PaaS
+
+### AKS
 

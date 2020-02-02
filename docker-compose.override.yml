@@ -4,12 +4,14 @@ services:
   shorturl.identityserver:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - IDENTITY_ISSUER=http://shorturl.identityserver
     ports:
       - "5999:80"
 
   shorturl.managementgui:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - IDENTITY_AUTHORITY=http://192.168.1.221:5999/
     ports:
       - "5002:80"
 
@@ -22,6 +24,7 @@ services:
   shorturl.urlmanagementapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - IDENTITY_AUTHORITY=http://192.168.1.221:5999/
     ports:
       - "5001:80"
 

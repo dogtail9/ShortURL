@@ -33,7 +33,7 @@ namespace ShortUrl.UrlManagementApi
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "http://192.168.1.221:5999/";
+                options.Authority = Configuration["IDENTITY_AUTHORITY"];
                 options.RequireHttpsMetadata = false;
 
                 options.Audience = "managementapi";

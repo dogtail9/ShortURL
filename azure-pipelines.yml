@@ -24,6 +24,7 @@ stages:
       displayName: Build an image
       inputs:
         command: build
-        dockerfile: '$(Build.SourcesDirectory)/ShortUrl.IdentityServer/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
+        dockerfile: 'ShortUrl.IdentityServer/Dockerfile'
         tags: |
           $(tag)

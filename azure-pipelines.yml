@@ -120,6 +120,7 @@ stages:
     steps:
     - pwsh: |
         dotnet tool install --global dotnet-sql-cache --version 3.0.2
+    - pwsh: |
         docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1435:1433 -d --name shorturlcache mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
         Start-Sleep -Seconds 20
         docker exec shorturlcache /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "P@ssw0rd" -Q "CREATE DATABASE ShortUrlCache"

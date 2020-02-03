@@ -51,7 +51,7 @@ namespace ShortUrl.ManagementGui
                 {
                     options.ServiceName = "ShortUrl.ManagementGui";
                     //o.ServiceName = "BackEndApp";
-                    options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+                    options.Endpoint = new Uri(Configuration.GetConnectionString("Zipkin"));
                 });
                 //.AddRequestCollector()
                 //.AddDependencyCollector();
@@ -66,7 +66,7 @@ namespace ShortUrl.ManagementGui
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = Configuration.GetConnectionString("SecurityTokenService"); 
+                    options.Authority = Configuration["IDENTITY_AUTHORITY"]; 
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "managementguiclient";

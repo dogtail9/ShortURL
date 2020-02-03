@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,10 +13,12 @@ namespace ShortUrl.IdentityServer
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
 
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -23,7 +26,7 @@ namespace ShortUrl.IdentityServer
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
 
-            var builder = services.AddIdentityServer()
+            var builder = services.AddIdentityServer(x=>x.IssuerUri = Configuration["IDENTITY_ISSUER"])// "http://shorturl.identityserver")
                 .AddInMemoryIdentityResources(Config.Ids())
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.Clients)
@@ -55,3 +58,5 @@ namespace ShortUrl.IdentityServer
         }
     }
 }
+
+// https://stackoverflow.com/questions/43911536/how-can-i-use-identityserver4-from-inside-and-outside-a-docker-machine

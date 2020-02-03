@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  shorturl.identityserver:
+    image: ${DOCKER_REGISTRY-}shorturlidentityserver
+    build:
+      context: .
+      dockerfile: ShortUrl.IdentityServer/Dockerfile
+
+  shorturl.managementgui:
+    image: ${DOCKER_REGISTRY-}shorturlmanagementgui
+    build:
+      context: .
+      dockerfile: ShortUrl.ManagementGui/Dockerfile
+    depends_on:
+       - shorturl.data
+       - shorturl.zipkin
+
+  shorturl.redirectapi:
+    image: ${DOCKER_REGISTRY-}shorturlredirectapi
+    build:
+      context: .
+      dockerfile: ShortUrl.RedirectApi/Dockerfile
+    depends_on:
+       - shorturl.data
+       - shorturl.cache
+       - shorturl.zipkin
+
+  shorturl.urlmanagementapi:
+    image: ${DOCKER_REGISTRY-}shorturlurlmanagementapi
+    build:
+      context: .
+      dockerfile: ShortUrl.UrlManagementApi/Dockerfile
+    depends_on:
+       - shorturl.data
+       - shorturl.zipkin
+
+  shorturl.data:
+    image: mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssw0rd
+
+  shorturl.cache:
+    image: shorturl/cache:v0.1
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssw0rd
+
+  shorturl.zipkin:
+    image: openzipkin/zipkin-slim
+
+    

@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  shorturl.identityserver:
+    build:
+      args:
+        - http_proxy=http://devproxy.shbmain.shb.biz:8088
+
+  shorturl.managementgui:
+    build:
+      args:
+        - http_proxy=http://devproxy.shbmain.shb.biz:8088
+
+  shorturl.redirectapi:
+    build:
+      args:
+        - http_proxy=http://devproxy.shbmain.shb.biz:8088
+
+  shorturl.urlmanagementapi:
+    build:
+      args:
+        - http_proxy=http://devproxy.shbmain.shb.biz:8088

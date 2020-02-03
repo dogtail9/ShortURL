@@ -10,7 +10,7 @@ resources:
 - repo: self
 
 variables:
-  system.debug: false
+  system.debug: true
 
 stages:
 - stage: Build_And_Push_Docker_Images
@@ -130,7 +130,7 @@ stages:
         docker exec shorturlcache /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "P@ssw0rd" -Q "CREATE DATABASE ShortUrlCache"
         dotnet sql-cache create "Server=localhost,1435;Database=ShortUrlCache;User Id=sa;Password=P@ssw0rd;" dbo UrlCache
         docker stop shorturlcache
-        docker commit shorturlcache cache_$(Build.BuildNumber)
+        docker commit shorturlcache dogtail9/shorturl:cache
         docker rm shorturlcache
       displayName: Say hello
       name: firstStep
@@ -142,7 +142,7 @@ stages:
         containerRegistry: 'Docker Hub'
         repository: dogtail9/shorturl
         command: push
-        tags: 'cache_$(Build.BuildNumber)'
+        tags: 'cache'
         addPipelineData: false
 
 - stage: Deploy

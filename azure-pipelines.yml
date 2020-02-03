@@ -135,7 +135,7 @@ stages:
       displayName: Say hello
       name: firstStep
       workingDirectory: $(build.sourcesDirectory)
-      failOnStderr: true
+      failOnStderr: false
     - task: Docker@2
       displayName: Push Cache
       inputs:

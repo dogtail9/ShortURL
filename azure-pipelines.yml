@@ -118,8 +118,12 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - task: DotNetCoreInstaller@0
+      displayName: 'Use .NET Core sdk 3.1.101'
+      inputs:
+      version: 3.1.101
     - pwsh: |
-        dotnet tool install --local dotnet-sql-cache --version 3.0.2
+        dotnet tool install --global dotnet-sql-cache --version 3.1.1
     - pwsh: |
         docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1435:1433 -d --name shorturlcache mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
         Start-Sleep -Seconds 20

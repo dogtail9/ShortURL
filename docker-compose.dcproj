@@ -7,7 +7,7 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>shorturl.managementgui</DockerServiceName>
-    <AdditionalComposeFilePaths>docker-compose.proxy.yml</AdditionalComposeFilePaths>
+    <!--<AdditionalComposeFilePaths>docker-compose.proxy.yml</AdditionalComposeFilePaths>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

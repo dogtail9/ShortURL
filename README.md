@@ -1656,7 +1656,13 @@ Try to add an url to the list. Browse to [http://localhost:9411](http://localhos
 
 ## Docker
 
+Install Docker on the development machine.
+
 ### Docker-Compose
+
+Right click on the `ShortUrl.IdentityServer`, `ShortUrl.ManagementGui` and the `ShortUrl.Management.Api` projects and add Docker support.
+Right click on the `ShortUrl.IdentityServer`, `ShortUrl.ManagementGui` and the `ShortUrl.Management.Api` projects and add Orcestrator support.
+Choose `docker-compose`. A docker-compose project will be created.
 
 ### Helm
 

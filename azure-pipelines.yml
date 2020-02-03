@@ -37,7 +37,7 @@ stages:
         docker stop shorturlcache
         docker commit shorturlcache dogtail9/shorturl:cache_$(Build.BuildNumber)
         docker rm shorturlcache
-      displayName: Build cache 
+      displayName: Build Cache 
       name: firstStep
       workingDirectory: $(build.sourcesDirectory)
       failOnStderr: false

@@ -26,6 +26,7 @@ stages:
         command: build
         buildContext: '$(Build.SourcesDirectory)'
         dockerfile: 'ShortUrl.IdentityServer/Dockerfile'
+        tags: 'identityserver'
 
     - task: Docker@2
       displayName: Push an image
@@ -33,3 +34,4 @@ stages:
         containerRegistry: 'Docker Hub'
         repository: 'shorturl'
         command: 'push'
+        tags: 'identityserver'

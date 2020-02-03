@@ -21,17 +21,20 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        buildContext: '$(Build.SourcesDirectory)'
-        dockerfile: 'ShortUrl.IdentityServer/Dockerfile'
-        tags: 'dogtail9/shorturl:$(build.buildnumber)'
-
-    - task: Docker@2
-      displayName: Push an image
+      displayName: build
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: 'shorturl'
-        command: 'push'
-        tags: 'dogtail9/shorturl:$(build.buildnumber)'
+        repository: dogtail9/shorturl
+        command: build
+        Dockerfile: ShortUrl.IdentityServer/Dockerfile
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: 'identityserver_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: push
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: push
+        tags: 'identityserver_$(Build.BuildNumber)'
+        addPipelineData: false

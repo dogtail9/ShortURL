@@ -12,7 +12,7 @@ variables:
   system.debug: true
 
 stages:
-- stage: Build
+- stage: Build and push Docker images
   displayName: Build image
   jobs:  
   - job: Build

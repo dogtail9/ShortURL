@@ -114,9 +114,10 @@ stages:
         addPipelineData: false
 - stage: Deploy
   displayName: Deploy Azure App Services
+  dependsOn: Build_And_Push_Docker_Images
+  condition: succeeded('Build_And_Push_Docker_Images')
   jobs:  
   - job: Delpoy
-    dependsOn: Build_And_Push_Docker_Images
     displayName: Deploy ARM Template
     pool:
       vmImage: 'ubuntu-latest'

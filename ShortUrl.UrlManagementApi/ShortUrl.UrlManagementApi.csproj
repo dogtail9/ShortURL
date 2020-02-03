@@ -10,6 +10,10 @@
     <DocumentationFile>C:\Code\GitHub\ShortURL\ShortUrl.UrlManagementApi\ShortUrl.UrlManagementApi.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Code\GitHub\ShortURL\ShortUrl.UrlManagementApi\ShortUrl.UrlManagementApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />

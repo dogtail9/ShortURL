@@ -37,7 +37,7 @@ namespace ShortUrl.UrlManagementApi
                 options.RequireHttpsMetadata = false;
 
                 options.Audience = "managementapi";
-                
+
             });
 
             services.AddAuthorization(options =>
@@ -50,7 +50,7 @@ namespace ShortUrl.UrlManagementApi
             services.AddScoped<IUrlRepository, SqlUrlRepository>();
 
             // Add OpenTelemetry
-            services.AddOpenTelemetry(builder => 
+            services.AddOpenTelemetry(builder =>
             {
                 builder.AddRequestCollector()
                 .AddDependencyCollector()
@@ -64,7 +64,7 @@ namespace ShortUrl.UrlManagementApi
                 {
                     options.ServiceName = "ShortUrl.ManagementApi";
                     //o.ServiceName = "BackEndApp";
-                    options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+                    options.Endpoint = new Uri(Configuration.GetConnectionString("Zipkin"));
                 });
             });
 
@@ -109,9 +109,10 @@ namespace ShortUrl.UrlManagementApi
         {
             if (env.IsDevelopment())
             {
-                UpdateDatabase(app);
                 app.UseDeveloperExceptionPage();
             }
+            
+            UpdateDatabase(app);
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

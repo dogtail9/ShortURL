@@ -12,18 +12,28 @@ services:
     build:
       context: .
       dockerfile: ShortUrl.ManagementGui/Dockerfile
+    depends_on:
+       - shorturl.data
+       - shorturl.zipkin
 
   shorturl.redirectapi:
     image: ${DOCKER_REGISTRY-}shorturlredirectapi
     build:
       context: .
       dockerfile: ShortUrl.RedirectApi/Dockerfile
+    depends_on:
+       - shorturl.data
+       - shorturl.cache
+       - shorturl.zipkin
 
   shorturl.urlmanagementapi:
     image: ${DOCKER_REGISTRY-}shorturlurlmanagementapi
     build:
       context: .
       dockerfile: ShortUrl.UrlManagementApi/Dockerfile
+    depends_on:
+       - shorturl.data
+       - shorturl.zipkin
 
   shorturl.data:
     image: mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04

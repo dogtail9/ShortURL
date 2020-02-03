@@ -1,10 +1,14 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+ARG http_proxy
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+ARG http_proxy
+ENV http_proxy=$http_proxy
+ENV HTTP_PROXY=$http_proxy
 WORKDIR /src
 COPY ["nuget.config", "nuget.config"]
 COPY ["ShortUrl.RedirectApi/ShortUrl.RedirectApi.csproj", "ShortUrl.RedirectApi/"]

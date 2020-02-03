@@ -17,6 +17,7 @@ stages:
   displayName: Build And Push Docker Images
   jobs:  
   - job: IdentityServer
+    dependsOn: []
     displayName: Build And Push IdentityServer
     pool:
       vmImage: 'ubuntu-latest'
@@ -40,6 +41,7 @@ stages:
         tags: 'identityserver_$(Build.BuildNumber)'
         addPipelineData: false
   - job: ManagementGui
+    dependsOn: []
     displayName: Build And Push ManagementGui
     pool:
       vmImage: 'ubuntu-latest'
@@ -63,6 +65,7 @@ stages:
         tags: 'managementgui_$(Build.BuildNumber)'
         addPipelineData: false
   - job: RedirectApi
+    dependsOn: []
     displayName: Build And Push RedirectApi
     pool:
       vmImage: 'ubuntu-latest'
@@ -86,6 +89,7 @@ stages:
         tags: 'redirectapi_$(Build.BuildNumber)'
         addPipelineData: false
   - job: ManagementApi
+    dependsOn: []
     displayName: Build And Push ManagementApi
     pool:
       vmImage: 'ubuntu-latest'

@@ -1,0 +1,94 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  system.debug: true
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      displayName: Build IdentityServer
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: build
+        Dockerfile: ShortUrl.IdentityServer/Dockerfile
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: 'identityserver_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Build ManagementGui
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: build
+        Dockerfile: ShortUrl.ManagementGui/Dockerfile
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: 'managementgui_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Build RedirectApi
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: build
+        Dockerfile: ShortUrl.RedirectApi/Dockerfile
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: 'redirectapi_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Build ManagementApi
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: build
+        Dockerfile: ShortUrl.UrlManagementApi/Dockerfile
+        buildContext: '$(Build.SourcesDirectory)'
+        tags: 'managementapi_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Push IdentityServer
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: push
+        tags: 'identityserver_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Push ManagementGui
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: push
+        tags: 'managementgui_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Push RedirectApi
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: push
+        tags: 'redirectapi_$(Build.BuildNumber)'
+        addPipelineData: false
+    - task: Docker@2
+      displayName: Push ManagementApi
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: push
+        tags: 'managementapi_$(Build.BuildNumber)'
+        addPipelineData: false

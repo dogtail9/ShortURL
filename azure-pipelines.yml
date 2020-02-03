@@ -10,7 +10,7 @@ resources:
 - repo: self
 
 variables:
-  system.debug: true
+  system.debug: false
 
 stages:
 - stage: Build_And_Push_Docker_Images
@@ -112,6 +112,34 @@ stages:
         command: push
         tags: 'managementapi_$(Build.BuildNumber)'
         addPipelineData: false
+  - job: Cache
+    dependsOn: []
+    displayName: Build And Push Cache
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - pwsh: |
+        dotnet tool install --global dotnet-sql-cache --version 3.1.1
+        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=P@ssw0rd' -p 1435:1433 -d --name shorturlcache mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
+        Start-Sleep -Seconds 20
+        docker exec shorturlcache /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "P@ssw0rd" -Q "CREATE DATABASE ShortUrlCache"
+        dotnet sql-cache create "Server=localhost,1435;Database=ShortUrlCache;User Id=sa;Password=P@ssw0rd;" dbo UrlCache
+        docker stop shorturlcache
+        docker commit shorturlcache cache_$(Build.BuildNumber)
+        docker rm shorturlcache
+      displayName: Say hello
+      name: firstStep
+      workingDirectory: $(build.sourcesDirectory)
+      failOnStderr: true
+    - task: Docker@2
+      displayName: Push Cache
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: dogtail9/shorturl
+        command: push
+        tags: 'cache_$(Build.BuildNumber)'
+        addPipelineData: false
+
 - stage: Deploy
   displayName: Deploy Azure App Services
   dependsOn: Build_And_Push_Docker_Images

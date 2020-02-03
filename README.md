@@ -1664,6 +1664,63 @@ Right click on the `ShortUrl.IdentityServer`, `ShortUrl.ManagementGui` and the `
 Right click on the `ShortUrl.IdentityServer`, `ShortUrl.ManagementGui` and the `ShortUrl.Management.Api` projects and add Orcestrator support.
 Choose `docker-compose`. A docker-compose project will be created.
 
+Add `docker-compose.proxy.yml` to the `docker-compose` project to be able to debug the solution from Visual Studio behind a corporate web proxy.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>0812f904-ae74-4937-aa50-f7a674deb33b</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceName>shorturl.managementgui</DockerServiceName>
+    <AdditionalComposeFilePaths>docker-compose.proxy.yml</AdditionalComposeFilePaths>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.proxy.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+</Project>
+```
+
+Add build args to the `Dockerfile` files to be able to build the container behind a corporate web proxy.
+
+```docker
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+ARG http_proxy
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+ARG http_proxy
+ENV http_proxy=$http_proxy
+ENV HTTP_PROXY=$http_proxy
+WORKDIR /src
+COPY ["ShortUrl.IdentityServer/ShortUrl.IdentityServer.csproj", "ShortUrl.IdentityServer/"]
+RUN dotnet restore "ShortUrl.IdentityServer/ShortUrl.IdentityServer.csproj"
+COPY . .
+WORKDIR "/src/ShortUrl.IdentityServer"
+RUN dotnet build "ShortUrl.IdentityServer.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "ShortUrl.IdentityServer.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ShortUrl.IdentityServer.dll"]
+```
+
 ### Helm
 
 ### Kubernetes

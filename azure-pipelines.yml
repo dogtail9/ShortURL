@@ -12,8 +12,17 @@ resources:
 variables:
   system.debug: true
 
-
 stages:
+- stage: Parallel_Job_1
+  displayName: Paralell job 1
+  jobs:
+  - job: HelloWorld
+    dependsOn: []
+    displayName: Build And Push Cache
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - bash: echo "Hello world" 
 - stage: Build_And_Push_Docker_Images
   displayName: Build And Push Docker Images
   jobs:  

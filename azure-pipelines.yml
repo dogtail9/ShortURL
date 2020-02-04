@@ -147,9 +147,10 @@ stages:
         addPipelineData: false
 
 - stage: Deploy
+  trigger: none
   displayName: Deploy Azure App Services
   dependsOn: Build_And_Push_Docker_Images
-  # condition: succeeded('Build_And_Push_Docker_Images')
+  condition: succeeded('Build_And_Push_Docker_Images')
   jobs:  
   - job: Delpoy
     displayName: Deploy ARM Template

@@ -13,7 +13,7 @@ variables:
   system.debug: true
 
 stages:
-- stage: Build_And_Publish_As_Zip 
+- stage: Build_And_Publish_Zip_Files 
   displayName: Build And Publish As Zip
   jobs:
   - job: Build IdentityServer

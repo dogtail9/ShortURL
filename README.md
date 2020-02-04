@@ -1745,6 +1745,12 @@ ENTRYPOINT ["dotnet", "ShortUrl.IdentityServer.dll"]
 
 ### Azure DevOps
 
+Start by creating a Yaml pipeline.
+
+```yaml
+
+```
+
 ### Github Actions
 
 ## Release

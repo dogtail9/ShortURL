@@ -45,7 +45,7 @@ stages:
       displayName: Push Cache
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: push
         tags: 'cache_$(Build.BuildNumber)'
         addPipelineData: false
@@ -59,7 +59,7 @@ stages:
       displayName: Build IdentityServer
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: build
         Dockerfile: ShortUrl.IdentityServer/Dockerfile
         buildContext: '$(Build.SourcesDirectory)'
@@ -69,7 +69,7 @@ stages:
       displayName: Push IdentityServer
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: push
         tags: 'identityserver_$(Build.BuildNumber)'
         addPipelineData: false
@@ -83,7 +83,7 @@ stages:
       displayName: Build ManagementGui
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: build
         Dockerfile: ShortUrl.ManagementGui/Dockerfile
         buildContext: '$(Build.SourcesDirectory)'
@@ -93,7 +93,7 @@ stages:
       displayName: Push ManagementGui
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: push
         tags: 'managementgui_$(Build.BuildNumber)'
         addPipelineData: false
@@ -107,7 +107,7 @@ stages:
       displayName: Build RedirectApi
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: build
         Dockerfile: ShortUrl.RedirectApi/Dockerfile
         buildContext: '$(Build.SourcesDirectory)'
@@ -117,7 +117,7 @@ stages:
       displayName: Push RedirectApi
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: push
         tags: 'redirectapi_$(Build.BuildNumber)'
         addPipelineData: false
@@ -131,7 +131,7 @@ stages:
       displayName: Build ManagementApi
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: build
         Dockerfile: ShortUrl.UrlManagementApi/Dockerfile
         buildContext: '$(Build.SourcesDirectory)'
@@ -141,7 +141,7 @@ stages:
       displayName: Push ManagementApi
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: dogtail9/shorturl
+        repository: $(docker.repository)
         command: push
         tags: 'managementapi_$(Build.BuildNumber)'
         addPipelineData: false

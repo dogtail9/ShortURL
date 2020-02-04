@@ -18,7 +18,7 @@ stages:
   jobs:
   - job: IdentityServer
     dependsOn: []
-    displayName: Build And Push Cache
+    displayName: Build And Public IdentityServer
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -47,7 +47,103 @@ stages:
       displayName: 'Publish Pipeline Artifact'
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifact: zip
+        artifact: IdentityServer
+  - job: ManagementGui
+    dependsOn: []
+    displayName: Build And Public ManagementGui
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .Net Core sdk 3.1.101'
+      inputs:
+        version: 3.1.101
+    - task: DotNetCoreCLI@2
+      displayName: 'Build ManagementGui'
+      inputs:
+        projects: '**/ShortUrl.ManagementGui.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish ManagementGui'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '**/ShortUrl.ManagementGui.csproj'
+        arguments: '-o $(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*.zip'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: ManagementGui
+  - job: RedirectApi
+    dependsOn: []
+    displayName: Build And Public ManagementGui
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .Net Core sdk 3.1.101'
+      inputs:
+        version: 3.1.101
+    - task: DotNetCoreCLI@2
+      displayName: 'Build RedirectApi'
+      inputs:
+        projects: '**/ShortUrl.RedirectApi.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish RedirectApi'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '**/ShortUrl.RedirectApi.csproj'
+        arguments: '-o $(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*.zip'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: RedirectApi
+  - job: UrlManagementApi
+    dependsOn: []
+    displayName: Build And Public ManagementGui
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .Net Core sdk 3.1.101'
+      inputs:
+        version: 3.1.101
+    - task: DotNetCoreCLI@2
+      displayName: 'Build UrlManagementApi'
+      inputs:
+        projects: '**/ShortUrl.UrlManagementApi.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish UrlManagementApi'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '**/ShortUrl.UrlManagementApi.csproj'
+        arguments: '-o $(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*.zip'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: UrlManagementApi
 - stage: Build_And_Push_Docker_Images
   displayName: Build And Push Docker Images
   jobs:  

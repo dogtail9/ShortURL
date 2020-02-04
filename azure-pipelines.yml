@@ -16,7 +16,7 @@ stages:
 - stage: Build_And_Publish_Zip_Files 
   displayName: Build And Publish As Zip
   jobs:
-  - job: Build IdentityServer
+  - job: IdentityServer
     dependsOn: []
     displayName: Build And Push Cache
     pool:

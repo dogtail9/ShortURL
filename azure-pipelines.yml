@@ -166,7 +166,7 @@ stages:
         docker exec shorturlcache /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "P@ssw0rd" -Q "CREATE DATABASE ShortUrlCache"
         dotnet sql-cache create "Server=localhost,1435;Database=ShortUrlCache;User Id=sa;Password=P@ssw0rd;" dbo UrlCache
         docker stop shorturlcache
-        docker commit shorturlcache dogtail9/shorturl:cache_$(Build.BuildNumber)
+        docker commit shorturlcache $(docker.repository):cache_$(Build.BuildNumber)
         docker rm shorturlcache
       displayName: Build Cache 
       name: firstStep

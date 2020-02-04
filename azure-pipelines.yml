@@ -157,5 +157,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test
-    steps:
-    - bash: echo "Hello world"
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - bash: echo "Hello world"

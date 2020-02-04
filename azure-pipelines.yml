@@ -34,17 +34,11 @@ stages:
       inputs:
         projects: '**/ShortUrl.DataAccess.Sql.MigrationHost.csproj'
     - pwsh: |
-        dotnet ef migrations script --startup-project .\ShortUrl.DataAccess.Sql.MigrationHost\ShortUrl.DataAccess.Sql.MigrationHost.csproj --project .\ShortUrl.DataAccess.Sql\ShortUrl.DataAccess.Sql.csproj  --idempotent --output create.sql
+        dotnet ef migrations script --startup-project $(build.sourcesDirectory)\ShortUrl.DataAccess.Sql.MigrationHost\ShortUrl.DataAccess.Sql.MigrationHost.csproj --project $(build.sourcesDirectory)\ShortUrl.DataAccess.Sql\ShortUrl.DataAccess.Sql.csproj --idempotent --output $(Build.ArtifactStagingDirectory)/create.sql
       displayName: Create Sql Script
       name: firstStep
       workingDirectory: $(build.sourcesDirectory)
       failOnStderr: false    
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-      inputs:
-        Contents: '**/*.sql'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        CleanTargetFolder: true
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Sql Script Artifact'
       inputs:

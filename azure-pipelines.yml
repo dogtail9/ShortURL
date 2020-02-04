@@ -16,6 +16,40 @@ stages:
 - stage: Build_And_Publish_Zip_Files 
   displayName: Build And Publish As Zip
   jobs:
+  - job: Sql
+    dependsOn: []
+    displayName: Create Sql Migration Script
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .Net Core sdk 3.1.101'
+      inputs:
+        version: 3.1.101
+    - pwsh: |
+        dotnet tool install --global dotnet-ef
+      displayName: Install dotnet-ef 
+    - task: DotNetCoreCLI@2
+      displayName: 'Build MigrationHost'
+      inputs:
+        projects: '**/ShortUrl.DataAccess.Sql.MigrationHost.csproj'
+    - pwsh: |
+        dotnet ef migrations script --startup-project ..\ShortUrl.DataAccess.Sql.MigrationHost\ShortUrl.DataAccess.Sql.MigrationHost.csproj --idempotent --output create.sql
+      displayName: Create Sql Script
+      name: firstStep
+      workingDirectory: $(build.sourcesDirectory)/ShortUrl.DataAccess.Sql.MigrationHost
+      failOnStderr: false    
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*.sql'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Sql Script Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: Sql
   - job: IdentityServer
     dependsOn: []
     displayName: Build And Public IdentityServer

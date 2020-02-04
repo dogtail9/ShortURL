@@ -27,27 +27,27 @@ stages:
     inputs:
       version: 3.1.101
     - task: DotNetCoreCLI@2
-    displayName: 'Build IdentityServer'
-    inputs:
-      projects: '**/ShortUrl.IdentityServer.csproj'
+      displayName: 'Build IdentityServer'
+      inputs:
+        projects: '**/ShortUrl.IdentityServer.csproj'
     - task: DotNetCoreCLI@2
-    displayName: 'Publish IdentityServer'
-    inputs:
-      command: publish
-      publishWebProjects: false
-      projects: '**/ShortUrl.IdentityServer.csproj'
-      arguments: '-o $(Build.ArtifactStagingDirectory)'
+      displayName: 'Publish IdentityServer'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '**/ShortUrl.IdentityServer.csproj'
+        arguments: '-o $(Build.ArtifactStagingDirectory)'
     - task: CopyFiles@2
-    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-    inputs:
-      Contents: '**/*.zip'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      CleanTargetFolder: true
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*.zip'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: true
     - task: PublishPipelineArtifact@1
-    displayName: 'Publish Pipeline Artifact'
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)'
-      artifact: zip
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: zip
 - stage: Build_And_Push_Docker_Images
   displayName: Build And Push Docker Images
   jobs:  

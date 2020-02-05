@@ -31,6 +31,12 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.DataAccess.Sql.MigrationHost", "ShortUrl.DataAccess.Sql.MigrationHost\ShortUrl.DataAccess.Sql.MigrationHost.csproj", "{A785E680-E543-4A7B-B58D-78B60168EEA1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArmTemplates", "ArmTemplates", "{F79C805C-FE21-47EA-A42A-82E59E0F469C}"
+	ProjectSection(SolutionItems) = preProject
+		identityserver.parameters.json = identityserver.parameters.json
+		identityserver.template.json = identityserver.template.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

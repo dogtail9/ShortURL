@@ -26,16 +26,24 @@
                 "capacity": 1
             },
             "kind": "linux",
-            "properties": {
-                "perSiteScaling": false,
-                "maximumElasticWorkerCount": 1,
-                "isSpot": false,
-                "reserved": true,
-                "isXenon": false,
-                "hyperV": false,
-                "targetWorkerCount": 0,
-                "targetWorkerSizeId": 0
+          "properties": {
+            "perSiteScaling": false,
+            "maximumElasticWorkerCount": 1,
+            "isSpot": false,
+            "reserved": true,
+            "isXenon": false,
+            "hyperV": false,
+            "targetWorkerCount": 0,
+            "targetWorkerSizeId": 0,
+            "siteConfig": {
+              "appSettings": [
+                {
+                  "name": "ASPNETCORE_ENVIRONMENT",
+                  "value": "Development"
+                }
+              ]
             }
+          }
         },
         {
             "type": "Microsoft.Web/sites",

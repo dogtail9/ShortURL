@@ -95,14 +95,7 @@
           "index.php",
           "hostingstart.html"
         ],
-        "siteConfig": {
-          "appSettings": [
-            {
-              "name": "ASPNETCORE_ENVIRONMENT",
-              "value": "Development"
-            }
-          ]
-        },
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "netFrameworkVersion": "v4.0",
         "linuxFxVersion": "DOTNETCORE|3.0",
         "requestTracingEnabled": false,
@@ -118,7 +111,7 @@
         "alwaysOn": true,
         "appCommandLine": "dotnet ShortUrl.IdentityServer.dll",
         "managedPipelineMode": "Integrated",
-        
+
         "virtualApplications": [
           {
             "virtualPath": "/",

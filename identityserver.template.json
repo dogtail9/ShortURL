@@ -85,7 +85,8 @@
             "displayName": "appsettings"
           },
           "properties": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "IDENTITY_ISSUER": "https://shorturlidentity.azurewebsites.net/"
           }
         }
       ]

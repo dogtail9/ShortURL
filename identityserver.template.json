@@ -34,15 +34,7 @@
         "isXenon": false,
         "hyperV": false,
         "targetWorkerCount": 0,
-        "targetWorkerSizeId": 0,
-        "siteConfig": {
-          "appSettings": [
-            {
-              "name": "ASPNETCORE_ENVIRONMENT",
-              "value": "Development"
-            }
-          ]
-        }
+        "targetWorkerSizeId": 0
       }
     },
     {
@@ -103,6 +95,14 @@
           "index.php",
           "hostingstart.html"
         ],
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "ASPNETCORE_ENVIRONMENT",
+              "value": "Development"
+            }
+          ]
+        },
         "netFrameworkVersion": "v4.0",
         "linuxFxVersion": "DOTNETCORE|3.0",
         "requestTracingEnabled": false,
@@ -118,6 +118,7 @@
         "alwaysOn": true,
         "appCommandLine": "dotnet ShortUrl.IdentityServer.dll",
         "managedPipelineMode": "Integrated",
+        
         "virtualApplications": [
           {
             "virtualPath": "/",

@@ -331,13 +331,13 @@ stages:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               resourceGroupName: 'ShortUrl-RG'
               location: 'North Europe'
-              csmFile: IdentityServer/identityserver.template.json
+              csmFile: 'identityserver.template.json'
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlIdentity'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
               WebAppName: ShortUrlIdentity
-              packageForLinux: IdentityServer/*.zip'
+              packageForLinux: 'ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'

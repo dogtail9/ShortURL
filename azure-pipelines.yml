@@ -68,11 +68,15 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
       inputs:
-        Contents: |
-        '**/*.zip'
-        '**/*identityserver.template.json'
+        Contents: '**/*.zip'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         CleanTargetFolder: true
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*identityserver.template.json'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: false
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
       inputs:

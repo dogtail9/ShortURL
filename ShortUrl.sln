@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArmTemplates", "ArmTemplate
 		identityserver.template.json = identityserver.template.json
 	EndProjectSection
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ShortUrl.AzureResourceGroup", "ShortUrl.AzureResourceGroup\ShortUrl.AzureResourceGroup.deployproj", "{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{A785E680-E543-4A7B-B58D-78B60168EEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A785E680-E543-4A7B-B58D-78B60168EEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A785E680-E543-4A7B-B58D-78B60168EEA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

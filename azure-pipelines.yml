@@ -393,8 +393,17 @@ stages:
               appType: webAppLinux
               WebAppName: ShortUrlIdentity
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
-              RuntimeStack: 'DOTNETCORE|3.1'
+              RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlManagementApi'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: ShortUrlManagementApi
+              packageForLinux: '$(Pipeline.Workspace)/ManagementApi/ShortUrl.ManagementApi.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.ManagementApi.dll'
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlManagementGui'
             inputs:

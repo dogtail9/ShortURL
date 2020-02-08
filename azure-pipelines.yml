@@ -334,7 +334,7 @@ stages:
     displayName: Deploy ARM Template
     pool:
       vmImage: 'ubuntu-latest'
-    #environment: Test
+    environment: Test
     strategy:
       runOnce:
         deploy:
@@ -356,7 +356,7 @@ stages:
     displayName: Deploy SQL Migration
     pool:
       vmImage: 'windows-latest'
-    #environment: Test
+    environment: Test
     strategy:
       runOnce:
         deploy:
@@ -381,7 +381,7 @@ stages:
     displayName: Deploy ShortUrl Application
     pool:
       vmImage: 'ubuntu-latest'
-    #environment: Test
+    environment: Test
     strategy:
       runOnce:
         deploy:

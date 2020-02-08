@@ -352,3 +352,13 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
+          - task: SqlAzureDacpacDeployment@1
+            displayName: 'Azure SQL SqlTask'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              ServerName: 'ShortUrlserver'
+              DatabaseName: 'ShortUrlserver/ShortUrldb'
+              SqlUsername: 'ShortUrl'
+              SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
+              deployType: SqlTask
+              SqlFile: '$(Pipeline.Workspace)/Sql/create.sql'

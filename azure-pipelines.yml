@@ -334,7 +334,7 @@ stages:
     displayName: Deploy ARM Template
     pool:
       vmImage: 'ubuntu-latest'
-    environment: Test
+    #environment: Test
     strategy:
       runOnce:
         deploy:
@@ -356,7 +356,7 @@ stages:
     displayName: Deploy SQL Migration
     pool:
       vmImage: 'windows-latest'
-    environment: Test
+    #environment: Test
     strategy:
       runOnce:
         deploy:
@@ -381,7 +381,7 @@ stages:
     displayName: Deploy ShortUrl Application
     pool:
       vmImage: 'ubuntu-latest'
-    environment: Test
+    #environment: Test
     strategy:
       runOnce:
         deploy:
@@ -395,3 +395,12 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlManagementGui'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: ShortUrlManagementGui
+              packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'

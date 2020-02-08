@@ -410,6 +410,6 @@ stages:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
               WebAppName: ShortUrlManagementGui
-              packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
+              packageForLinux: '$(Pipeline.Workspace)/UrlManagementGui/ShortUrl.UrlManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
-              StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
+              StartupCommand: 'dotnet ShortUrl.UrlManagementGui.dll'

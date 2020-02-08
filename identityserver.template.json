@@ -309,7 +309,7 @@
         "use32BitWorkerProcess": true,
         "webSocketsEnabled": false,
         "alwaysOn": true,
-        "appCommandLine": "dotnet ShortUrl.ManagementApi.dll",
+        "appCommandLine": "dotnet ShortUrl.UrlManagementApi.dll",
         "managedPipelineMode": "Integrated",
 
         "virtualApplications": [

@@ -327,8 +327,8 @@ stages:
 
 - stage: Deploy_ARM_Template
   displayName: Deploy ARM Template
-  dependsOn: Build_And_Push_Docker_Images
-  condition: succeeded('Build_And_Push_Docker_Images')
+  dependsOn: Build_And_Publish_Zip_Files
+  condition: succeeded('Build_And_Publish_Zip_Files')
   jobs:  
   - deployment: Delpoy
     displayName: Deploy ARM Template
@@ -365,8 +365,8 @@ stages:
             displayName: 'Azure SQL SqlTask'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: 'ShortUrlserver'
-              DatabaseName: 'ShortUrlserver/ShortUrldb'
+              ServerName: 'shorturlserver.database.windows.net'
+              DatabaseName: 'ShortUrldb'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask

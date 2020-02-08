@@ -401,15 +401,15 @@ stages:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
               WebAppName: ShortUrlManagementApi
-              packageForLinux: '$(Pipeline.Workspace)/ManagementApi/ShortUrl.ManagementApi.zip'
+              packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
-              StartupCommand: 'dotnet ShortUrl.ManagementApi.dll'
+              StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlManagementGui'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
               WebAppName: ShortUrlManagementGui
-              packageForLinux: '$(Pipeline.Workspace)/UrlManagementGui/ShortUrl.UrlManagementGui.zip'
+              packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
-              StartupCommand: 'dotnet ShortUrl.UrlManagementGui.dll'
+              StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'

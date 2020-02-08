@@ -16,6 +16,23 @@ stages:
 - stage: Build_And_Publish_Zip_Files 
   displayName: Build And Publish As Zip
   jobs:
+  - job:
+    dependsOn: []
+    displayName: ARM Template
+    pool: 
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      inputs:
+        Contents: '**/*identityserver.template.json'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        CleanTargetFolder: false
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: ARM
   - job: Sql
     dependsOn: []
     displayName: Create Sql Migration Script
@@ -71,12 +88,6 @@ stages:
         Contents: '**/*.zip'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         CleanTargetFolder: true
-    - task: CopyFiles@2
-      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-      inputs:
-        Contents: '**/*identityserver.template.json'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-        CleanTargetFolder: false
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
       inputs:
@@ -331,7 +342,7 @@ stages:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               resourceGroupName: 'ShortUrl-RG'
               location: 'North Europe'
-              csmFile: '$(Pipeline.Workspace)/IdentityServer/identityserver.template.json'
+              csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlIdentity'
             inputs:

@@ -226,6 +226,11 @@
           "name": "[concat(string(variables('databaseServerName')), '/', string(variables('databaseName')))]",
           "location": "[parameters('location')]",
           "apiVersion": "2017-10-01-preview",
+          "sku": {
+            "name": "Basic",
+            "tier": "Basic",
+            "capacity": 5
+          },
           "dependsOn": [
             "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
           ]

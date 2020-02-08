@@ -14,6 +14,7 @@ variables:
 
 stages:
 - stage: Build_And_Publish_Zip_Files 
+  dependsOn: []
   displayName: Build And Publish As Zip
   jobs:
   - job:
@@ -189,7 +190,9 @@ stages:
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: UrlManagementApi
+
 - stage: Build_And_Push_Docker_Images
+  dependsOn: []
   displayName: Build And Push Docker Images
   jobs:  
   - job: Cache
@@ -322,8 +325,8 @@ stages:
         tags: 'managementapi_$(Build.BuildNumber)'
         addPipelineData: false
 
-- stage: Deploy
-  displayName: Deploy Azure App Services
+- stage: Deploy_ARM_Template
+  displayName: Deploy ARM Template
   dependsOn: Build_And_Push_Docker_Images
   condition: succeeded('Build_And_Push_Docker_Images')
   jobs:  
@@ -343,15 +346,21 @@ stages:
               resourceGroupName: 'ShortUrl-RG'
               location: 'North Europe'
               csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service Deploy: ShortUrlIdentity'
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              appType: webAppLinux
-              WebAppName: ShortUrlIdentity
-              packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
-              RuntimeStack: 'DOTNETCORE|3.1'
-              StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
+
+- stage: Deploy_SQL_Migration
+  displayName: Deploy SQL Migration
+  dependsOn: Deploy_ARM_Template
+  condition: succeeded('Deploy_ARM_Template')
+  jobs:  
+  - deployment: Delpoy
+    displayName: Deploy SQL Migration
+    pool:
+      vmImage: 'windows-latest'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
           - task: SqlAzureDacpacDeployment@1
             displayName: 'Azure SQL SqlTask'
             inputs:
@@ -362,3 +371,27 @@ stages:
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask
               SqlFile: '$(Pipeline.Workspace)/Sql/create.sql'
+
+- stage: Deploy_ShortUrl_Applocations
+  displayName: Deploy Azure App Services
+  dependsOn: Deploy_SQL_Migration
+  condition: succeeded('Deploy_SQL_Migration')
+  jobs:  
+  - deployment: Delpoy
+    displayName: Deploy ShortUrl Application
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlIdentity'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: ShortUrlIdentity
+              packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'

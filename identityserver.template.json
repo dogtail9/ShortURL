@@ -38,7 +38,7 @@
     "identityName": "[concat(toLower(parameters('projectName')),'identity')]",
     "managementGuiName": "[concat(toLower(parameters('projectName')),'managementgui')]",
     "managementApiName": "[concat(toLower(parameters('projectName')),'managementapi')]",
-    "redirectName": "[concat(toLower(parameters('projectName')),'redirect')]"
+    "redirectName": "[concat(toLower(parameters('projectName')),'redirectapi')]"
   },
   "resources": [
     {

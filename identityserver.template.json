@@ -10,20 +10,20 @@
       }
     },
     "sites_ShortUrlIdentity_name": {
-      "defaultValue": "ShortUrlIdentity",
-      "type": "String"
+      "type": "String",
+      "defaultValue": "ShortUrlIdentity"
     },
     "sites_ShortUrlManagementApi_name": {
-      "defaultValue": "ShortUrlManagementApi",
-      "type": "String"
+      "type": "String",
+      "defaultValue": "ShortUrlManagementApi"
     },
     "sites_ShortUrlManagementGui_name": {
-      "defaultValue": "ShortUrlManagementGui",
-      "type": "String"
+      "type": "String",
+      "defaultValue": "ShortUrlManagementGui"
     },
     "serverfarms_ShortUrl_ASP_name": {
-      "defaultValue": "ShortUrl-ASP",
-      "type": "String"
+      "type": "String",
+      "defaultValue": "ShortUrl-ASP"
     },
     "location": {
       "type": "string",
@@ -49,7 +49,11 @@
   },
   "variables": {
     "databaseServerName": "[concat(toLower(parameters('projectName')),'server')]",
-    "databaseName": "[concat(parameters('projectName'),'db')]"
+    "databaseName": "[concat(parameters('projectName'),'db')]",
+    "identityName": "[concat(parameters('projectName'),'identity')]",
+    "managementGuiName": "[concat(parameters('projectName'),'managementgui')]",
+    "managementApiName": "[concat(parameters('projectName'),'managementapi')]",
+    "redirectName": "[concat(parameters('projectName'),'redirect')]"
   },
   "resources": [
     {
@@ -76,6 +80,8 @@
         "targetWorkerSizeId": 0
       }
     },
+
+
 
     {
       "type": "Microsoft.Web/sites",
@@ -219,6 +225,7 @@
         "hostNameType": "Verified"
       }
     },
+
 
 
     {
@@ -509,6 +516,9 @@
         "hostNameType": "Verified"
       }
     },
+
+
+
     {
       "type": "Microsoft.Sql/servers",
       "name": "[variables('databaseServerName')]",

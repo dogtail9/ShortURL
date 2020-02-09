@@ -366,7 +366,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               ServerName: 'surlserver.database.windows.net'
-              DatabaseName: 'shorturldb'
+              DatabaseName: 'surldb'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask

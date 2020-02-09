@@ -9,22 +9,6 @@
         "description": "Specify a project name that is used to generate resource names."
       }
     },
-    "sites_ShortUrlIdentity_name": {
-      "type": "String",
-      "defaultValue": "ShortUrlIdentity"
-    },
-    "sites_ShortUrlManagementApi_name": {
-      "type": "String",
-      "defaultValue": "ShortUrlManagementApi"
-    },
-    "sites_ShortUrlManagementGui_name": {
-      "type": "String",
-      "defaultValue": "ShortUrlManagementGui"
-    },
-    "serverfarms_ShortUrl_ASP_name": {
-      "type": "String",
-      "defaultValue": "ShortUrl-ASP"
-    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -49,17 +33,18 @@
   },
   "variables": {
     "databaseServerName": "[concat(toLower(parameters('projectName')),'server')]",
-    "databaseName": "[concat(parameters('projectName'),'db')]",
-    "identityName": "[concat(parameters('projectName'),'identity')]",
-    "managementGuiName": "[concat(parameters('projectName'),'managementgui')]",
-    "managementApiName": "[concat(parameters('projectName'),'managementapi')]",
-    "redirectName": "[concat(parameters('projectName'),'redirect')]"
+    "databaseName": "[concat(toLower(parameters('projectName')),'db')]",
+    "serverfarmName": "[concat(toLower(parameters('projectName')),'serverfarm')]",
+    "identityName": "[concat(toLower(parameters('projectName')),'identity')]",
+    "managementGuiName": "[concat(toLower(parameters('projectName')),'managementgui')]",
+    "managementApiName": "[concat(toLower(parameters('projectName')),'managementapi')]",
+    "redirectName": "[concat(toLower(parameters('projectName')),'redirect')]"
   },
   "resources": [
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-02-01",
-      "name": "[parameters('serverfarms_ShortUrl_ASP_name')]",
+      "name": "[variables('serverfarmName')]",
       "location": "North Europe",
       "sku": {
         "name": "P1v2",
@@ -86,27 +71,27 @@
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_ShortUrlIdentity_name')]",
+      "name": "[variables('identityName')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ShortUrl_ASP_name'))]"
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
       ],
       "kind": "app,linux",
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
           {
-            "name": "shorturlidentity.azurewebsites.net",
+            "name": "[concat(variables('identityName'),'.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Standard"
           },
           {
-            "name": "shorturlidentity.scm.azurewebsites.net",
+            "name": "[concat(variables('identityName'),'.scm.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Repository"
           }
         ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ShortUrl_ASP_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
         "reserved": true,
         "isXenon": false,
         "hyperV": false,
@@ -125,14 +110,14 @@
           "type": "config",
           "apiVersion": "2015-08-01",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlIdentity_name'))]"
+            "[resourceId('Microsoft.Web/sites', variables('identityName'))]"
           ],
           "tags": {
             "displayName": "appsettings"
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Development",
-            "IDENTITY_ISSUER": "https://shorturlidentity.azurewebsites.net/"
+            "IDENTITY_ISSUER": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
           }
         }
       ]
@@ -140,10 +125,10 @@
     {
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_ShortUrlIdentity_name'), '/web')]",
+      "name": "[concat(variables('identityName'), '/web')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlIdentity_name'))]"
+        "[resourceId('Microsoft.Web/sites', variables('identityName'))]"
       ],
       "properties": {
         "numberOfWorkers": 1,
@@ -215,13 +200,13 @@
     {
       "type": "Microsoft.Web/sites/hostNameBindings",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_ShortUrlIdentity_name'), '/', parameters('sites_ShortUrlIdentity_name'), '.azurewebsites.net')]",
+      "name": "[concat(variables('identityName'), '/', variables('identityName'), '.azurewebsites.net')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlIdentity_name'))]"
+        "[resourceId('Microsoft.Web/sites', variables('identityName'))]"
       ],
       "properties": {
-        "siteName": "ShortUrlIdentity",
+        "siteName": "variables('identityName')",
         "hostNameType": "Verified"
       }
     },
@@ -231,27 +216,27 @@
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_ShortUrlManagementApi_name')]",
+      "name": "[variables('managementApiName')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ShortUrl_ASP_name'))]"
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
       ],
       "kind": "app,linux",
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
           {
-            "name": "shorturlmanagementapi.azurewebsites.net",
+            "name": "[concat(variables('managementApiName'),'.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Standard"
           },
           {
-            "name": "shorturlmanagementapi.scm.azurewebsites.net",
+            "name": "[concat(variables('managementApiName'),'.scm.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Repository"
           }
         ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ShortUrl_ASP_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
         "reserved": true,
         "isXenon": false,
         "hyperV": false,
@@ -270,14 +255,14 @@
           "type": "config",
           "apiVersion": "2015-08-01",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlManagementApi_name'))]"
+            "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
           ],
           "tags": {
             "displayName": "appsettings"
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Azure",
-            "IDENTITY_AUTHORITY": "https://shorturlidentity.azurewebsites.net/"
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
           }
         }
       ]
@@ -285,10 +270,10 @@
     {
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_ShortUrlManagementApi_name'), '/web')]",
+      "name": "[concat(variables('managementApiName'), '/web')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlManagementApi_name'))]"
+        "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
       ],
       "properties": {
         "numberOfWorkers": 1,
@@ -360,13 +345,13 @@
     {
       "type": "Microsoft.Web/sites/hostNameBindings",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_ShortUrlManagementApi_name'), '/', parameters('sites_ShortUrlManagementApi_name'), '.azurewebsites.net')]",
+      "name": "[concat(variables('managementApiName'), '/', variables('managementApiName'), '.azurewebsites.net')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlManagementApi_name'))]"
+        "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
       ],
       "properties": {
-        "siteName": "ShortUrlManagementApi",
+        "siteName": "[variables('managementApiName')]",
         "hostNameType": "Verified"
       }
     },
@@ -376,27 +361,27 @@
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_ShortUrlManagementGui_name')]",
+      "name": "[variables('managementGuiName')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ShortUrl_ASP_name'))]"
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
       ],
       "kind": "app,linux",
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
           {
-            "name": "shorturlmanagementgui.azurewebsites.net",
+            "name": "[concat(variables('managementGuiName'),'.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Standard"
           },
           {
-            "name": "shorturlmanagementgui.scm.azurewebsites.net",
+            "name": "[concat(variables('managementGuiName'), '.scm.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Repository"
           }
         ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ShortUrl_ASP_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
         "reserved": true,
         "isXenon": false,
         "hyperV": false,
@@ -415,15 +400,15 @@
           "type": "config",
           "apiVersion": "2015-08-01",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlManagementGui_name'))]"
+            "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
           ],
           "tags": {
             "displayName": "appsettings"
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Azure",
-            "IDENTITY_AUTHORITY": "https://shorturlidentity.azurewebsites.net/",
-            "ManagementService": "https://shorturlmanagementapi.azurewebsites.net"
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
+            "ManagementService": "[concat('https://',variables('managementApiName'),'.azurewebsites.net/')]"
           }
         }
       ]
@@ -431,10 +416,10 @@
     {
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_ShortUrlManagementGui_name'), '/web')]",
+      "name": "[concat(variables('managementGuiName'), '/web')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlManagementGui_name'))]"
+        "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
       ],
       "properties": {
         "numberOfWorkers": 1,
@@ -506,13 +491,13 @@
     {
       "type": "Microsoft.Web/sites/hostNameBindings",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_ShortUrlManagementGui_name'), '/', parameters('sites_ShortUrlManagementGui_name'), '.azurewebsites.net')]",
+      "name": "[concat(variables('managementGuiName'), '/', variables('managementGuiName'), '.azurewebsites.net')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_ShortUrlManagementGui_name'))]"
+        "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
       ],
       "properties": {
-        "siteName": "ShortUrlManagementGui",
+        "siteName": "[variables('managementGuiName')]",
         "hostNameType": "Verified"
       }
     },

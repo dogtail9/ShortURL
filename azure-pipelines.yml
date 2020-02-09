@@ -413,3 +413,12 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlRedirectApi'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: shorturlredirectapi
+              packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'

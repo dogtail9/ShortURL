@@ -34,6 +34,7 @@
   "variables": {
     "databaseServerName": "[concat(toLower(parameters('projectName')),'server')]",
     "databaseName": "[concat(toLower(parameters('projectName')),'db')]",
+    "cacheName": "[concat(toLower(parameters('projectName')),'cache')]",
     "serverfarmName": "[concat(toLower(parameters('projectName')),'serverfarm')]",
     "identityName": "[concat(toLower(parameters('projectName')),'identity')]",
     "managementGuiName": "[concat(toLower(parameters('projectName')),'managementgui')]",
@@ -41,6 +42,7 @@
     "redirectName": "[concat(toLower(parameters('projectName')),'redirectapi')]"
   },
   "resources": [
+    //Serverfarm
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-02-01",
@@ -66,6 +68,7 @@
       }
     },
 
+    // IdentityServer
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -209,6 +212,7 @@
       }
     },
 
+    // Management API
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -352,6 +356,7 @@
       }
     },
 
+    // Management GUI
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -496,6 +501,7 @@
       }
     },
 
+    // Redirect API
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -638,6 +644,7 @@
       }
     },
 
+    // Database
     {
       "type": "Microsoft.Sql/servers",
       "name": "[variables('databaseServerName')]",
@@ -652,6 +659,20 @@
         {
           "type": "Microsoft.Sql/servers/databases",
           "name": "[concat(string(variables('databaseServerName')), '/', string(variables('databaseName')))]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2017-10-01-preview",
+          "sku": {
+            "name": "Basic",
+            "tier": "Basic",
+            "capacity": 5
+          },
+          "dependsOn": [
+            "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
+          ]
+        },
+        {
+          "type": "Microsoft.Sql/servers/databases",
+          "name": "[concat(string(variables('databaseServerName')), '/', string(variables('cacheName')))]",
           "location": "[parameters('location')]",
           "apiVersion": "2017-10-01-preview",
           "sku": {

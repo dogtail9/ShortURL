@@ -373,16 +373,6 @@ stages:
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
-          - task: SqlAzureDacpacDeployment@1
-            displayName: 'Azure SQL SqlTask'
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: 'surlserver.database.windows.net'
-              DatabaseName: 'surldb'
-              SqlUsername: 'ShortUrl'
-              SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
-              deployType: SqlTask
-              SqlFile: '$(Pipeline.Workspace)/Sql/create.sql'
 
 - stage: Deploy_SQL_Migration
   displayName: Deploy SQL Migration

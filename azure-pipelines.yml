@@ -343,7 +343,7 @@ stages:
             displayName: 'Azure Deployment:Create Or Update Resource Group action on ShortUrl-RG'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              resourceGroupName: 'ShortUrl-RG'
+              resourceGroupName: 'surl'
               location: 'North Europe'
               csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
 

@@ -404,8 +404,8 @@ stages:
   dependsOn: ['Deploy_SQL_Migration', 'Deploy_SQL_Cache']
   condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
   jobs:  
-  - deployment: Delpoy
-    displayName: Deploy ShortUrl Application
+  - deployment: Delpoy_Identity
+    displayName: Deploy IdentityServer
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test
@@ -422,6 +422,15 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
+  - deployment: Delpoy_ManagementApi
+    displayName: Deploy Management Api
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlManagementApi'
             inputs:
@@ -431,6 +440,15 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
+  - deployment: Delpoy_ManagementGui
+    displayName: Deploy Management Gui
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlManagementGui'
             inputs:
@@ -440,6 +458,15 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
+  - deployment: Delpoy_RedirectApi
+    displayName: Deploy Redirect Api
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Test
+    strategy:
+      runOnce:
+        deploy:
+          steps:
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: ShortUrlRedirectApi'
             inputs:

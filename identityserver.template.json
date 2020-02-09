@@ -66,8 +66,6 @@
       }
     },
 
-
-
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -211,8 +209,6 @@
       }
     },
 
-
-
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -355,8 +351,6 @@
         "hostNameType": "Verified"
       }
     },
-
-
 
     {
       "type": "Microsoft.Web/sites",
@@ -502,8 +496,6 @@
       }
     },
 
-
-
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -645,8 +637,6 @@
         "hostNameType": "Verified"
       }
     },
-
-
 
     {
       "type": "Microsoft.Sql/servers",

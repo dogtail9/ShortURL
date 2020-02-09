@@ -411,8 +411,8 @@ stages:
 
 - stage: Deploy_ShortUrl_Applocations
   displayName: Deploy Azure App Services
-  dependsOn: Deploy_SQL_Migration
-  condition: succeeded('Deploy_SQL_Migration')
+  dependsOn: ['Deploy_SQL_Migration', 'Deploy_SQL_Cache']
+  condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
   jobs:  
   - deployment: Delpoy
     displayName: Deploy ShortUrl Application

@@ -1,0 +1,198 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "projectName": {
+      "type": "string",
+      "defaultValue": "surl",
+      "metadata": {
+        "description": "Specify a project name that is used to generate resource names."
+      }
+    },
+    "start": {
+      "type": "string",
+      "defaultValue": "ShortUrl.IdentityServer.dll",
+      "metadata": {
+        "description": "Specify the app to run."
+      }
+    },
+    "ASPNETCORE_ENVIRONMENT": {
+      "type": "string",
+      "defaultValue": "Azure",
+      "metadata": {
+        "description": "Specify the ASPNETCORE_ENVIRONMENT."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Specify the Azure location for all services."
+      }
+    },
+    "environment": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Specify the Resource Group for all services."
+      }
+    },
+    "runtime": {
+      "type": "string",
+      "defaultValue": "DOTNETCORE|3.1",
+      "metadata": {
+        "description": "Specify the app service runtime."
+      }
+    }
+  },
+  "variables": {
+    "serviceName": "[concat(parameters('environment'), toLower(parameters('projectName')), 'appservice')]",
+    "serverfarmName": "[concat(parameters('environment'), toLower(parameters('projectName')), 'serverfarm')]",
+    "appCommandLine": "[concat('dotnet ', parameters('start'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('serviceName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
+      ],
+      "kind": "app,linux",
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(variables('serviceName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('serviceName'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
+        "reserved": true,
+        "isXenon": false,
+        "hyperV": false,
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('serviceName'))]"
+          ],
+          "tags": {
+            "displayName": "appsettings"
+          },
+          "properties": {
+            "ASPNETCORE_ENVIRONMENT": "[parameters('ASPNETCORE_ENVIRONMENT')]",
+            "IDENTITY_ISSUER": "[concat('https://',variables('serviceName'),'.azurewebsites.net/')]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('serviceName'), '/web')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('serviceName'))]"
+      ],
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "linuxFxVersion": "[parameters('runtime')]",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2019",
+        "httpLoggingEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$ShortUrlIdentity",
+        "scmType": "VSTSRM",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": true,
+        "appCommandLine": "[variables('appCommandLine')]",
+        "managedPipelineMode": "Integrated",
+
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": true
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": [
+          ]
+        },
+        "autoHealEnabled": false,
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "reservedInstanceCount": 0
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('serviceName'), '/', variables('serviceName'), '.azurewebsites.net')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('serviceName'))]"
+      ],
+      "properties": {
+        "siteName": "[variables('serviceName')]",
+        "hostNameType": "Verified"
+      }
+    }
+  ]
+}

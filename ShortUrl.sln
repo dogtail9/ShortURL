@@ -33,8 +33,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.DataAccess.Sql.Mig
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArmTemplates", "ArmTemplates", "{F79C805C-FE21-47EA-A42A-82E59E0F469C}"
 	ProjectSection(SolutionItems) = preProject
-		identityserver.parameters.json = identityserver.parameters.json
+		appservice.template.json = appservice.template.json
+		empty.parameters.json = empty.parameters.json
+		empty.template.json = empty.template.json
+		identityserver.parameters..json = identityserver.parameters..json
 		identityserver.template.json = identityserver.template.json
+		managementapi.parameters.json = managementapi.parameters.json
 	EndProjectSection
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ShortUrl.AzureResourceGroup", "ShortUrl.AzureResourceGroup\ShortUrl.AzureResourceGroup.deployproj", "{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}"

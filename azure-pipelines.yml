@@ -383,7 +383,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               ServerName: 'surltestsurlserver.database.windows.net'
-              DatabaseName: 'surldb'
+              DatabaseName: 'surltestsurldb'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask
@@ -535,7 +535,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               ServerName: 'surlproductionsurlserver.database.windows.net'
-              DatabaseName: 'surldb'
+              DatabaseName: 'surlproductionsurldb'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask

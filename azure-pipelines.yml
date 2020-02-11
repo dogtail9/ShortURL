@@ -390,7 +390,9 @@ stages:
               SqlFile: '$(Pipeline.Workspace)/Sql/create.sql'
   - deployment: Delpoy_Identity
     displayName: Deploy IdentityServer
-    dependsOn: ['Deploy_SQL_Migration', 'Deploy_SQL_Cache']
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
     condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
     pool:
       vmImage: 'ubuntu-latest'

@@ -325,12 +325,12 @@ stages:
         tags: 'managementapi_$(Build.BuildNumber)'
         addPipelineData: false
 
-- stage: Deploy_ARM_Template
-  displayName: Deploy ARM Template
+- stage: Deploy_Test
+  displayName: Deploy Test
   dependsOn: Build_And_Publish_Zip_Files
   condition: succeeded('Build_And_Publish_Zip_Files')
   jobs:  
-  - deployment: Delpoy
+  - deployment: Deploy_ARM_Template
     displayName: Deploy ARM Template
     pool:
       vmImage: 'ubuntu-latest'
@@ -346,14 +346,9 @@ stages:
               resourceGroupName: 'surl'
               location: 'North Europe'
               csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
-
-- stage: Deploy_SQL_Cache
-  displayName: Deploy SQL Cache
-  dependsOn: Deploy_ARM_Template
-  condition: succeeded('Deploy_ARM_Template')
-  jobs:  
-  - deployment: Delpoy
+  - deployment: Deploy_SQL_Cache
     displayName: Deploy SQL Cache
+    dependsOn: Deploy_ARM_Template
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test
@@ -373,14 +368,9 @@ stages:
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
-
-- stage: Deploy_SQL_Migration
-  displayName: Deploy SQL Migration
-  dependsOn: Deploy_ARM_Template
-  condition: succeeded('Deploy_ARM_Template')
-  jobs:  
-  - deployment: Delpoy
+  - deployment: Deploy_SQL_Migration
     displayName: Deploy SQL Migration
+    dependsOn: Deploy_ARM_Template
     pool:
       vmImage: 'windows-latest'
     environment: Test
@@ -398,14 +388,10 @@ stages:
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask
               SqlFile: '$(Pipeline.Workspace)/Sql/create.sql'
-
-- stage: Deploy_ShortUrl_Applocations
-  displayName: Deploy Azure App Services
-  dependsOn: ['Deploy_SQL_Migration', 'Deploy_SQL_Cache']
-  condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
-  jobs:  
   - deployment: Delpoy_Identity
     displayName: Deploy IdentityServer
+    dependsOn: ['Deploy_SQL_Migration', 'Deploy_SQL_Cache']
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test

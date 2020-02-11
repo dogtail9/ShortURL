@@ -46,6 +46,7 @@
     }
   },
   "variables": {
+    "authorityName": "[concat(parameters('environment'), 'identity', 'appservice')]",
     "serviceName": "[concat(parameters('environment'), toLower(parameters('projectName')), 'appservice')]",
     "serverfarmName": "[concat(parameters('environment'), toLower(parameters('projectName')), 'serverfarm')]",
     "appCommandLine": "[concat('dotnet ', parameters('start'))]"
@@ -100,7 +101,8 @@
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "[parameters('ASPNETCORE_ENVIRONMENT')]",
-            "IDENTITY_ISSUER": "[concat('https://',variables('serviceName'),'.azurewebsites.net/')]"
+            "IDENTITY_ISSUER": "[concat('https://',variables('serviceName'),'.azurewebsites.net/')]",
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('authorityName'),'.azurewebsites.net/')]"
           }
         }
       ]

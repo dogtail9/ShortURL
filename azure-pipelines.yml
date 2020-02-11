@@ -364,7 +364,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=surltestserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
+              dotnet sql-cache create "Server=surltestserver.database.windows.net;Database=surltestcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
@@ -516,7 +516,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=surlproductionserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
+              dotnet sql-cache create "Server=surlproductionserver.database.windows.net;Database=surlproductioncache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false

@@ -406,7 +406,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlidentity
+              WebAppName: surltestsurlidentity
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
@@ -428,7 +428,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlmanagementapi
+              WebAppName: surltestsurlmanagementapi
               packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
@@ -450,7 +450,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlmanagementgui
+              WebAppName: surltestsurlmanagementgui
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
@@ -472,7 +472,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlredirectapi
+              WebAppName: surltestsurlredirectapi
               packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'
@@ -558,7 +558,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlidentity
+              WebAppName: surlproductionsurlidentity
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
@@ -580,7 +580,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlmanagementapi
+              WebAppName: surlproductionsurlmanagementapi
               packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
@@ -602,7 +602,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlmanagementgui
+              WebAppName: surlproductionsurlmanagementgui
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
@@ -624,7 +624,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surlredirectapi
+              WebAppName: surlproductionsurlredirectapi
               packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'

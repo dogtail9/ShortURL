@@ -412,6 +412,10 @@ stages:
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
   - deployment: Delpoy_ManagementApi
     displayName: Deploy Management Api
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test
@@ -430,6 +434,10 @@ stages:
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
   - deployment: Delpoy_ManagementGui
     displayName: Deploy Management Gui
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test
@@ -448,6 +456,10 @@ stages:
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
   - deployment: Delpoy_RedirectApi
     displayName: Deploy Redirect Api
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
     pool:
       vmImage: 'ubuntu-latest'
     environment: Test

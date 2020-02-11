@@ -364,7 +364,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=surlserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
+              dotnet sql-cache create "Server=surltestserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
@@ -382,7 +382,7 @@ stages:
             displayName: 'Azure SQL SqlTask'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: 'surlserver.database.windows.net'
+              ServerName: 'surltestserver.database.windows.net'
               DatabaseName: 'surldb'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
@@ -516,7 +516,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=surlserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
+              dotnet sql-cache create "Server=surlproductionserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
@@ -534,7 +534,7 @@ stages:
             displayName: 'Azure SQL SqlTask'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: 'surlserver.database.windows.net'
+              ServerName: 'surlproductionserver.database.windows.net'
               DatabaseName: 'surldb'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'

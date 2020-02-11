@@ -476,3 +476,155 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'
+
+- stage: Deploy_Production
+  displayName: Deploy Production
+  dependsOn: Deploy_Test
+  condition: succeeded('Deploy_Test')
+  jobs:  
+  - deployment: Deploy_ARM_Template
+    displayName: Deploy ARM Template
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Azure Deployment:Create Or Update Resource Group action on ShortUrl-RG'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              resourceGroupName: 'surl'
+              location: 'North Europe'
+              csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
+  - deployment: Deploy_SQL_Cache
+    displayName: Deploy SQL Cache
+    dependsOn: Deploy_ARM_Template
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DotNetCoreInstaller@2
+            displayName: 'Use .NET Core sdk 3.1.101'
+            inputs:
+              version: 3.1.101
+          - pwsh: |
+              dotnet tool install --global dotnet-sql-cache --version 3.1.1
+            displayName: Install dotnet-sql-cache 
+          - pwsh: |
+              dotnet sql-cache create "Server=surlserver.database.windows.net;Database=surlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surlcache
+            displayName: Create Cache 
+            name: firstStep
+            failOnStderr: false
+  - deployment: Deploy_SQL_Migration
+    displayName: Deploy SQL Migration
+    dependsOn: Deploy_ARM_Template
+    pool:
+      vmImage: 'windows-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: SqlAzureDacpacDeployment@1
+            displayName: 'Azure SQL SqlTask'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              ServerName: 'surlserver.database.windows.net'
+              DatabaseName: 'surldb'
+              SqlUsername: 'ShortUrl'
+              SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
+              deployType: SqlTask
+              SqlFile: '$(Pipeline.Workspace)/Sql/create.sql'
+  - deployment: Delpoy_Identity
+    displayName: Deploy IdentityServer
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlIdentity'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: surlidentity
+              packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
+              RuntimeStack: 'DOTNETCORE|3.0'
+              StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
+  - deployment: Delpoy_ManagementApi
+    displayName: Deploy Management Api
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlManagementApi'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: surlmanagementapi
+              packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
+  - deployment: Delpoy_ManagementGui
+    displayName: Deploy Management Gui
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlManagementGui'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: surlmanagementgui
+              packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
+  - deployment: Delpoy_RedirectApi
+    displayName: Deploy Redirect Api
+    dependsOn: 
+    - Deploy_SQL_Migration 
+    - Deploy_SQL_Cache
+    condition: succeeded('Deploy_SQL_Migration', 'Deploy_SQL_Cache')
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: ShortUrlRedirectApi'
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
+              appType: webAppLinux
+              WebAppName: surlredirectapi
+              packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
+              RuntimeStack: 'DOTNETCORE|3.1'
+              StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'

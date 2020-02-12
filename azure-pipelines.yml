@@ -11,7 +11,7 @@ resources:
 
 variables:
   system.debug: true
-  resourceGroupName: surlt
+  resourceGroupName: surl
 
 stages:
 - stage: Build_And_Publish_Zip_Files 

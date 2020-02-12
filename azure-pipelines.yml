@@ -11,6 +11,7 @@ resources:
 
 variables:
   system.debug: true
+  resourceGroupName: surltest
 
 stages:
 - stage: Build_And_Publish_Zip_Files 
@@ -340,10 +341,10 @@ stages:
         deploy:
           steps:
           - task: AzureResourceGroupDeployment@2
-            displayName: 'Azure Deployment:Create Or Update Resource Group action on ShortUrl-RG'
+            displayName: 'Azure Deployment:Create Or Update Resource Group action on $(resourceGroupName)'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              resourceGroupName: 'surltest'
+              resourceGroupName: '$(resourceGroupName)'
               location: 'North Europe'
               csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
   - deployment: Deploy_SQL_Cache
@@ -364,7 +365,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=surltestsurlserver.database.windows.net;Database=surltestsurlcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo surltestsurlcache
+              dotnet sql-cache create "Server=$(resourceGroupName)server.database.windows.net;Database=$(resourceGroupName)cache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo $(resourceGroupName)cache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
@@ -382,8 +383,8 @@ stages:
             displayName: 'Azure SQL SqlTask'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: 'surltestsurlserver.database.windows.net'
-              DatabaseName: 'surltestsurldb'
+              ServerName: '$(resourceGroupName)server.database.windows.net'
+              DatabaseName: '$(resourceGroupName)db'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask
@@ -406,7 +407,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surltestsurlidentity
+              WebAppName: $(resourceGroupName)identity
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
@@ -428,7 +429,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surltestsurlmanagementapi
+              WebAppName: $(resourceGroupName)managementapi
               packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
@@ -450,7 +451,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surltestsurlmanagementgui
+              WebAppName: $(resourceGroupName)managementgui
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
@@ -472,7 +473,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: surltestsurlredirectapi
+              WebAppName: $(resourceGroupName)redirectapi
               packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'

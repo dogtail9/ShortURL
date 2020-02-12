@@ -4,7 +4,7 @@
   "parameters": {
     "projectName": {
       "type": "string",
-      "defaultValue": "[concat(resourceGroup().Name, 'surl')]",
+      "defaultValue": "[resourceGroup().Name]",
       "metadata": {
         "description": "Specify a project name that is used to generate resource names."
       }

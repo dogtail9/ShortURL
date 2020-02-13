@@ -81,6 +81,7 @@ namespace ShortUrl.ManagementGui
                     options.Scope.Add("offline_access");
                     options.Scope.Add("managementapi");
                     options.Scope.Add("shorturl");
+                    options.Scope.Add("groups");
                     
                     options.GetClaimsFromUserInfoEndpoint = true;
 
@@ -91,6 +92,8 @@ namespace ShortUrl.ManagementGui
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("shorturl.accesslevel", "admin"));
+                options.AddPolicy("Kille", policy => policy.RequireClaim("groups", "Kalle"));
+                options.AddPolicy("Tjej", policy => policy.RequireClaim("groups", "Svea"));
             });
 
 
@@ -100,6 +103,7 @@ namespace ShortUrl.ManagementGui
                 // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
                 options.Client.Scope = "managementapi";
                 options.Client.Scope = "shorturl";
+                options.Client.Scope = "groups";
             })
                 .ConfigureBackchannelHttpClient();
 

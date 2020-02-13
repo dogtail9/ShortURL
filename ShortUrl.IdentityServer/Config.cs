@@ -5,6 +5,7 @@
 using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace ShortUrl.IdentityServer
 {
@@ -20,12 +21,20 @@ namespace ShortUrl.IdentityServer
                 claimTypes: new[] { "shorturl.accesslevel" }
             );
 
+            var groupsProfile = new IdentityResource
+            (
+                name: "groups",
+                displayName: "groups Profile",
+                claimTypes: new[] { "groups" }
+            );
+
             return new IdentityResource[]
             {
               new IdentityResources.OpenId(),
               new IdentityResources.Profile(),
               new IdentityResources.Email(),
-              shorturlProfile
+              shorturlProfile,
+              groupsProfile
             };
         }
 
@@ -82,7 +91,8 @@ namespace ShortUrl.IdentityServer
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "managementapi",
-                        "shorturl"
+                        "shorturl",
+                        "groups"
                     },
                     AlwaysIncludeUserClaimsInIdToken = true,
 

@@ -118,7 +118,8 @@
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Development",
-            "IDENTITY_ISSUER": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
+            "IDENTITY_ISSUER": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
+            "ManagementGuiUrl": "[concat('https://',variables('managementGuiName'),'.azurewebsites.net')]"
           }
         }
       ]

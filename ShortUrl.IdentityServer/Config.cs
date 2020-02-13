@@ -4,6 +4,7 @@
 
 using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Security.Claims;
 
@@ -11,7 +12,6 @@ namespace ShortUrl.IdentityServer
 {
     public static class Config
     {
-
         public static IEnumerable<IdentityResource> Ids()
         {
             var shorturlProfile = new IdentityResource
@@ -47,8 +47,9 @@ namespace ShortUrl.IdentityServer
                 }
             };
 
-        public static IEnumerable<Client> Clients =>
-            new Client[]
+        public static IEnumerable<Client> GetClients(IConfiguration configuration)
+        {
+            return new Client[]
             {
                 new Client
                 {
@@ -80,10 +81,10 @@ namespace ShortUrl.IdentityServer
                     //AccessTokenLifetime=70,
 
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:5002/signin-oidc" },
+                    RedirectUris = { $"{configuration["ManagementGuiUrl"]}/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { $"{configuration["ManagementGuiUrl"]}/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {
@@ -99,5 +100,6 @@ namespace ShortUrl.IdentityServer
                     AllowOfflineAccess = true
                 }
             };
+        }
     }
 }

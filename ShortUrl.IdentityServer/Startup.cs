@@ -29,7 +29,7 @@ namespace ShortUrl.IdentityServer
             var builder = services.AddIdentityServer(x=>x.IssuerUri = Configuration["IDENTITY_ISSUER"])// "http://shorturl.identityserver")
                 .AddInMemoryIdentityResources(Config.Ids())
                 .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryClients(Config.GetClients(Configuration))
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure

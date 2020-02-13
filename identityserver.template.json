@@ -272,6 +272,7 @@
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Azure",
             "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
+          }
         }
       ]
     },

@@ -11,7 +11,9 @@ resources:
 
 variables:
   system.debug: true
-  resourceGroupName: surl
+  resourceGroupNamePrefix: surl
+  testResourceGroupName: $(resourceGroupNamePrefix)test
+  productionResourceGroupName: $(resourceGroupNamePrefix)production
 
 stages:
 - stage: Build_And_Publish_Zip_Files 
@@ -341,10 +343,10 @@ stages:
         deploy:
           steps:
           - task: AzureResourceGroupDeployment@2
-            displayName: 'Azure Deployment:Create Or Update Resource Group action on $(resourceGroupName)test'
+            displayName: 'Azure Deployment:Create Or Update Resource Group action on $(testResourceGroupName)'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              resourceGroupName: '$(resourceGroupName)test'
+              resourceGroupName: '$(testResourceGroupName)'
               location: 'North Europe'
               csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
   - deployment: Deploy_SQL_Cache
@@ -365,7 +367,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=$(resourceGroupName)testserver.database.windows.net;Database=$(resourceGroupName)testcache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo $(resourceGroupName)testcache
+              dotnet sql-cache create "Server=$(testResourceGroupName)server.database.windows.net;Database=$(testResourceGroupName)cache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo $(testResourceGroupName)cache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
@@ -383,8 +385,8 @@ stages:
             displayName: 'Azure SQL SqlTask'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: '$(resourceGroupName)testserver.database.windows.net'
-              DatabaseName: '$(resourceGroupName)testdb'
+              ServerName: '$(testResourceGroupName)server.database.windows.net'
+              DatabaseName: '$(testResourceGroupName)db'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask
@@ -407,7 +409,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)testidentity
+              WebAppName: $(testResourceGroupName)identity
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
@@ -429,7 +431,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)testmanagementapi
+              WebAppName: $(testResourceGroupName)managementapi
               packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
@@ -451,7 +453,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)testmanagementgui
+              WebAppName: $(testResourceGroupName)managementgui
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
@@ -473,7 +475,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)testredirectapi
+              WebAppName: $(testResourceGroupName)redirectapi
               packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'
@@ -496,7 +498,7 @@ stages:
             displayName: 'Azure Deployment:Create Or Update Resource Group action on ShortUrl-RG'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              resourceGroupName: '$(resourceGroupName)production'
+              resourceGroupName: '$(productionResourceGroupName)'
               location: 'North Europe'
               csmFile: '$(Pipeline.Workspace)/ARM/identityserver.template.json'
   - deployment: Deploy_SQL_Cache
@@ -517,7 +519,7 @@ stages:
               dotnet tool install --global dotnet-sql-cache --version 3.1.1
             displayName: Install dotnet-sql-cache 
           - pwsh: |
-              dotnet sql-cache create "Server=$(resourceGroupName)productionserver.database.windows.net;Database=$(resourceGroupName)productioncache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo $(resourceGroupName)productioncache
+              dotnet sql-cache create "Server=$(productionResourceGroupName)server.database.windows.net;Database=$(productionResourceGroupName)cache;User Id=ShortUrl;Password=89452678532!@hKiLJUYGHHNgfgjh;" dbo $(productionResourceGroupName)cache
             displayName: Create Cache 
             name: firstStep
             failOnStderr: false
@@ -535,8 +537,8 @@ stages:
             displayName: 'Azure SQL SqlTask'
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
-              ServerName: '$(resourceGroupName)productionserver.database.windows.net'
-              DatabaseName: '$(resourceGroupName)productiondb'
+              ServerName: '$(productionResourceGroupName)server.database.windows.net'
+              DatabaseName: '$(productionResourceGroupName)db'
               SqlUsername: 'ShortUrl'
               SqlPassword: '89452678532!@hKiLJUYGHHNgfgjh'
               deployType: SqlTask
@@ -559,7 +561,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)productionidentity
+              WebAppName: $(productionResourceGroupName)identity
               packageForLinux: '$(Pipeline.Workspace)/IdentityServer/ShortUrl.IdentityServer.zip'
               RuntimeStack: 'DOTNETCORE|3.0'
               StartupCommand: 'dotnet ShortUrl.IdentityServer.dll'
@@ -581,7 +583,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)productionmanagementapi
+              WebAppName: $(productionResourceGroupName)managementapi
               packageForLinux: '$(Pipeline.Workspace)/UrlManagementApi/ShortUrl.UrlManagementApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.UrlManagementApi.dll'
@@ -603,7 +605,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)productionmanagementgui
+              WebAppName: $(productionResourceGroupName)managementgui
               packageForLinux: '$(Pipeline.Workspace)/ManagementGui/ShortUrl.ManagementGui.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.ManagementGui.dll'
@@ -625,7 +627,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (42955aa6-8ee8-4233-9e3f-882a3e5091de)'
               appType: webAppLinux
-              WebAppName: $(resourceGroupName)productionredirectapi
+              WebAppName: $(productionResourceGroupName)redirectapi
               packageForLinux: '$(Pipeline.Workspace)/RedirectApi/ShortUrl.RedirectApi.zip'
               RuntimeStack: 'DOTNETCORE|3.1'
               StartupCommand: 'dotnet ShortUrl.RedirectApi.dll'

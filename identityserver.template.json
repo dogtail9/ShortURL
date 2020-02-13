@@ -252,8 +252,8 @@
         "siteConfig": {
           "connectionStrings": [
             {
-              "name": "ConnString1",
-              "connectionString": "Server=localhost;Database=ShortUrl;User Id=sa;Password=P@ssw0rd;"
+              "name": "UrlDbContext",
+              "connectionString": "[concat('Server=tcp:',variables('databaseServerName'),'server.database.windows.net,1433;Initial Catalog=',variables('databaseName'),';Persist Security Info=False;User ID=ShortUrl;Password=',parameters('adminPassword'),';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]"
             }
           ]
         }

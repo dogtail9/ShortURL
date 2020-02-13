@@ -257,450 +257,455 @@
             }
           ]
         }
-      }
-    },
-    "resources"
-    :
-    [
-      {
-        "name": "appsettings",
-        "type": "config",
-        "apiVersion": "2015-08-01",
-        "dependsOn": [
-          "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
-        ],
-        "tags": {
-          "displayName": "appsettings"
-        },
-        "properties": {
-          "ASPNETCORE_ENVIRONMENT": "Azure",
-          "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
-        }
-    ]
-}, {
-  "type": "Microsoft.Web/sites/config",
-  "apiVersion": "2018-11-01",
-  "name": "[concat(variables('managementApiName'), '/web')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
-  ],
-  "properties": {
-    "numberOfWorkers": 1,
-    "defaultDocuments": [
-      "Default.htm",
-      "Default.html",
-      "Default.asp",
-      "index.htm",
-      "index.html",
-      "iisstart.htm",
-      "default.aspx",
-      "index.php",
-      "hostingstart.html"
-    ],
-    "netFrameworkVersion": "v4.0",
-    "linuxFxVersion": "DOTNETCORE|3.1",
-    "requestTracingEnabled": false,
-    "remoteDebuggingEnabled": false,
-    "remoteDebuggingVersion": "VS2019",
-    "httpLoggingEnabled": false,
-    "logsDirectorySizeLimit": 35,
-    "detailedErrorLoggingEnabled": false,
-    "publishingUsername": "$ShortUrlIdentity",
-    "scmType": "VSTSRM",
-    "use32BitWorkerProcess": true,
-    "webSocketsEnabled": false,
-    "alwaysOn": true,
-    "appCommandLine": "dotnet ShortUrl.UrlManagementApi.dll",
-    "managedPipelineMode": "Integrated",
-
-    "virtualApplications": [
-      {
-        "virtualPath": "/",
-        "physicalPath": "site\\wwwroot",
-        "preloadEnabled": true
-      }
-    ],
-    "loadBalancing": "LeastRequests",
-    "experiments": {
-      "rampUpRules": []
-    },
-    "autoHealEnabled": false,
-    "localMySqlEnabled": false,
-    "ipSecurityRestrictions": [
-      {
-        "ipAddress": "Any",
-        "action": "Allow",
-        "priority": 1,
-        "name": "Allow all",
-        "description": "Allow all access"
-      }
-    ],
-    "scmIpSecurityRestrictions": [
-      {
-        "ipAddress": "Any",
-        "action": "Allow",
-        "priority": 1,
-        "name": "Allow all",
-        "description": "Allow all access"
-      }
-    ],
-    "scmIpSecurityRestrictionsUseMain": false,
-    "http20Enabled": false,
-    "minTlsVersion": "1.2",
-    "ftpsState": "AllAllowed",
-    "reservedInstanceCount": 0
-  }
-}, {
-  "type": "Microsoft.Web/sites/hostNameBindings",
-  "apiVersion": "2018-11-01",
-  "name": "[concat(variables('managementApiName'), '/', variables('managementApiName'), '.azurewebsites.net')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
-  ],
-  "properties": {
-    "siteName": "[variables('managementApiName')]",
-    "hostNameType": "Verified"
-  }
-},
-
-// Management GUI
-{
-  "type": "Microsoft.Web/sites",
-  "apiVersion": "2018-11-01",
-  "name": "[variables('managementGuiName')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
-  ],
-  "kind": "app,linux",
-  "properties": {
-    "enabled": true,
-    "hostNameSslStates": [
-      {
-        "name": "[concat(variables('managementGuiName'),'.azurewebsites.net')]",
-        "sslState": "Disabled",
-        "hostType": "Standard"
       },
-      {
-        "name": "[concat(variables('managementGuiName'), '.scm.azurewebsites.net')]",
-        "sslState": "Disabled",
-        "hostType": "Repository"
-      }
-    ],
-    "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
-    "reserved": true,
-    "isXenon": false,
-    "hyperV": false,
-    "scmSiteAlsoStopped": false,
-    "clientAffinityEnabled": false,
-    "clientCertEnabled": false,
-    "hostNamesDisabled": false,
-    "containerSize": 0,
-    "dailyMemoryTimeQuota": 0,
-    "httpsOnly": false,
-    "redundancyMode": "None"
-  },
-  "resources": [
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
+          ],
+          "tags": {
+            "displayName": "appsettings"
+          },
+          "properties": {
+            "ASPNETCORE_ENVIRONMENT": "Azure",
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
+        }
+      ]
+    },
     {
-      "name": "appsettings",
-      "type": "config",
-      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('managementApiName'), '/web')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
+      ],
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "linuxFxVersion": "DOTNETCORE|3.1",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2019",
+        "httpLoggingEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$ShortUrlIdentity",
+        "scmType": "VSTSRM",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": true,
+        "appCommandLine": "dotnet ShortUrl.UrlManagementApi.dll",
+        "managedPipelineMode": "Integrated",
+
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": true
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "reservedInstanceCount": 0
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('managementApiName'), '/', variables('managementApiName'), '.azurewebsites.net')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('managementApiName'))]"
+      ],
+      "properties": {
+        "siteName": "[variables('managementApiName')]",
+        "hostNameType": "Verified"
+      }
+    },
+
+    // Management GUI
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('managementGuiName')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
+      ],
+      "kind": "app,linux",
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(variables('managementGuiName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('managementGuiName'), '.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
+        "reserved": true,
+        "isXenon": false,
+        "hyperV": false,
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
+          ],
+          "tags": {
+            "displayName": "appsettings"
+          },
+          "properties": {
+            "ASPNETCORE_ENVIRONMENT": "Azure",
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
+            "ManagementService": "[concat('https://',variables('managementApiName'),'.azurewebsites.net/')]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('managementGuiName'), '/web')]",
+      "location": "North Europe",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
       ],
-      "tags": {
-        "displayName": "appsettings"
-      },
       "properties": {
-        "ASPNETCORE_ENVIRONMENT": "Azure",
-        "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
-        "ManagementService": "[concat('https://',variables('managementApiName'),'.azurewebsites.net/')]"
-      }
-    }
-  ]
-}, {
-  "type": "Microsoft.Web/sites/config",
-  "apiVersion": "2018-11-01",
-  "name": "[concat(variables('managementGuiName'), '/web')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
-  ],
-  "properties": {
-    "numberOfWorkers": 1,
-    "defaultDocuments": [
-      "Default.htm",
-      "Default.html",
-      "Default.asp",
-      "index.htm",
-      "index.html",
-      "iisstart.htm",
-      "default.aspx",
-      "index.php",
-      "hostingstart.html"
-    ],
-    "netFrameworkVersion": "v4.0",
-    "linuxFxVersion": "DOTNETCORE|3.1",
-    "requestTracingEnabled": false,
-    "remoteDebuggingEnabled": false,
-    "remoteDebuggingVersion": "VS2019",
-    "httpLoggingEnabled": false,
-    "logsDirectorySizeLimit": 35,
-    "detailedErrorLoggingEnabled": false,
-    "publishingUsername": "$ShortUrlIdentity",
-    "scmType": "VSTSRM",
-    "use32BitWorkerProcess": true,
-    "webSocketsEnabled": false,
-    "alwaysOn": true,
-    "appCommandLine": "dotnet ShortUrl.ManagementGui.dll",
-    "managedPipelineMode": "Integrated",
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "linuxFxVersion": "DOTNETCORE|3.1",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2019",
+        "httpLoggingEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$ShortUrlIdentity",
+        "scmType": "VSTSRM",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": true,
+        "appCommandLine": "dotnet ShortUrl.ManagementGui.dll",
+        "managedPipelineMode": "Integrated",
 
-    "virtualApplications": [
-      {
-        "virtualPath": "/",
-        "physicalPath": "site\\wwwroot",
-        "preloadEnabled": true
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": true
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "reservedInstanceCount": 0
       }
-    ],
-    "loadBalancing": "LeastRequests",
-    "experiments": {
-      "rampUpRules": []
     },
-    "autoHealEnabled": false,
-    "localMySqlEnabled": false,
-    "ipSecurityRestrictions": [
-      {
-        "ipAddress": "Any",
-        "action": "Allow",
-        "priority": 1,
-        "name": "Allow all",
-        "description": "Allow all access"
-      }
-    ],
-    "scmIpSecurityRestrictions": [
-      {
-        "ipAddress": "Any",
-        "action": "Allow",
-        "priority": 1,
-        "name": "Allow all",
-        "description": "Allow all access"
-      }
-    ],
-    "scmIpSecurityRestrictionsUseMain": false,
-    "http20Enabled": false,
-    "minTlsVersion": "1.2",
-    "ftpsState": "AllAllowed",
-    "reservedInstanceCount": 0
-  }
-}, {
-  "type": "Microsoft.Web/sites/hostNameBindings",
-  "apiVersion": "2018-11-01",
-  "name": "[concat(variables('managementGuiName'), '/', variables('managementGuiName'), '.azurewebsites.net')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
-  ],
-  "properties": {
-    "siteName": "[variables('managementGuiName')]",
-    "hostNameType": "Verified"
-  }
-},
-
-// Redirect API
-{
-  "type": "Microsoft.Web/sites",
-  "apiVersion": "2018-11-01",
-  "name": "[variables('redirectName')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
-  ],
-  "kind": "app,linux",
-  "properties": {
-    "enabled": true,
-    "hostNameSslStates": [
-      {
-        "name": "[concat(variables('redirectName'),'.azurewebsites.net')]",
-        "sslState": "Disabled",
-        "hostType": "Standard"
-      },
-      {
-        "name": "[concat(variables('redirectName'), '.scm.azurewebsites.net')]",
-        "sslState": "Disabled",
-        "hostType": "Repository"
-      }
-    ],
-    "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
-    "reserved": true,
-    "isXenon": false,
-    "hyperV": false,
-    "scmSiteAlsoStopped": false,
-    "clientAffinityEnabled": false,
-    "clientCertEnabled": false,
-    "hostNamesDisabled": false,
-    "containerSize": 0,
-    "dailyMemoryTimeQuota": 0,
-    "httpsOnly": false,
-    "redundancyMode": "None"
-  },
-  "resources": [
     {
-      "name": "appsettings",
-      "type": "config",
-      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('managementGuiName'), '/', variables('managementGuiName'), '.azurewebsites.net')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('managementGuiName'))]"
+      ],
+      "properties": {
+        "siteName": "[variables('managementGuiName')]",
+        "hostNameType": "Verified"
+      }
+    },
+
+    // Redirect API
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('redirectName')]",
+      "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
+      ],
+      "kind": "app,linux",
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(variables('redirectName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('redirectName'), '.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]",
+        "reserved": true,
+        "isXenon": false,
+        "hyperV": false,
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('redirectName'))]"
+          ],
+          "tags": {
+            "displayName": "appsettings"
+          },
+          "properties": {
+            "ASPNETCORE_ENVIRONMENT": "Azure"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('redirectName'), '/web')]",
+      "location": "North Europe",
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('redirectName'))]"
       ],
-      "tags": {
-        "displayName": "appsettings"
-      },
       "properties": {
-        "ASPNETCORE_ENVIRONMENT": "Azure"
-      }
-    }
-  ]
-}, {
-  "type": "Microsoft.Web/sites/config",
-  "apiVersion": "2018-11-01",
-  "name": "[concat(variables('redirectName'), '/web')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/sites', variables('redirectName'))]"
-  ],
-  "properties": {
-    "numberOfWorkers": 1,
-    "defaultDocuments": [
-      "Default.htm",
-      "Default.html",
-      "Default.asp",
-      "index.htm",
-      "index.html",
-      "iisstart.htm",
-      "default.aspx",
-      "index.php",
-      "hostingstart.html"
-    ],
-    "netFrameworkVersion": "v4.0",
-    "linuxFxVersion": "DOTNETCORE|3.1",
-    "requestTracingEnabled": false,
-    "remoteDebuggingEnabled": false,
-    "remoteDebuggingVersion": "VS2019",
-    "httpLoggingEnabled": false,
-    "logsDirectorySizeLimit": 35,
-    "detailedErrorLoggingEnabled": false,
-    "publishingUsername": "$ShortUrlIdentity",
-    "scmType": "VSTSRM",
-    "use32BitWorkerProcess": true,
-    "webSocketsEnabled": false,
-    "alwaysOn": true,
-    "appCommandLine": "dotnet ShortUrl.RedirectApi.dll",
-    "managedPipelineMode": "Integrated",
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "linuxFxVersion": "DOTNETCORE|3.1",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2019",
+        "httpLoggingEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$ShortUrlIdentity",
+        "scmType": "VSTSRM",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": true,
+        "appCommandLine": "dotnet ShortUrl.RedirectApi.dll",
+        "managedPipelineMode": "Integrated",
 
-    "virtualApplications": [
-      {
-        "virtualPath": "/",
-        "physicalPath": "site\\wwwroot",
-        "preloadEnabled": true
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": true
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "reservedInstanceCount": 0
       }
-    ],
-    "loadBalancing": "LeastRequests",
-    "experiments": {
-      "rampUpRules": []
-    },
-    "autoHealEnabled": false,
-    "localMySqlEnabled": false,
-    "ipSecurityRestrictions": [
-      {
-        "ipAddress": "Any",
-        "action": "Allow",
-        "priority": 1,
-        "name": "Allow all",
-        "description": "Allow all access"
-      }
-    ],
-    "scmIpSecurityRestrictions": [
-      {
-        "ipAddress": "Any",
-        "action": "Allow",
-        "priority": 1,
-        "name": "Allow all",
-        "description": "Allow all access"
-      }
-    ],
-    "scmIpSecurityRestrictionsUseMain": false,
-    "http20Enabled": false,
-    "minTlsVersion": "1.2",
-    "ftpsState": "AllAllowed",
-    "reservedInstanceCount": 0
-  }
-}, {
-  "type": "Microsoft.Web/sites/hostNameBindings",
-  "apiVersion": "2018-11-01",
-  "name": "[concat(variables('redirectName'), '/', variables('redirectName'), '.azurewebsites.net')]",
-  "location": "North Europe",
-  "dependsOn": [
-    "[resourceId('Microsoft.Web/sites', variables('redirectName'))]"
-  ],
-  "properties": {
-    "siteName": "[variables('redirectName')]",
-    "hostNameType": "Verified"
-  }
-},
-
-// Database
-{
-  "type": "Microsoft.Sql/servers",
-  "name": "[variables('databaseServerName')]",
-  "location": "[parameters('location')]",
-  "apiVersion": "2015-05-01-preview",
-  "properties": {
-    "administratorLogin": "[parameters('adminUser')]",
-    "administratorLoginPassword": "[parameters('adminPassword')]",
-    "version": "12.0"
-  },
-  "resources": [
-    {
-      "type": "Microsoft.Sql/servers/databases",
-      "name": "[concat(string(variables('databaseServerName')), '/', string(variables('databaseName')))]",
-      "location": "[parameters('location')]",
-      "apiVersion": "2017-10-01-preview",
-      "sku": {
-        "name": "Basic",
-        "tier": "Basic",
-        "capacity": 5
-      },
-      "dependsOn": [
-        "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
-      ]
     },
     {
-      "type": "Microsoft.Sql/servers/databases",
-      "name": "[concat(string(variables('databaseServerName')), '/', string(variables('cacheName')))]",
-      "location": "[parameters('location')]",
-      "apiVersion": "2017-10-01-preview",
-      "sku": {
-        "name": "Basic",
-        "tier": "Basic",
-        "capacity": 5
-      },
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('redirectName'), '/', variables('redirectName'), '.azurewebsites.net')]",
+      "location": "North Europe",
       "dependsOn": [
-        "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
-      ]
-    },
-    {
-      "type": "firewallrules",
-      "name": "AllowAllAzureIps",
-      "location": "[parameters('location')]",
-      "apiVersion": "2015-05-01-preview",
-      "dependsOn": [
-        "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('redirectName'))]"
       ],
       "properties": {
-        "startIpAddress": "0.0.0.0",
-        "endIpAddress": "0.0.0.0"
+        "siteName": "[variables('redirectName')]",
+        "hostNameType": "Verified"
       }
+    },
+
+    // Database
+    {
+      "type": "Microsoft.Sql/servers",
+      "name": "[variables('databaseServerName')]",
+      "location": "[parameters('location')]",
+      "apiVersion": "2015-05-01-preview",
+      "properties": {
+        "administratorLogin": "[parameters('adminUser')]",
+        "administratorLoginPassword": "[parameters('adminPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+          "type": "Microsoft.Sql/servers/databases",
+          "name": "[concat(string(variables('databaseServerName')), '/', string(variables('databaseName')))]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2017-10-01-preview",
+          "sku": {
+            "name": "Basic",
+            "tier": "Basic",
+            "capacity": 5
+          },
+          "dependsOn": [
+            "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
+          ]
+        },
+        {
+          "type": "Microsoft.Sql/servers/databases",
+          "name": "[concat(string(variables('databaseServerName')), '/', string(variables('cacheName')))]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2017-10-01-preview",
+          "sku": {
+            "name": "Basic",
+            "tier": "Basic",
+            "capacity": 5
+          },
+          "dependsOn": [
+            "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
+          ]
+        },
+        {
+          "type": "firewallrules",
+          "name": "AllowAllAzureIps",
+          "location": "[parameters('location')]",
+          "apiVersion": "2015-05-01-preview",
+          "dependsOn": [
+            "[resourceID('Microsoft.Sql/servers/', variables('databaseServerName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        }
+      ]
     }
   ]
-} ] }
+}

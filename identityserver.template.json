@@ -263,7 +263,15 @@
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Azure",
-            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
+            "siteConfig": {
+              "connectionStrings": [
+                {
+                  "name": "ConnString1",
+                  "connectionString": "Server=localhost;Database=ShortUrl;User Id=sa;Password=P@ssw0rd;"
+                }
+              ]
+            }
           }
         }
       ]

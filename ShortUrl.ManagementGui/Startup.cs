@@ -51,7 +51,7 @@ namespace ShortUrl.ManagementGui
                 {
                     options.ServiceName = "ShortUrl.ManagementGui";
                     //o.ServiceName = "BackEndApp";
-                    options.Endpoint = new Uri(Configuration.GetConnectionString("Zipkin"));
+                    options.Endpoint = new Uri(Configuration["Zipkin"]);
                 });
                 //.AddRequestCollector()
                 //.AddDependencyCollector();

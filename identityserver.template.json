@@ -417,7 +417,8 @@
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Azure",
             "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
-            "ManagementService": "[concat('https://',variables('managementApiName'),'.azurewebsites.net/')]"
+            "ManagementService": "[concat('https://',variables('managementApiName'),'.azurewebsites.net/')]",
+            "Zipkin": "novalue"
           }
         }
       ]

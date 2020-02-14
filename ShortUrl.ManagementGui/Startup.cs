@@ -110,7 +110,7 @@ namespace ShortUrl.ManagementGui
             //registers a typed HTTP client with token management support
             services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
             {
-                client.BaseAddress = new Uri(Configuration.GetConnectionString("ManagementService"));
+                client.BaseAddress = new Uri(Configuration["ManagementService"]);
             })
                 .AddUserAccessTokenHandler();
 

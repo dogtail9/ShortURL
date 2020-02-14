@@ -272,7 +272,8 @@
           },
           "properties": {
             "ASPNETCORE_ENVIRONMENT": "Azure",
-            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]"
+            "IDENTITY_AUTHORITY": "[concat('https://',variables('identityName'),'.azurewebsites.net/')]",
+            "Zipkin": "http://noconnection:9411/api/v2/spans"
           }
         }
       ]

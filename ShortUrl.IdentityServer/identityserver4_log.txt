@@ -15041,3 +15041,45 @@ Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException: The antiforgery
 2020-02-13 21:55:07.254 +01:00 [DBG] Issued claims: ["name","given_name","family_name","email","email_verified","website","shorturl.accesslevel","groups","groups"]
 2020-02-13 21:55:07.256 +01:00 [INF] Profile service returned the following claim types: name given_name family_name email email_verified website shorturl.accesslevel groups groups
 2020-02-13 21:55:07.256 +01:00 [DBG] End userinfo request
+2020-02-14 16:48:30.771 +01:00 [INF] Starting host...
+2020-02-14 16:48:34.655 +01:00 [INF] Starting IdentityServer4 version 3.0.1.0
+2020-02-14 16:48:34.666 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2020-02-14 16:48:34.667 +01:00 [DBG] Custom IssuerUri set to http://localhost:5999
+2020-02-14 16:48:34.672 +01:00 [INF] Using the default authentication scheme idsrv for IdentityServer
+2020-02-14 16:48:34.673 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2020-02-14 16:48:34.673 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2020-02-14 16:48:34.673 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2020-02-14 16:48:34.674 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2020-02-14 16:48:34.674 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2020-02-14 16:48:36.406 +01:00 [DBG] Login Url: /Account/Login
+2020-02-14 16:48:36.409 +01:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-02-14 16:48:36.411 +01:00 [DBG] Logout Url: /Account/Logout
+2020-02-14 16:48:36.411 +01:00 [DBG] ConsentUrl Url: /consent
+2020-02-14 16:48:36.412 +01:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-02-14 16:48:36.413 +01:00 [DBG] Error Url: /home/error
+2020-02-14 16:48:36.413 +01:00 [DBG] Error Id Parameter: errorId
+2020-02-14 16:48:36.429 +01:00 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2020-02-14 16:48:36.439 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2020-02-14 16:48:36.440 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2020-02-14 16:48:36.444 +01:00 [DBG] Start discovery request
+2020-02-14 16:48:36.831 +01:00 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2020-02-14 16:48:36.832 +01:00 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2020-02-14 16:48:36.833 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2020-02-14 16:48:36.835 +01:00 [DBG] Start key discovery request
+2020-02-14 16:48:36.928 +01:00 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2020-02-14 16:48:36.933 +01:00 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2020-02-14 16:48:36.934 +01:00 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2020-02-14 16:48:36.936 +01:00 [DBG] Start authorize request
+2020-02-14 16:48:36.943 +01:00 [DBG] No user present in authorize request
+2020-02-14 16:48:36.945 +01:00 [DBG] Start authorize request protocol validation
+2020-02-14 16:48:36.956 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-02-14 16:48:36.968 +01:00 [DBG] Checking for PKCE parameters
+2020-02-14 16:48:36.990 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-02-14 16:48:37.021 +01:00 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"managementguiclient","ClientName":null,"RedirectUri":"http://localhost:5002/signin-oidc","AllowedRedirectUris":["http://localhost:5002/signin-oidc"],"SubjectId":"anonymous","ResponseType":"code","ResponseMode":"form_post","GrantType":"authorization_code","RequestedScopes":"openid profile email offline_access managementapi shorturl groups","State":"CfDJ8AKKEMzdu5BHlsiXkTx0Ld1xAQROi6Lemo_jNzAxyyKeMaIZjw-MuRxYNi5meseVln2MZ0irzjRo6anYVga-gFOoEW-QRLtDCIk7xBccfxLhAK497Op3mkob1hfLflGg6QYh2QsWv3ef5DHCyYI3RZhuMoBxgHmXHjNxEzFp9-Zz6QobSfVqvrEbQ4oM9fZZAzBk_iVbvrbApB9U_vz-a9JD1jKDdWQyk9B5izK2TSBYJSWPwPQqmqRnWBrfIDvZEDTJ7WJMCWb4uXodU_WPOFdU9ReAQmfnGdeNqza1N3pgbPJ9lFdiASzWGCAX8T50cLI8dMsXXhq8kvQNe2NaPSL7F92WVORD3JRCWyRelQlDuUZAWGYPWOowa47fsM7oww","UiLocales":null,"Nonce":"637172921169071900.YTI3ODFjNmUtMjcxZS00MzNiLWExZmMtMTE1ZjEzOGEwNjQ4MzYyZDM2YWItYmYxNy00NjQ0LWJhNDItZTczNDJhYjMzMGM5","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"managementguiclient","redirect_uri":"http://localhost:5002/signin-oidc","response_type":"code","scope":"openid profile email offline_access managementapi shorturl groups","code_challenge":"dX3JYPcNPRRv5IrO6g-_OvIfH0Oy_NLIFhQmnVyUG0k","code_challenge_method":"S256","response_mode":"form_post","nonce":"637172921169071900.YTI3ODFjNmUtMjcxZS00MzNiLWExZmMtMTE1ZjEzOGEwNjQ4MzYyZDM2YWItYmYxNy00NjQ0LWJhNDItZTczNDJhYjMzMGM5","state":"CfDJ8AKKEMzdu5BHlsiXkTx0Ld1xAQROi6Lemo_jNzAxyyKeMaIZjw-MuRxYNi5meseVln2MZ0irzjRo6anYVga-gFOoEW-QRLtDCIk7xBccfxLhAK497Op3mkob1hfLflGg6QYh2QsWv3ef5DHCyYI3RZhuMoBxgHmXHjNxEzFp9-Zz6QobSfVqvrEbQ4oM9fZZAzBk_iVbvrbApB9U_vz-a9JD1jKDdWQyk9B5izK2TSBYJSWPwPQqmqRnWBrfIDvZEDTJ7WJMCWb4uXodU_WPOFdU9ReAQmfnGdeNqza1N3pgbPJ9lFdiASzWGCAX8T50cLI8dMsXXhq8kvQNe2NaPSL7F92WVORD3JRCWyRelQlDuUZAWGYPWOowa47fsM7oww","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.5.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2020-02-14 16:48:37.098 +01:00 [INF] Showing login: User is not authenticated
+2020-02-14 16:48:37.168 +01:00 [DBG] Start authorize request protocol validation
+2020-02-14 16:48:37.179 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-02-14 16:48:37.185 +01:00 [DBG] Checking for PKCE parameters
+2020-02-14 16:48:37.187 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2020-02-14 16:48:37.200 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.

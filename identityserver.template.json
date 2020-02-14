@@ -75,6 +75,9 @@
       "apiVersion": "2018-11-01",
       "name": "[variables('zipkinName')]",
       "location": "North Europe",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
+      ],
       "kind": "app,linux,container",
       "properties": {
         "enabled": true,
@@ -130,7 +133,7 @@
       "name": "[concat(variables('zipkinName'), '/web')]",
       "location": "North Europe",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarmName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('zipkinName'))]"
       ],
       "properties": {
         "numberOfWorkers": 1,

@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArmTemplates", "ArmTemplate
 		identityserver.parameters..json = identityserver.parameters..json
 		identityserver.template.json = identityserver.template.json
 		managementapi.parameters.json = managementapi.parameters.json
+		windows.parameters.json = windows.parameters.json
+		windows.template.json = windows.template.json
 	EndProjectSection
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ShortUrl.AzureResourceGroup", "ShortUrl.AzureResourceGroup\ShortUrl.AzureResourceGroup.deployproj", "{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}"

@@ -694,7 +694,21 @@
         "containerSize": 0,
         "dailyMemoryTimeQuota": 0,
         "httpsOnly": false,
-        "redundancyMode": "None"
+        "redundancyMode": "None",
+        "siteConfig": {
+          "connectionStrings": [
+            {
+              "name": "UrlCache",
+              "connectionString": "[concat('Server=tcp:',variables('databaseServerName'),'.database.windows.net,1433;Initial Catalog=',variables('cacheName'),';Persist Security Info=False;User ID=ShortUrl;Password=',parameters('adminPassword'),';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]",
+              "type": 2
+            },
+            {
+              "name": "UrlDbContext",
+              "connectionString": "[concat('Server=tcp:',variables('databaseServerName'),'.database.windows.net,1433;Initial Catalog=',variables('databaseName'),';Persist Security Info=False;User ID=ShortUrl;Password=',parameters('adminPassword'),';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;')]",
+              "type": 2
+            }
+          ]
+        }
       },
       "resources": [
         {
@@ -708,7 +722,8 @@
             "displayName": "appsettings"
           },
           "properties": {
-            "ASPNETCORE_ENVIRONMENT": "Azure"
+            "ASPNETCORE_ENVIRONMENT": "Azure",
+            "CacheTabelName": "[variables('cacheName')]"
           }
         }
       ]

@@ -36,7 +36,7 @@ namespace ShortUrl.RedirectApi
             {
                 options.ConnectionString = Configuration.GetConnectionString("UrlCache");
                 options.SchemaName = "dbo";
-                options.TableName = Configuration["CacheTabelName"];// "UrlCache";
+                options.TableName = Configuration["CacheTabelName"];
             });
         }
 

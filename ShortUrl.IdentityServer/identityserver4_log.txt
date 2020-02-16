@@ -15083,3 +15083,20 @@ Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException: The antiforgery
 2020-02-14 16:48:37.185 +01:00 [DBG] Checking for PKCE parameters
 2020-02-14 16:48:37.187 +01:00 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
 2020-02-14 16:48:37.200 +01:00 [DBG] client configuration validation for client managementguiclient succeeded.
+2020-02-16 21:10:32.642 +01:00 [INF] Starting host...
+2020-02-16 21:10:42.070 +01:00 [INF] Starting IdentityServer4 version 3.0.1.0
+2020-02-16 21:10:42.083 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2020-02-16 21:10:42.084 +01:00 [DBG] Custom IssuerUri set to http://localhost:5999
+2020-02-16 21:10:42.087 +01:00 [INF] Using the default authentication scheme idsrv for IdentityServer
+2020-02-16 21:10:42.087 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2020-02-16 21:10:42.087 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2020-02-16 21:10:42.087 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2020-02-16 21:10:42.088 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2020-02-16 21:10:42.088 +01:00 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2020-02-16 21:10:44.278 +01:00 [DBG] Login Url: /Account/Login
+2020-02-16 21:10:44.281 +01:00 [DBG] Login Return Url Parameter: ReturnUrl
+2020-02-16 21:10:44.283 +01:00 [DBG] Logout Url: /Account/Logout
+2020-02-16 21:10:44.284 +01:00 [DBG] ConsentUrl Url: /consent
+2020-02-16 21:10:44.284 +01:00 [DBG] Consent Return Url Parameter: returnUrl
+2020-02-16 21:10:44.285 +01:00 [DBG] Error Url: /home/error
+2020-02-16 21:10:44.285 +01:00 [DBG] Error Id Parameter: errorId

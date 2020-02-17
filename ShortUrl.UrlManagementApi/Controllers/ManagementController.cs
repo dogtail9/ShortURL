@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,10 +37,11 @@ namespace ShortUrl.UrlManagementApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ModelsAndClaims))]
         public async Task<IActionResult> GetAll()
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
             var shortUrlModels = await _repository.GetAll();
             var claims = from c in User.Claims select new MyClaim { Type = c.Type, Value = c.Value };
 
-            var response = new ModelsAndClaims { ShortUrlModels = shortUrlModels, MyClaims = claims };
+            var response = new ModelsAndClaims { ShortUrlModels = shortUrlModels, MyClaims = claims, AccessToken= accessToken };
 
             return new JsonResult(response);
         }

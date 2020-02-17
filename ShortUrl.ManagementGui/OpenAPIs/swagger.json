@@ -212,6 +212,10 @@
               "$ref": "#/components/schemas/MyClaim"
             },
             "nullable": true
+          },
+          "accessToken": {
+            "type": "string",
+            "nullable": true
           }
         },
         "nullable": true

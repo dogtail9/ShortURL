@@ -11,5 +11,6 @@ namespace ShortUrl.UrlManagementApi
     {
         public IEnumerable<ShortUrlModel> ShortUrlModels { get; set; }
         public IEnumerable<MyClaim> MyClaims { get; set; }
+        public string AccessToken { get; set; }
     }
 }

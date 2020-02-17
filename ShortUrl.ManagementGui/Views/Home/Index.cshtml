@@ -62,7 +62,7 @@
     }
 </dl>
 
-<h2>Properties</h2>
+<h2>MVC Properties</h2>
 
 <dl>
     @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
@@ -71,6 +71,12 @@
         <dd>@prop.Value</dd>
     }
 </dl>
+
+<h2>AccessToken</h2>
+
+@Model.AccessToken
+
+<h2>Claims</h2>
 
 <table class="table">
     <thead>

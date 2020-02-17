@@ -65,7 +65,7 @@ namespace ShortUrl.IdentityServer
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "managementapi", "shorturl" }
+                    AllowedScopes = { "managementapi", "shorturl", "groups" }
                 },
 
                 // interactive ASP.NET Core MVC client

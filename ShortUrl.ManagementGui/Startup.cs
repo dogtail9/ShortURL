@@ -105,14 +105,14 @@ namespace ShortUrl.ManagementGui
                 options.Client.Scope = "shorturl";
                 options.Client.Scope = "groups";
             })
-                .ConfigureBackchannelHttpClient();
+            .ConfigureBackchannelHttpClient();
 
             //registers a typed HTTP client with token management support
             services.AddHttpClient<IManagementApiClient, ManagementApiClient>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["ManagementService"]);
             })
-                .AddUserAccessTokenHandler();
+            .AddUserAccessTokenHandler();
 
             //services.AddAccessTokenManagement(options =>
             //{

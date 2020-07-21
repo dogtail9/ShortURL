@@ -16,6 +16,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace.Configuration;
 using OpenTelemetry.Exporter.Jaeger;
 using OpenTelemetry.Trace;
+using Microsoft.IdentityModel.Logging;
 
 namespace ShortUrl.ManagementGui
 {
@@ -31,6 +32,8 @@ namespace ShortUrl.ManagementGui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             services.AddControllersWithViews();
 
             // Add the authentication service

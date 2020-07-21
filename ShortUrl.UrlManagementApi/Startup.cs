@@ -138,12 +138,15 @@ namespace ShortUrl.UrlManagementApi
 
         private static void UpdateDatabase(IApplicationBuilder app)
         {
+            Console.WriteLine("Migrate Database");
             using (var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope())
             {
+                Console.WriteLine("Migrate Database: Scope Created");
                 using (var context = serviceScope.ServiceProvider.GetService<UrlDbContext>())
                 {
+                    Console.WriteLine("Migrate Database: Run Migration");
                     context.Database.Migrate();
                 }
             }

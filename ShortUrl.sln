@@ -45,6 +45,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ArmTemplates", "ArmTemplate
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ShortUrl.AzureResourceGroup", "ShortUrl.AzureResourceGroup\ShortUrl.AzureResourceGroup.deployproj", "{B778184D-E595-4A5D-8ABB-59FA9A5CC64B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", "{264B58D9-B205-41F5-857F-B5CCD2A2173C}"
+	ProjectSection(SolutionItems) = preProject
+		001_InstallIstio.ps1 = 001_InstallIstio.ps1
+		010_namespace.yml = 010_namespace.yml
+		020_gateway.yml = 020_gateway.yml
+		030_sts.yml = 030_sts.yml
+		040_zipkin.yml = 040_zipkin.yml
+		050_database.yml = 050_database.yml
+		060_redirectApi.yml = 060_redirectApi.yml
+		070_managementApi.yml = 070_managementApi.yml
+		080_adminWeb.yml = 080_adminWeb.yml
+		Delete.ps1 = Delete.ps1
+		Deploy.ps1 = Deploy.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

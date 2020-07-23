@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace ShortUrl.IdentityServer
 {
@@ -26,7 +28,7 @@ namespace ShortUrl.IdentityServer
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
 
-            var builder = services.AddIdentityServer(x=>x.IssuerUri = Configuration["IDENTITY_ISSUER"])// "http://shorturl.identityserver")
+            var builder = services.AddIdentityServer(x => x.IssuerUri = Configuration["IDENTITY_ISSUER"])// "http://shorturl.identityserver")
                 .AddInMemoryIdentityResources(Config.Ids())
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.GetClients(Configuration))
@@ -43,13 +45,16 @@ namespace ShortUrl.IdentityServer
                 app.UseDeveloperExceptionPage();
             }
 
-            // uncomment if you want to add MVC
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+                RequestPath = "/sts"
+            });
+            app.UsePathBase("/sts");
             app.UseRouting();
 
             app.UseIdentityServer();
 
-            // uncomment, if you want to add MVC
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

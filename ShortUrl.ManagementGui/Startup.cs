@@ -17,6 +17,8 @@ using OpenTelemetry.Trace.Configuration;
 using OpenTelemetry.Exporter.Jaeger;
 using OpenTelemetry.Trace;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace ShortUrl.ManagementGui
 {
@@ -147,7 +149,12 @@ namespace ShortUrl.ManagementGui
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+                RequestPath = "/admin"
+            });
+            app.UsePathBase("/admin");
 
             app.UseRouting();
 

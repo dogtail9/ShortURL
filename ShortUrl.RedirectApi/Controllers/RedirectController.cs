@@ -29,12 +29,13 @@ namespace ShortUrl.RedirectApi.Controllers
         [HttpGet("{key}")]
         public async Task<IActionResult> RedirectTo(string key)
         {
-            if (_hostEnvironment.IsDevelopment() && key == "info")
+            //if (_hostEnvironment.IsDevelopment() && key == "info")
+            if (key == "info")
                 return View("Info");
 
             // Get url for key from cache
             var urlFromCache = await _cache.GetStringAsync(key);
-            
+
             // If the url is found return the url
             if (!(urlFromCache is null))
                 return Redirect(urlFromCache);

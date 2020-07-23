@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: sts-v1
+  labels:
+    app: sts
+spec:
+  replicas: 1
+  # revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: sts
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sts
+        version: v1
+    spec:
+      containers:
+      - name: sts
+        image: shorturl/identityserver:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5000
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: development

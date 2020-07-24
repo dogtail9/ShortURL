@@ -81,10 +81,10 @@ namespace ShortUrl.IdentityServer
                     //AccessTokenLifetime=70,
 
                     // where to redirect to after login
-                    RedirectUris = { $"{configuration["ManagementGuiUrl"]}/signin-oidc" },
+                    RedirectUris = { $"{configuration["ManagementGuiUrl"]}/admin/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { $"{configuration["ManagementGuiUrl"]}/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { $"{configuration["ManagementGuiUrl"]}/admin/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {

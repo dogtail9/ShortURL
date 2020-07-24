@@ -28,11 +28,15 @@ namespace ShortUrl.IdentityServer
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
 
-            var builder = services.AddIdentityServer(x => x.IssuerUri = Configuration["IDENTITY_ISSUER"])// "http://shorturl.identityserver")
-                .AddInMemoryIdentityResources(Config.Ids())
-                .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.GetClients(Configuration))
-                .AddTestUsers(TestUsers.Users);
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.IssuerUri = Configuration["IDENTITY_ISSUER"];
+
+            })
+            .AddInMemoryIdentityResources(Config.Ids())
+            .AddInMemoryApiResources(Config.Apis)
+            .AddInMemoryClients(Config.GetClients(Configuration))
+            .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();

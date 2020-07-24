@@ -6,27 +6,27 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - IDENTITY_ISSUER=http://shorturl.identityserver
     ports:
-      - "5999:80"
+      - "5000:5000"
 
   shorturl.managementgui:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - IDENTITY_AUTHORITY=http://172.25.26.161:5999/
+      - IDENTITY_AUTHORITY=http://172.26.128.1:5000/sts
     ports:
-      - "5002:80"
+      - "5003:5003"
 
   shorturl.redirectapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
     ports:
-      - "5000:80"
+      - "5001:5001"
 
   shorturl.urlmanagementapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - IDENTITY_AUTHORITY=http://172.25.26.161:5999/
+      - IDENTITY_AUTHORITY=http://172.26.128.1:5000/sts
     ports:
-      - "5001:80"
+      - "5002:5002"
 
   shorturl.data:
     environment:

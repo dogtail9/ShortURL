@@ -2,16 +2,16 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: shorturl-dev
-  name: admin
+  name: web
   labels:
-    app: admin
-    service: admin
+    app: web
+    service: web
 spec:
   ports:
   - port: 5003
     name: http
   selector:
-    app: admin
+    app: web
 
 ---
 
@@ -19,26 +19,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: shorturl-dev
-  name: admin-v1
+  name: web-v1
   labels:
-    app: admin
+    app: web
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: admin
+      app: web
       version: v1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: admin
+        app: web
         version: v1
     spec:
       containers:
-      - name: admin
+      - name: web
         image: shorturl/managementgui:dev
         imagePullPolicy: IfNotPresent
         ports:
@@ -53,7 +53,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   namespace: shorturl-dev
-  name: admin
+  name: web
 spec:
   hosts:
   - "*"
@@ -65,6 +65,6 @@ spec:
         prefix: /admin
     route:
     - destination:
-        host: admin
+        host: web
         port:
           number: 5003

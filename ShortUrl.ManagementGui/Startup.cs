@@ -89,6 +89,7 @@ namespace ShortUrl.ManagementGui
                     options.Scope.Add("groups");
                     
                     options.GetClaimsFromUserInfoEndpoint = true;
+                    
 
                     // not mapped by default
                     //options.ClaimActions.MapUniqueJsonKey("shorturl.accesslevel", "shorturl.accesslevel");

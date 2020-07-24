@@ -46,6 +46,8 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: development
+        - name: IDENTITY_ISSUER
+          value: http://identityserver
 
 ---
 

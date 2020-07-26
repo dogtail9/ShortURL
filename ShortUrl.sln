@@ -58,6 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", 
 		080_adminWeb.yml = 080_adminWeb.yml
 		Delete.ps1 = Delete.ps1
 		Deploy.ps1 = Deploy.ps1
+		HostFilePath.txt = HostFilePath.txt
 	EndProjectSection
 EndProject
 Global

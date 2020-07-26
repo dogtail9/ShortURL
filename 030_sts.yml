@@ -45,9 +45,11 @@ spec:
           - containerPort: 5000
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: development
+          value: Development
         - name: IDENTITY_ISSUER
           value: http://identityserver
+        - name: ManagementGuiUrl
+          value: http://shorturl
 
 ---
 

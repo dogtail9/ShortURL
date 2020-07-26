@@ -81,10 +81,10 @@ namespace ShortUrl.IdentityServer
                     //AccessTokenLifetime=70,
 
                     // where to redirect to after login
-                    RedirectUris = {"http://172.26.128.1/admin/signin-oidc" }, // { $"{configuration["ManagementGuiUrl"]}/admin/signin-oidc" },
+                    RedirectUris = { $"{configuration["ManagementGuiUrl"]}/admin/signin-oidc" }, // ,{"http://shorturl/admin/signin-oidc" }
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://172.26.128.1/admin/signout-callback-oidc" }, // { $"{configuration["ManagementGuiUrl"]}/admin/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { $"{configuration["ManagementGuiUrl"]}/admin/signout-callback-oidc" }, // { ,{ "http://shorturl/admin/signout-callback-oidc" }
 
                     AllowedScopes = new List<string>
                     {

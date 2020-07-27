@@ -5,13 +5,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - IDENTITY_ISSUER=http://shorturl.identityserver
+      - ManagementGuiUrl=http://shorturl:5003
     ports:
       - "5000:5000"
 
   shorturl.managementgui:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - IDENTITY_AUTHORITY=http://172.26.128.1:5000/sts
+      - IDENTITY_AUTHORITY=http://shorturl:5000/sts
     ports:
       - "5003:5003"
 
@@ -24,7 +25,7 @@ services:
   shorturl.urlmanagementapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - IDENTITY_AUTHORITY=http://172.26.128.1:5000/sts
+      - IDENTITY_AUTHORITY=http://shorturl:5000/sts
     ports:
       - "5002:5002"
 

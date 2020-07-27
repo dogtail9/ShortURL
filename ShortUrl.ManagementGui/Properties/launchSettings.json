@@ -18,10 +18,11 @@
     "ShortUrl.ManagementGui": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "admin",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5002"
+      "applicationUrl": "http://localhost:5003"
     },
     "Docker": {
       "commandName": "Docker",

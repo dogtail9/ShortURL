@@ -1,0 +1,1 @@
+./istioctl.exe dashboard kiali

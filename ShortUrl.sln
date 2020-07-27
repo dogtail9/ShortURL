@@ -47,7 +47,9 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ShortUrl.AzureResourceGroup
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", "{264B58D9-B205-41F5-857F-B5CCD2A2173C}"
 	ProjectSection(SolutionItems) = preProject
+		000_PullDemoImages.ps1 = 000_PullDemoImages.ps1
 		001_InstallIstio.ps1 = 001_InstallIstio.ps1
+		002_InstallDashboard.ps1 = 002_InstallDashboard.ps1
 		010_namespace.yml = 010_namespace.yml
 		020_gateway.yml = 020_gateway.yml
 		030_sts.yml = 030_sts.yml
@@ -56,6 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", 
 		060_redirectApi.yml = 060_redirectApi.yml
 		070_managementApi.yml = 070_managementApi.yml
 		080_adminWeb.yml = 080_adminWeb.yml
+		900_OpenKiali.ps1 = 900_OpenKiali.ps1
 		Delete.ps1 = Delete.ps1
 		Deploy.ps1 = Deploy.ps1
 		HostFilePath.txt = HostFilePath.txt

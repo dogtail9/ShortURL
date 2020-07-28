@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 
 identityserver4_log.txt
+istioctl.exe
+Dashboard.yaml

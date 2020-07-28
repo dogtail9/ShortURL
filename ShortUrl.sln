@@ -50,8 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", 
 		000_GetIstioCli.ps1 = 000_GetIstioCli.ps1
 		010_PullDemoImages.ps1 = 010_PullDemoImages.ps1
 		020_CreateCacheImage.ps1 = 020_CreateCacheImage.ps1
-		030_InstallDashboard.ps1 = 030_InstallDashboard.ps1
-		040_InstallIstio.ps1 = 040_InstallIstio.ps1
+		030_InstallIstio.ps1 = 030_InstallIstio.ps1
+		040_InstallDashboard.ps1 = 040_InstallDashboard.ps1
 		110_namespace.yml = 110_namespace.yml
 		120_gateway.yml = 120_gateway.yml
 		130_sts.yml = 130_sts.yml
@@ -64,6 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", 
 		Delete.ps1 = Delete.ps1
 		Deploy.ps1 = Deploy.ps1
 		HostFilePath.txt = HostFilePath.txt
+		PrepDemo.ps1 = PrepDemo.ps1
 	EndProjectSection
 EndProject
 Global

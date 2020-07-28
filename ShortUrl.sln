@@ -61,6 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", 
 		170_managementApi.yml = 170_managementApi.yml
 		180_adminWeb.yml = 180_adminWeb.yml
 		900_OpenKiali.ps1 = 900_OpenKiali.ps1
+		ConcatYaml.ps1 = ConcatYaml.ps1
 		Delete.ps1 = Delete.ps1
 		Deploy.ps1 = Deploy.ps1
 		HostFilePath.txt = HostFilePath.txt

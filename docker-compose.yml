@@ -2,13 +2,13 @@ version: '3.4'
 
 services:
   shorturl.identityserver:
-    image: ${DOCKER_REGISTRY-}shorturl/identityserver:dev
+    image: ${DOCKER_REGISTRY-}shorturl/identityserver:${TAG}
     build:
       context: .
       dockerfile: ShortUrl.IdentityServer/Dockerfile
 
   shorturl.managementgui:
-    image: ${DOCKER_REGISTRY-}shorturl/managementgui:dev
+    image: ${DOCKER_REGISTRY-}shorturl/managementgui:${TAG}
     build:
       context: .
       dockerfile: ShortUrl.ManagementGui/Dockerfile
@@ -17,7 +17,7 @@ services:
        - shorturl.zipkin
 
   shorturl.redirectapi:
-    image: ${DOCKER_REGISTRY-}shorturl/redirectapi:dev
+    image: ${DOCKER_REGISTRY-}shorturl/redirectapi:${TAG}
     build:
       context: .
       dockerfile: ShortUrl.RedirectApi/Dockerfile
@@ -27,7 +27,7 @@ services:
        - shorturl.zipkin
 
   shorturl.urlmanagementapi:
-    image: ${DOCKER_REGISTRY-}shorturl/urlmanagementapi:dev
+    image: ${DOCKER_REGISTRY-}shorturl/urlmanagementapi:${TAG}
     build:
       context: .
       dockerfile: ShortUrl.UrlManagementApi/Dockerfile

@@ -49,7 +49,7 @@ spec:
         - name: IDENTITY_ISSUER
           value: http://identityserver
         - name: ManagementGuiUrl
-          value: http://shorturl
+          value: http://shorturl.dev
 
 ---
 
@@ -60,9 +60,9 @@ metadata:
   name: identityserver
 spec:
   hosts:
-  - "*"
+  - "shorturl.dev"
   gateways:
-  - shorturl-gateway
+  - shorturl-gateway-dev
   http:
   - match:
     - uri:

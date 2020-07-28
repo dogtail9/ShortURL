@@ -1,0 +1,440 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shorturl-dev
+  labels:
+    istio-injection: enabled
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  namespace: shorturl-dev
+  name: shorturl-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: shorturl-dev
+  name: identityserver
+  labels:
+    app: identityserver
+    service: identityserver
+spec:
+  ports:
+  - port: 5000
+    name: http
+  selector:
+    app: identityserver
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: identityserver-v1
+  labels:
+    app: identityserver
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: identityserver
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: identityserver
+        version: v1
+    spec:
+      containers:
+      - name: identityserver
+        image: shorturl/identityserver:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5000
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: development
+        - name: IDENTITY_ISSUER
+          value: http://identityserver
+        - name: ManagementGuiUrl
+          value: http://shorturl
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: shorturl-dev
+  name: identityserver
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - shorturl-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /sts
+    route:
+    - destination:
+        host: identityserver
+        port:
+          number: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: shorturl-dev
+  name: zipkin
+  labels:
+    app: zipkin
+    service: zipkin
+spec:
+  ports:
+  - port: 9411
+    name: http
+  selector:
+    app: zipkin
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: zipkin-v1
+  labels:
+    app: zipkin
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: zipkin
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: zipkin
+        version: v1
+    spec:
+      containers:
+      - name: zipkin
+        image: openzipkin/zipkin-slim
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 9411
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: shorturl-dev
+  name: zipkin
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - shorturl-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /zipkin
+    route:
+    - destination:
+        host: zipkin
+        port:
+          number: 9411
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: shorturl-dev
+  name: sql
+  labels:
+    app: sql
+    service: sql
+spec:
+  ports:
+  - port: 1433
+    protocol: TCP
+  selector:
+    app: sql
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: sql-v1
+  labels:
+    app: sql
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: sql
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sql
+        version: v1
+    spec:
+      containers:
+      - name: sql
+        image: mcr.microsoft.com/mssql/server
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 1433
+        resources:
+          limits:
+            memory: "2Gi"
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: P@ssw0rd
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: shorturl-dev
+  name: redirect
+  labels:
+    app: redirect
+    service: redirect
+spec:
+  ports:
+  - port: 5001
+    name: http
+  selector:
+    app: redirect
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: redirect-v1
+  labels:
+    app: redirect
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: redirect
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: redirect
+        version: v1
+    spec:
+      containers:
+      - name: redirect
+        image: shorturl/redirectapi:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5001
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Kubernetes
+      - name: cache
+        image: shorturl/cache:v0.1
+        resources:
+          limits:
+            memory: "2Gi"
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: P@ssw0rd
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: shorturl-dev
+  name: redirect
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - shorturl-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /redirect
+    route:
+    - destination:
+        host: redirect
+        port:
+          number: 5001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: shorturl-dev
+  name: management
+  labels:
+    app: management
+    service: management
+spec:
+  ports:
+  - port: 5002
+    name: http
+  selector:
+    app: management
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: management-v1
+  labels:
+    app: management
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: management
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: management
+        version: v1
+    spec:
+      containers:
+      - name: management
+        image: shorturl/urlmanagementapi:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5002
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Kubernetes
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: shorturl-dev
+  name: web
+  labels:
+    app: web
+    service: web
+spec:
+  ports:
+  - port: 5003
+    name: http
+  selector:
+    app: web
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shorturl-dev
+  name: web-v1
+  labels:
+    app: web
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: web
+      version: v1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: web
+        version: v1
+    spec:
+      containers:
+      - name: web
+        image: shorturl/managementgui:dev
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5003
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Kubernetes
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: shorturl-dev
+  name: web
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - shorturl-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /admin
+#    rewrite:
+#      uri: /admin
+    route:
+    - destination:
+        host: web
+        port:
+          number: 5003
+
+---
+
+

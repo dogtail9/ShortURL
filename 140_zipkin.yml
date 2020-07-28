@@ -53,9 +53,9 @@ metadata:
   name: zipkin
 spec:
   hosts:
-  - "*"
+  - "shorturl.dev"
   gateways:
-  - shorturl-gateway
+  - shorturl-gateway-dev
   http:
   - match:
     - uri:

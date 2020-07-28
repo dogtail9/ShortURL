@@ -19,6 +19,7 @@ using OpenTelemetry.Trace;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace ShortUrl.ManagementGui
 {
@@ -40,7 +41,13 @@ namespace ShortUrl.ManagementGui
 
             // Add the authentication service
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
+            
+            //services.Configure<ForwardedHeadersOptions>(options =>
+            //{
+            //    options.ForwardedHeaders =
+            //        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            //});
+            
             // Add OpenTelemetry
             services.AddOpenTelemetry(builder =>
             {
@@ -141,6 +148,7 @@ namespace ShortUrl.ManagementGui
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

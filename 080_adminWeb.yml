@@ -63,6 +63,8 @@ spec:
   - match:
     - uri:
         prefix: /admin
+#    rewrite:
+#      uri: /admin
     route:
     - destination:
         host: web

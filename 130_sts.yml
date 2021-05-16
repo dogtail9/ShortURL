@@ -60,7 +60,7 @@ metadata:
   name: identityserver
 spec:
   hosts:
-  - "shorturl.dev"
+  - "*"
   gateways:
   - shorturl-gateway-dev
   http:
